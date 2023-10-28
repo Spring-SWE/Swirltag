@@ -1,18 +1,14 @@
 <template>
-    <PrimaryButton @click="confirmUserDeletion">Open Modal</PrimaryButton>
+    <PrimaryButton text-size="lg" class="w-10/12" @click="confirmUserDeletion">Post</PrimaryButton>
     <Modal :show="confirmingUserDeletion" @close="closeModal">
-        <!-- New comment form -->
-        <div class="flex">
-            1
-            2
-        </div>
+        <!-- New Thread form -->
         <div class="flex gap-x-3 px-3 py-3">
-            <img class="h-12 w-12 dark:bg-gray-50 rounded-full bg-gray-800" src="https://placewaifu.com/image/48" alt="" />
+            <img class="h-12 w-12 dark:bg-gray-50 rounded-full bg-gray-800" src="https://placewaifu.com/image/40" alt="" />
             <form @submit.prevent="onSubmit" action="#" class="cursorClass relative flex-auto mt-5">
                 <div class="rounded-lg pb-16 shadow-sm">
                     <label for="comment" class="sr-only">Add your comment</label>
                     <textarea rows="3" name="comment" id="comment"
-                        class="block w-full resize-y border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 lg:text-2xl sm:text-sm sm:leading-6"
+                        class="block w-full resize-y border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 lg:text-2xl sm:text-sm sm:leading-6 focus:border-transparent focus:ring-0"
                         placeholder="The world is waiting!" />
                 </div>
 

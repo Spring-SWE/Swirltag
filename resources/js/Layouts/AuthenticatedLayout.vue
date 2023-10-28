@@ -125,6 +125,9 @@ const closeModal = () => {
                                 </li>
                             </ul>
                         </li>
+                        <li class="-mx-5 mt-auto text-center">
+                            <CreateThreadFormButton />
+                        </li>
                         <!-- Dropdown component -->
                         <li class="-mx-6 mt-auto w-">
                             <Dropdown width="64">
@@ -152,9 +155,6 @@ const closeModal = () => {
                                     </div>
                                 </template>
                             </Dropdown>
-                        </li>
-                        <li>
-                            <CreateThreadFormButton />
                         </li>
                     </ul>
                 </nav>

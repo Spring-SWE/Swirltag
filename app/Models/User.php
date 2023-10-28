@@ -46,7 +46,7 @@ class User extends Authenticatable
     ];
 
      /**
-     * Get the Threads from the user.
+     * Get the Threads from the User.
      */
     public function threads(): HasMany
     {

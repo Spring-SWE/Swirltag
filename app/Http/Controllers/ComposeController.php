@@ -7,9 +7,6 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Thread;
 
-
-
-
 class ComposeController extends Controller
 {
     /**
