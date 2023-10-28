@@ -2,6 +2,7 @@
 import ThemeSwitcher from '@/Components/ThemeSwitcher.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
+import CreateThreadFormButton from '@/Pages/Compose/Partials/CreateThreadFormButton.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
@@ -27,6 +28,17 @@ const navigation = [
 ]
 
 const sidebarOpen = ref(false)
+const creatingNewThread = ref(false);
+
+const createNewThread = () => {
+    creatingNewThread.value = true;
+};
+
+const closeModal = () => {
+    creatingNewThread.value = false;
+
+    form.reset();
+};
 
 </script>
 
@@ -128,10 +140,8 @@ const sidebarOpen = ref(false)
 
                                 <template #content>
                                     <!-- Dropdown menu -->
-                                    <div
-                                        class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
-                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                            >
+                                    <div class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
+                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
                                             <li>
                                                 <DropdownLink href="/profile">Settings</DropdownLink>
                                             </li>
@@ -143,7 +153,9 @@ const sidebarOpen = ref(false)
                                 </template>
                             </Dropdown>
                         </li>
-
+                        <li>
+                            <CreateThreadFormButton />
+                        </li>
                     </ul>
                 </nav>
             </div>

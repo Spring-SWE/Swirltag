@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Requests\Auth\StoreThreadRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
-use Inertia\Response;
+use App\Http\Controllers\Controller;
+use App\Models\Thread;
+
+
+
 
 class ComposeController extends Controller
 {
     /**
-     * Create a Thread
+     * Handle an incoming Compose request.
      */
-    public function createThread(Request $request): void
+    public function store(StoreThreadRequest $request): RedirectResponse
     {
-       //...
+        $thread = Thread::create([
+            'body' => $request->input('body'),
+            'user_id' => $request->user()->id,
+        ]);
+
+        return back();
     }
+
 }

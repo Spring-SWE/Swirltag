@@ -16,14 +16,12 @@ class Thread extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'post',
+        'body',
         'user_id',
-        'votes',
-        'comments',
-        'reports',
-        'views',
-        'reposts',
-        'shares'
+        'comment_count',
+        'view_count',
+        'repost_count',
+        'share_count'
     ];
 
     /**
