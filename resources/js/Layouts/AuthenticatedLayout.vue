@@ -2,6 +2,7 @@
 import ThemeSwitcher from '@/Components/ThemeSwitcher.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
+import Toast from '@/Components/Toast.vue';
 import CreateThreadFormButton from '@/Pages/Compose/Partials/CreateThreadFormButton.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue'
@@ -69,6 +70,7 @@ const closeModal = () => {
                                     </button>
                                 </div>
                             </TransitionChild>
+
                             <!-- Sidebar component for mobile -->
                             <div
                                 class="flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-900 px-6 pb-2 ring-1 ring-white/10">
@@ -199,10 +201,13 @@ const closeModal = () => {
                             <PlusIcon class="h-6 w-6 text-gray-500" aria-hidden="true" />
                         </button>
                     </div>
+                    <!-- Flash messages -->
+                    <div v-if="$page.props.flash.message">
+                    <Toast>{{ $page.props.flash.message }}</Toast>
+                    </div>
                 </div>
             </div>
         </div>
-
         <!-- Main content Area -->
         <div class="bg-white dark:bg-gray-900 pb-10 pt-3 ml-3 lg:pl-72 grid grid-cols-12 gap-4">
             <slot />

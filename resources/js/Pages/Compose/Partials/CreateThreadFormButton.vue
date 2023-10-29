@@ -7,9 +7,15 @@
             <form @submit.prevent="onSubmit" action="#" class="cursorClass relative flex-auto mt-5">
                 <div class="rounded-lg pb-16 shadow-sm">
                     <label for="comment" class="sr-only">Add your comment</label>
-                    <textarea rows="3" name="comment" id="comment"
+                    <textarea v-model="form.body" rows="3" name="comment" id="comment"
                         class="block w-full resize-y border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 lg:text-2xl sm:text-sm sm:leading-6 focus:border-transparent focus:ring-0"
                         placeholder="The world is waiting!" />
+                        <div rows="3" name="comment" id="comment" contenteditable="true"
+                        class="block w-full resize-y border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 lg:text-2xl sm:text-sm sm:leading-6 focus:border-transparent focus:ring-0"
+                        aria-describedby="Test?"
+                        v-html="twerf"
+                        >
+                        </div>
                 </div>
 
                 <div class="absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
@@ -36,10 +42,11 @@
                             </button>
                         </div>
                     </div>
-                    <PrimaryButton text-size="lg">Post</PrimaryButton>
+                    <PrimaryButton text-size="lg" @click="storeThread" :disabled="disabled">Post</PrimaryButton>
                 </div>
             </form>
         </div>
+        <div v-if="form.errors.body"><DangerAlert>{{ form.errors.body }}</DangerAlert></div>
     </Modal>
 
     <Modal :show="clickingAwayFromThread" @close="closeModal">
@@ -48,30 +55,36 @@
 </template>
 
 <script setup>
+import Twitter from 'twitter-text';
+import { computed } from 'vue';
+import { ref } from 'vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Modal from '@/Components/Modal.vue';
 import { useForm } from '@inertiajs/vue3';
-import { nextTick, ref } from 'vue';
+import DangerAlert from '@/Components/DangerAlert.vue';
 import {
     PhotoIcon,
     GifIcon,
     PaperClipIcon,
-    XMarkIcon,
 
 } from '@heroicons/vue/20/solid'
 
 const clickingAwayFromThread = ref(false);
 const confirmingUserDeletion = ref(false);
-const passwordInput = ref(null);
 
 const form = useForm({
-    password: '',
+    body: '',
 });
+
+
+const twerf = computed(() => {
+    return Twitter.autoLink(form.body);
+});
+
+const disabled = computed(() => !form.body);
 
 const confirmUserDeletion = () => {
     confirmingUserDeletion.value = true;
-
-    nextTick(() => passwordInput.value.focus());
 };
 
 const showWarning = () => {
@@ -79,12 +92,11 @@ const showWarning = () => {
 
 };
 
-
-const deleteUser = () => {
-    form.delete(route('profile.destroy'), {
+const storeThread = () => {
+    form.post(route('store-thread'), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
-        onError: () => passwordInput.value.focus(),
+        onError: () => console.log('error'),
         onFinish: () => form.reset(),
     });
 };

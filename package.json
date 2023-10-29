@@ -22,6 +22,7 @@
     "dependencies": {
         "@headlessui/vue": "^1.7.16",
         "@heroicons/vue": "^2.0.18",
-        "flowbite-vue": "^0.1.0"
+        "flowbite-vue": "^0.1.0",
+        "twitter-text": "^3.1.0"
     }
 }

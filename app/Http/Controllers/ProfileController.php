@@ -19,9 +19,13 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/Edit', [
+
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+
             'status' => session('status'),
+
             'create_url' => route('profile.edit'),
+
         ]);
     }
 
@@ -33,6 +37,7 @@ class ProfileController extends Controller
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
+
             $request->user()->email_verified_at = null;
         }
 
@@ -57,6 +62,7 @@ class ProfileController extends Controller
         $user->delete();
 
         $request->session()->invalidate();
+
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
