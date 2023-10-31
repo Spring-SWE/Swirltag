@@ -6,3 +6,13 @@
 .post-url {
     color: #6366f1;
 }
+
+.mention {
+    font-weight: 900;
+    color:#6366f1 !important;
+}
+
+.ProseMirror:focus {
+    outline: none !important;
+  }
+

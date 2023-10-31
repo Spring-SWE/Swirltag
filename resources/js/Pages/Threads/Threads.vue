@@ -59,7 +59,7 @@ import {
                 </div>
 
                 <div class="thread-media mt-1">
-                    <img class="border dark:border-gray-800 rounded-lg w-full h-auto max-h-96" src="https://picsum.photos/850">
+                    <img class="border dark:border-gray-800 rounded-lg w-full h-auto max-h-96" src="https://picsum.photos/384">
                 </div>
 
                 <div class="quoted-content">
