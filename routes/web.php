@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/settings', [SettingsController::class, 'destroy'])->name('settings.destroy');
 });
 
+/**
+ * Load routes
+ */
 require __DIR__ . '/auth.php';
 require __DIR__ . '/compose.php';
 require __DIR__ . '/profile.php';

@@ -9,7 +9,8 @@ import { Head } from '@inertiajs/vue3';
     <Head title="Guest View" />
 
     <GuestLayout>
-        <Threads />
-        <ThreadsTrendingBar />
+        <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1">
+            <ThreadsTrendingBar />
+        </div>
     </GuestLayout>
 </template>

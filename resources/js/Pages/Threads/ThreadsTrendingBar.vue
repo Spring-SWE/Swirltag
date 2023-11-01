@@ -8,7 +8,6 @@ import {
 
 <template>
 <!-- Thread Trending Tab-->
-<div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1">
     <div
         class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="flex items-center mb-3">
@@ -118,5 +117,4 @@ import {
             </ul>
         </div>
     </div>
-</div>
 </template>

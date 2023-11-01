@@ -8,7 +8,8 @@ import { Head } from '@inertiajs/vue3';
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
-        <Threads />
-        <ThreadsTrendingBar />
+        <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1">
+            <ThreadsTrendingBar />
+        </div>
     </AuthenticatedLayout>
 </template>

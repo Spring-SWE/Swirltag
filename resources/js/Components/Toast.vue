@@ -21,7 +21,7 @@
             role="alert"
           />
       </svg>
-      <div class="pl-4 text-sm font-semibold text-white">
+      <div class="pl-4 text-sm font-semibold text-gray-500 dark:text-white">
         <slot></slot>
       </div>
     </div>

@@ -4,7 +4,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import Toast from '@/Components/Toast.vue';
 import CreateThreadFormButton from '@/Pages/Compose/Partials/CreateThreadFormButton.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link, usePage, } from '@inertiajs/vue3';
 import { ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import {
@@ -20,16 +20,11 @@ import {
     UserIcon,
 } from '@heroicons/vue/24/outline'
 
-const navigation = [
-    { name: 'Home', href: '/dashboard', icon: HomeIcon, current: true },
-    { name: 'Notifications', href: '#', icon: BellIcon, current: false },
-    { name: 'Swirls', href: '#', icon: UsersIcon, current: false },
-    { name: 'Messages', href: '#', icon: EnvelopeIcon, current: false },
-    { name: 'Profile', href: '#', icon: UserIcon, current: false },
-]
 
 const sidebarOpen = ref(false)
 const creatingNewThread = ref(false);
+const page = usePage().props;
+const userName = page.auth.user.name;
 
 const createNewThread = () => {
     creatingNewThread.value = true;
@@ -40,6 +35,23 @@ const closeModal = () => {
 
     form.reset();
 };
+
+const navigation = [
+    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: false },
+    { name: 'Notifications', href: '#', icon: BellIcon, current: false },
+    { name: 'Swirls', href: '#', icon: UsersIcon, current: false },
+    { name: 'Messages', href: '#', icon: EnvelopeIcon, current: false },
+    { name: 'Profile', href: `/profile/${userName}`, icon: UserIcon, current: false },
+]
+
+navigation.forEach(item => {
+    if (item.name.toLowerCase() === 'profile') {
+        item.current = page.ziggy.location.includes(item.name.toLowerCase());
+    } else {
+        item.current = page.ziggy.location.endsWith(item.href);
+    }
+});
+
 
 </script>
 
@@ -138,7 +150,7 @@ const closeModal = () => {
                                         <img class="h-8 w-8 rounded-full bg-gray-800" src="https://placewaifu.com/image/40"
                                             alt="" />
                                         <span class="sr-only">Your profile</span>
-                                        <span aria-hidden="true">{{ $page.props.auth.user.name }}</span>
+                                        <span aria-hidden="true">{{ userName }}</span>
                                     </button>
                                 </template>
 
@@ -150,7 +162,7 @@ const closeModal = () => {
                                                 <DropdownLink href="/settings">Settings</DropdownLink>
                                             </li>
                                             <li>
-                                                <DropdownLink href="/logout">Log out</DropdownLink>
+                                                <Link class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out" href="/logout" method="post" as="button" type="button">Logout</Link>
                                             </li>
                                         </ul>
                                     </div>

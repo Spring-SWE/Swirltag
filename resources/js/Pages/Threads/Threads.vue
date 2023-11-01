@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onMounted, watch } from 'vue';
 import SwirlBadge from '@/Components/SwirlBadge.vue';
 import {
     EllipsisHorizontalIcon,
@@ -12,11 +13,24 @@ import {
     CheckBadgeIcon,
 } from '@heroicons/vue/24/solid'
 
+const props = defineProps({
+    threadsDisplayMethod: {
+        type: String,
+    },
+    user: {
+        type: String,
+    },
+    threadData: {
+        type:Object
+    }
+});
+
 </script>
+
 <template>
-    <div class="thread col-span-12 lg:col-span-8">
         <!-- Thread -->
-        <div class="hover:cursor-pointer thread p-3 rounded border border-gray-100 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 shadow">
+        <!-- Loop should start here -->
+        <div  class="hover:cursor-pointer thread p-3 rounded border border-gray-100 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 shadow">
             <div class="thread-details grid grid-cols-12 gap-4">
                 <div class="top-thread-left col-span-11">
                     <div class="flex justify-start pb-3">
@@ -31,7 +45,7 @@ import {
                         </div>
                         <div class="flex-none">
                             <a href="#" class="ml-1 underline decoration-2 decoration-theme-purple dark:text-white font-semibold">
-                                Spring
+                                {{ props.threadData.name }}
                             </a>
                         </div>
                         <div class="flex-none">
@@ -52,14 +66,13 @@ import {
             </div>
             <div class="thread-content justify-center items-center">
                 <div class="thread-text">
-                    <p class="mx-auto font-medium pb-3 dark:text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        Necessitatibus
-                        provident consequuntur in accusantium cumque tempore et odio molestiae voluptatem obcaecati
-                        possimus, incidunt iure, deserunt earum? Suscipit eius qui vitae ipsum?</p>
+                    <p class="mx-auto font-medium pb-3 dark:text-white">
+                        {{ props.threadData.body }}
+                    </p>
                 </div>
 
                 <div class="thread-media mt-1">
-                    <img class="border dark:border-gray-800 rounded-lg w-full h-auto max-h-96" src="https://picsum.photos/384">
+                    <!-- todo -->
                 </div>
 
                 <div class="quoted-content">
@@ -82,14 +95,14 @@ import {
                             <div>
                                 <ChatBubbleLeftIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
                             </div>
-                            <div class="font-semibold text-gray-600 dark:text-white"> 4k</div>
+                            <div class="font-semibold text-gray-600 dark:text-white"> {{ props.threadData.comment_count }} </div>
                         </div>
 
                         <div class="repost-thread px-2 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                             <div>
                                 <ArrowPathRoundedSquareIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
                             </div>
-                            <div class="font-semibold text-gray-600 dark:text-white"> 1k</div>
+                            <div class="font-semibold text-gray-600 dark:text-white">  {{ props.threadData.share_count }} </div>
                         </div>
                         <div class="px-1 py-1">
                             <ArrowUpTrayIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
@@ -99,6 +112,5 @@ import {
 
         </div>
     </div>
-
      <!-- Thread -->
-</div></template>
+</template>

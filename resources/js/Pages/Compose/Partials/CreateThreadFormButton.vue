@@ -1,3 +1,100 @@
+
+<script setup>
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Modal from '@/Components/Modal.vue';
+import DangerAlert from '@/Components/DangerAlert.vue';
+import { ref, computed, watch } from 'vue';
+import { useForm } from '@inertiajs/vue3';
+import { useEditor, EditorContent, } from '@tiptap/vue-3';
+import StarterKit from '@tiptap/starter-kit';
+import Link from '@tiptap/extension-link';
+import { GifIcon, PhotoIcon, PaperClipIcon, } from '@heroicons/vue/24/solid';
+import Mention from '@tiptap/extension-mention';
+import Placeholder from '@tiptap/extension-placeholder';
+import suggestion from './suggestion.js'
+
+const editor = ref(useEditor({
+    content: ``,
+    extensions: [
+        StarterKit,
+        suggestion,
+        Link,
+        Mention.configure({
+            HTMLAttributes: {
+                class: 'mention',
+            },
+            matcher: {
+                allowSpaces: false,
+                startOfLine: false,
+            },
+            suggestion: {
+                items: suggestion.items,
+                render: suggestion.render,
+            }
+        }),
+        Placeholder.configure({
+            emptyEditorClass: 'is-editor-empty',
+            placeholder: 'The world is waiting!',
+        })
+    ],
+}));
+
+const clickingAwayFromThread = ref(false);
+const confirmingUserDeletion = ref(false);
+const errorsWithSubmission = ref(false);
+
+const form = useForm({
+    body: editor.value?.getText(),
+});
+
+//Such a terrible way to do this, but at this point
+//fuck Javascript & everyone who uses it.
+
+watch(
+  () => editor.value?.getText(),
+  (newValue) => {
+    form.body = newValue
+    console.log(newValue);
+    console.log(form.body);
+  }
+);
+
+const disabled = computed(() => editor.value?.isEmpty);
+
+const confirmUserDeletion = () => {
+    confirmingUserDeletion.value = true;
+};
+
+const storeThread = () => {
+    form.post(route('store-thread'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            editor.content = '';
+            closeModal()
+        },
+        onError: () => {
+            errorsWithSubmission.value = true
+        },
+        //onFinish: () => form.reset(),
+    });
+};
+
+const closeModal = () => {
+    closeAlert();
+    confirmingUserDeletion.value = false;
+    editor.value.commands.setContent("");
+};
+
+const closeAlert = () => {
+    errorsWithSubmission.value = false;
+};
+
+const showWarning = () => {
+    clickingAwayFromThread.value = true;
+
+};
+</script>
+
 <template>
     <PrimaryButton text-size="lg" class="w-10/12" @click="confirmUserDeletion">Post</PrimaryButton>
     <Modal :show="confirmingUserDeletion" @close="closeModal">
@@ -49,106 +146,6 @@
         bro are u sure?
     </Modal>
 </template>
-
-<script setup>
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import Modal from '@/Components/Modal.vue';
-import DangerAlert from '@/Components/DangerAlert.vue';
-import { ref, computed, watch } from 'vue';
-import { useForm } from '@inertiajs/vue3';
-import { useEditor, EditorContent, } from '@tiptap/vue-3';
-import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
-import { GifIcon, PhotoIcon, PaperClipIcon, } from '@heroicons/vue/24/solid';
-import Mention from '@tiptap/extension-mention';
-import Placeholder from '@tiptap/extension-placeholder';
-import suggestion from './suggestion.js'
-
-
-const editor = ref(useEditor({
-    content: ``,
-    extensions: [
-        StarterKit,
-        suggestion,
-        Link,
-        Mention.configure({
-            HTMLAttributes: {
-                class: 'mention',
-            },
-            matcher: {
-                allowSpaces: false,
-                startOfLine: false,
-            },
-            suggestion: {
-                items: suggestion.items,
-                render: suggestion.render,
-            }
-        }),
-        Placeholder.configure({
-            emptyEditorClass: 'is-editor-empty',
-            placeholder: 'The world is waiting!',
-        })
-    ],
-}));
-
-const clickingAwayFromThread = ref(false);
-const confirmingUserDeletion = ref(false);
-const errorsWithSubmission = ref(false);
-
-const form = useForm({
-    body: editor.value?.getText(),
-});
-
-console.log(editor.value?.getText());
-
-//Such a terrible way to do this, but at this point
-//fuck Javascript & everyone who uses it.
-
-watch(
-  () => editor.value?.getText(),
-  (newValue) => {
-    form.body = newValue
-    console.log(newValue);
-    console.log(form.body);
-  }
-);
-
-const disabled = computed(() => editor.value?.isEmpty);
-
-const confirmUserDeletion = () => {
-    confirmingUserDeletion.value = true;
-};
-
-const storeThread = () => {
-    form.post(route('store-thread'), {
-        preserveScroll: true,
-        onSuccess: () => {
-            editor.content = '';
-            closeModal()
-        },
-        onError: () => {
-            errorsWithSubmission.value = true
-        },
-        //onFinish: () => form.reset(),
-    });
-};
-
-const closeModal = () => {
-    closeAlert();
-    confirmingUserDeletion.value = false;
-    editor.value.commands.setContent("");
-};
-
-const closeAlert = () => {
-    errorsWithSubmission.value = false;
-};
-
-const showWarning = () => {
-    clickingAwayFromThread.value = true;
-
-};
-
-</script>
 
 <style lang="scss">
 .tiptap {
