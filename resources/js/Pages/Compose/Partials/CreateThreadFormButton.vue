@@ -41,7 +41,7 @@
             </form>
         </div>
         <div v-if="form.errors.body">
-            <DangerAlert>{{ form.errors.body }}</DangerAlert>
+            <DangerAlert :show="errorsWithSubmission" @close="closeAlert">{{ form.errors.body }}</DangerAlert>
         </div>
     </Modal>
 
@@ -93,6 +93,7 @@ const editor = ref(useEditor({
 
 const clickingAwayFromThread = ref(false);
 const confirmingUserDeletion = ref(false);
+const errorsWithSubmission = ref(false);
 
 const form = useForm({
     body: editor.value?.getText(),
@@ -118,11 +119,6 @@ const confirmUserDeletion = () => {
     confirmingUserDeletion.value = true;
 };
 
-const showWarning = () => {
-    clickingAwayFromThread.value = true;
-
-};
-
 const storeThread = () => {
     form.post(route('store-thread'), {
         preserveScroll: true,
@@ -130,15 +126,28 @@ const storeThread = () => {
             editor.content = '';
             closeModal()
         },
-        onError: () => console.log('error'),
-        onFinish: () => form.reset(),
+        onError: () => {
+            errorsWithSubmission.value = true
+        },
+        //onFinish: () => form.reset(),
     });
 };
 
 const closeModal = () => {
+    closeAlert();
     confirmingUserDeletion.value = false;
     editor.value.commands.setContent("");
 };
+
+const closeAlert = () => {
+    errorsWithSubmission.value = false;
+};
+
+const showWarning = () => {
+    clickingAwayFromThread.value = true;
+
+};
+
 </script>
 
 <style lang="scss">

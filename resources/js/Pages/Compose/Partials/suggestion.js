@@ -10,6 +10,34 @@ export default {
     ].filter(item => item.toLowerCase().startsWith(query.toLowerCase())).slice(0, 5)
   },
 
+//For api call eventually
+//   export default {
+//     async items({ query }) {
+//       try {
+//         // Fetch data from API with the query as a parameter
+//         const response = await axios.get('https://your-api-endpoint.com/search', {
+//           params: {
+//             q: query
+//           }
+//         });
+
+//         if (response.status !== 200 || !response.data) {
+//           throw new Error("API returned an error or no data");
+//         }
+
+//
+//         const names = response.data;
+
+//         return names
+//           .filter(name => name.toLowerCase().startsWith(query.toLowerCase()))
+//           .slice(0, 5);
+
+//       } catch (error) {
+//         console.error("Failed fetching data:", error);
+//         return []; // Return an empty array in case of error
+//       }
+//     },
+
   render: () => {
     let component
     let popup

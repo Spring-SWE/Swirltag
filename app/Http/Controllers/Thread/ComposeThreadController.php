@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Thread;
 
 use App\Http\Requests\StoreThreadRequest;
 use Illuminate\Http\RedirectResponse;
