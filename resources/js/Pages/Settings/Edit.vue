@@ -2,7 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
+import UpdateSettingsInformationForm from './Partials/UpdateSettingsInformationForm.vue';
 import { Head } from '@inertiajs/vue3';
 
 defineProps({
@@ -16,13 +16,13 @@ defineProps({
 </script>
 
 <template>
-    <Head title="Profile" />
+    <Head title="Settings" />
 
     <AuthenticatedLayout>
         <div class="col-span-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    <UpdateProfileInformationForm
+                    <UpdateSettingsInformationForm
                         :must-verify-email="mustVerifyEmail"
                         :status="status"
                         class="max-w-xl"

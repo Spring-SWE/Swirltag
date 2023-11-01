@@ -44,7 +44,6 @@ const closeModal = () => {
 </script>
 
 <template>
-    <Head title="Home" />
     <div class="dark:bg-gray-900">
         <TransitionRoot as="template" :show="sidebarOpen">
             <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
@@ -148,7 +147,7 @@ const closeModal = () => {
                                     <div class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
                                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
                                             <li>
-                                                <DropdownLink href="/profile">Settings</DropdownLink>
+                                                <DropdownLink href="/settings">Settings</DropdownLink>
                                             </li>
                                             <li>
                                                 <DropdownLink href="/logout">Log out</DropdownLink>
