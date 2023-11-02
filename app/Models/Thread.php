@@ -25,11 +25,19 @@ class Thread extends Model
     ];
 
     /**
-     * Get the User that owns the Thread.
+     * The User that owns the Thread.
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The Media morped to the Thread.
+     */
+    public function media()
+    {
+        return $this->morphToMany(Media::class, 'mediable');
     }
 
 }

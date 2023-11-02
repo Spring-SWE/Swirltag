@@ -35,8 +35,8 @@ const props = defineProps({
                 <div class="top-thread-left col-span-11">
                     <div class="flex justify-start pb-3">
                         <ul class="inline-flex space-x-2">
-                           <SwirlBadge href="/swirl/anime">~Anime</SwirlBadge>
-                           <SwirlBadge href="/swirl/videogames">~Videogames</SwirlBadge>
+                           <!-- <SwirlBadge href="/swirl/anime">~Anime</SwirlBadge>
+                           <SwirlBadge href="/swirl/videogames">~Videogames</SwirlBadge> -->
                         </ul>
                     </div>
                     <div class="flex">

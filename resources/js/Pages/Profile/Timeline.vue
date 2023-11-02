@@ -1,6 +1,7 @@
 <script setup>
 import Threads from '@/Pages/Threads/Threads.vue';
-import ThreadsTrendingBar from '@/Pages/Threads/ThreadsTrendingBar.vue';
+import ProfileInlineTabs from '@/Pages/Profile/Partials/ProfileInlineTabs.vue';
+import ProfileUserDetails from '@/Pages/Profile/Partials/ProfileUserDetails.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head } from '@inertiajs/vue3';
@@ -24,6 +25,9 @@ const userName = props.user.name;
 
     <div v-if="$page.props.auth.user">
         <AuthenticatedLayout>
+            <div class="col-span-12">
+                <ProfileInlineTabs></ProfileInlineTabs>
+            </div>
             <div class="thread col-span-12 lg:col-span-8">
                 <Threads v-for="thread in threads"
                     :key="thread.id"
@@ -31,7 +35,7 @@ const userName = props.user.name;
                     :threadData="thread" />
             </div>
             <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1">
-                <ThreadsTrendingBar />
+                <ProfileUserDetails />
             </div>
         </AuthenticatedLayout>
     </div>
@@ -45,7 +49,7 @@ const userName = props.user.name;
                     :threadData="thread" />
             </div>
             <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1">
-                <ThreadsTrendingBar />
+                <ProfileUserDetails />
             </div>
         </GuestLayout>
     </div>
