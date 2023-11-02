@@ -26,7 +26,6 @@ const sidebarOpen = ref(false)
 </script>
 
 <template>
-    <Head title="Home" />
     <div class="dark:bg-gray-900">
         <TransitionRoot as="template" :show="sidebarOpen">
             <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">

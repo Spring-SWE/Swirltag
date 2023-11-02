@@ -22,7 +22,7 @@ class StoreThreadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => ['required', 'min:10'],
+            'body' => ['required'],
         ];
     }
 

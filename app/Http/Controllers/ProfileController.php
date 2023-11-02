@@ -18,18 +18,8 @@ class ProfileController extends Controller
 
              'user' => User::where('name', $name)->firstOrFail(),
 
-             'threadsDisplay' => 'timeline',
-
              'threads' => $getThreads->handle($name)
 
          ]);
-    }
-
-     /**
-     * Show the Threads posted in a Swirl.
-     */
-    public function showSwirl(int $swirlID)
-    {
-        //todo
     }
 }

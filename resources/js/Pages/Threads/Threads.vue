@@ -45,7 +45,7 @@ const props = defineProps({
                         </div>
                         <div class="flex-none">
                             <a href="#" class="ml-1 underline decoration-2 decoration-theme-purple dark:text-white font-semibold">
-                                {{ props.threadData.name }}
+                                {{ props.user }}
                             </a>
                         </div>
                         <div class="flex-none">
