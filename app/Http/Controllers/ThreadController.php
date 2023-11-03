@@ -6,7 +6,6 @@ use App\Http\Requests\StoreThreadRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Actions\StoreNewThread;
 use App\Models\Media;
-use App\Models\Thread;
 
 class ThreadController extends Controller
 {
