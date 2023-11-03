@@ -38,5 +38,6 @@ Route::middleware('auth')->group(function () {
  * Load routes
  */
 require __DIR__ . '/auth.php';
-require __DIR__ . '/compose.php';
 require __DIR__ . '/profile.php';
+require __DIR__ . '/thread.php';
+require __DIR__ . '/media.php';

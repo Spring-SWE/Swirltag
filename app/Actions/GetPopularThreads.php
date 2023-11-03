@@ -6,9 +6,9 @@ use Illuminate\Support\Collection;
 
 class GetPopularThreads {
 
-    public function handle(): ?Collection
+    public function handle(): Collection
     {
-        $threads = Thread::with('user')->orderBy('view_count', 'desc')->get();
+        $threads = Thread::with(['user', 'media'])->orderBy('view_count', 'desc')->get();
 
         return $threads;
     }

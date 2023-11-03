@@ -34,7 +34,7 @@ const userName = props.user.name;
                     :user="userName"
                     :threadData="thread" />
             </div>
-            <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1">
+            <div class="col-span-12 lg:block lg:col-span-4 mr-2 h-16 sticky top-1">
                 <ProfileUserDetails />
             </div>
         </AuthenticatedLayout>

@@ -25,6 +25,7 @@ const props = defineProps({
     }
 });
 
+console.log(props.threadData);
 </script>
 
 <template>
@@ -72,7 +73,7 @@ const props = defineProps({
                 </div>
 
                 <div class="thread-media mt-1">
-                    <!-- todo -->
+                    <img class="rounded-lg mx-auto" :width="props.threadData.media[0].width" v-if="props.threadData.media && props.threadData.media.length > 0" :src="props.threadData.media[0].file_path" alt="">
                 </div>
 
                 <div class="quoted-content">

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Thread extends Model
 {
@@ -21,7 +22,7 @@ class Thread extends Model
         'comment_count',
         'view_count',
         'repost_count',
-        'share_count'
+        'share_count',
     ];
 
     /**
@@ -33,11 +34,12 @@ class Thread extends Model
     }
 
     /**
-     * The Media morped to the Thread.
+     * The Media related to the Thread.
      */
-    public function media()
+    public function media(): BelongsToMany
     {
-        return $this->morphToMany(Media::class, 'mediable');
+        return $this->belongsToMany(Media::class, 'mediables', 'mediable_id', 'media_id')
+            ->where('mediable_type', Thread::class);
     }
 
 }

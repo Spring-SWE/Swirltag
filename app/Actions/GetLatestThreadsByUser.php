@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 
 class GetLatestThreadsByUser {
 
-    public function handle(string $username): ?Collection
+    public function handle(string $username): Collection
     {
         $threads = Thread::whereHas('user', function ($query) use ($username) {
 

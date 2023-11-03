@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full overscroll-none bg-white dark:bg-gray-900" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="h-full overscroll-none dark:bg-gray-900" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +25,7 @@
         @inertiaHead
 
     </head>
-    <body class="font-sans overscroll-y-none antialiased h-full bg-white dark:bg-gray-900">
+    <body class="font-sans overscroll-y-none antialiased h-full dark:bg-gray-900">
         @inertia
     </body>
 
