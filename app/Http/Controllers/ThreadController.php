@@ -11,16 +11,18 @@ use App\Models\Thread;
 class ThreadController extends Controller
 {
     /**
-     * Handle an incoming Compose request.
+     * Store a newly requested Thread.
      */
     public function store(StoreThreadRequest $request, StoreNewThread $storeNewThread): RedirectResponse
     {
         $thread = $storeNewThread->handle($request);
 
         // Check if media was uploaded
-        if ($request->has('media_id')) {
+        if ($request->filled('media_id')) {
+
             // Associate media with the thread
             $media = Media::findOrFail($request->input('media_id'));
+
             $thread->media()->attach($media->id, ['mediable_id' => $thread->id, 'mediable_type' => Thread::class]);
         }
 

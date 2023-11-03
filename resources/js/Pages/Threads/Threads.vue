@@ -25,7 +25,6 @@ const props = defineProps({
     }
 });
 
-console.log(props.threadData);
 </script>
 
 <template>
@@ -67,12 +66,12 @@ console.log(props.threadData);
             </div>
             <div class="thread-content justify-center items-center">
                 <div class="thread-text">
-                    <p class="mx-auto font-medium pb-3 dark:text-white">
+                    <p class="mx-auto mt-2 font-medium pb-3 dark:text-white">
                         {{ props.threadData.body }}
                     </p>
                 </div>
 
-                <div class="thread-media mt-1">
+                <div class="thread-media mt-2">
                     <img class="rounded-lg mx-auto" :width="props.threadData.media[0].width" v-if="props.threadData.media && props.threadData.media.length > 0" :src="props.threadData.media[0].file_path" alt="">
                 </div>
 

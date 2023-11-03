@@ -147,7 +147,6 @@ const handlePost = () => {
 const storeThread = () => {
     if (mediaId.value) {
         form.media_id = mediaId.value;
-        console.log(form.media_id);
     }
 
     form.post(route('store-thread'), {

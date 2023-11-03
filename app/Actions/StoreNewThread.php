@@ -13,7 +13,7 @@ class StoreNewThread {
             'user_id' => $request->user()->id,
         ];
 
-        if (!$request->has('media_id')) {
+        if ($request->filled('media_id')) {
             $threadData['media_id'] = $request->input('media_id');
         }
 
