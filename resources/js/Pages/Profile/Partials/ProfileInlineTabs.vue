@@ -1,6 +1,6 @@
 <script setup>
 const tabs = [
-    { name: 'Posts', href: '#', current: true },
+    { name: 'Threads', href: '#', current: true },
     { name: 'Replies', href: '#', current: false },
     { name: 'Media', href: '#', current: false },
 ]

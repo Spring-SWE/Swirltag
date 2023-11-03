@@ -20,10 +20,9 @@ class ThreadController extends Controller
         // Check if media was uploaded
         if ($request->filled('media_id')) {
 
-            // Associate media with the thread
             $media = Media::findOrFail($request->input('media_id'));
 
-            $thread->media()->attach($media->id, ['mediable_id' => $thread->id, 'mediable_type' => Thread::class]);
+            $thread->media()->attach($media);
         }
 
         session()->flash('message', 'Your post was successful!');

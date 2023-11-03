@@ -16,8 +16,6 @@ class MediaController extends Controller
 
         $media = $storeNewMedia->handle($image);
 
-        // Intervention Image to resize/manipulate the image..coming soon(tm)
-
         // Return the media info as JSON
         return response()->json([
             'id' => $media->id,

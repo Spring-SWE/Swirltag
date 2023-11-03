@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Media extends Model
 {
@@ -32,7 +33,7 @@ class Media extends Model
     /**
      * The Thread the Media is morphed to.
      */
-    public function threads()
+    public function threads(): MorphToMany
     {
         return $this->morphedByMany(Thread::class, 'mediable');
     }
