@@ -18,7 +18,7 @@ import {
                 <CheckBadgeIcon class="h-6 w-6 text-white" alt="verification badge" />
             </div>
             <!-- Follow Button -->
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full absolute right-4 top-4">
+            <button class="bg-white hover:bg-gray-100 text-gray-600 font-bold py-2 px-5 rounded-full absolute right-4 top-4">
                 Follow
             </button>
         </div>

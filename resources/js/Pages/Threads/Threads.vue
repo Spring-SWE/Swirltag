@@ -67,7 +67,7 @@ const props = defineProps({
             </div>
         </div>
         <div class="thread-content justify-center items-center">
-            <div class="thread-text">
+            <div class="thread-text whitespace-pre-line overflow-wrap break-words">
                 <p class="mx-auto mt-2 font-medium pb-3 dark:text-white">
                     {{ props.threadData.body }}
                 </p>

@@ -1,26 +1,37 @@
 <?php
+
 namespace App\Actions;
 
 use Illuminate\Http\Request;
 use App\Models\Thread;
+use Illuminate\Support\Facades\Cache;
 
-class StoreNewThread {
+class StoreNewThread
+{
 
     public function handle(Request $request)
     {
-        $threadData = [
-            'body' => $request->input('body'),
-            'user_id' => $request->user()->id,
-        ];
+        $userId = $request->user()->id;
 
-        if ($request->filled('media_id')) {
+        $lock = Cache::lock('user-posting:' . $userId, 5);
 
-            $threadData['media_id'] = $request->input('media_id');
+        //Lock creating new threads for 5 seconds
+        if ($lock->get())
+        {
 
+            $threadData = [
+                'body' => $request->input('body'),
+                'user_id' => $userId,
+            ];
+
+            if ($request->filled('media_id')) {
+
+                $threadData['media_id'] = $request->input('media_id');
+            }
+
+            $thread = Thread::create($threadData);
+
+            return $thread;
         }
-
-        $thread = Thread::create($threadData);
-
-        return $thread;
     }
 }

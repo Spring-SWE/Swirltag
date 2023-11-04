@@ -3,5 +3,7 @@
 use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('store-thread', [ThreadController::class, 'store'])->name('store-thread');
+Route::middleware(['throttle:post_limit'])->group(function () {
+    Route::post('store-thread', [ThreadController::class, 'store'])->name('store-thread');
+});
 

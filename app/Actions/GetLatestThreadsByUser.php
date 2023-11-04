@@ -15,6 +15,7 @@ class GetLatestThreadsByUser
                 $query->where('name', $username);
             })
             ->orderBy('created_at', 'desc')
+            ->limit(10)
             ->get();
 
         return $threads;

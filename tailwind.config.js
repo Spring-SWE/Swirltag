@@ -20,6 +20,9 @@ export default {
                 'theme-purple': '#6366f1',
                 'theme-purple-dark': '#595bd8',
               },
+            whitespace: {
+                'pre-line': 'pre-line',
+            }
         },
     },
 

@@ -8,7 +8,7 @@ class GetPopularThreads {
 
     public function handle(): Collection
     {
-        $threads = Thread::with(['user', 'media'])->orderBy('view_count', 'desc')->get();
+        $threads = Thread::with(['user', 'media'])->orderBy('view_count', 'desc')->limit(10)->get();
 
         return $threads;
     }

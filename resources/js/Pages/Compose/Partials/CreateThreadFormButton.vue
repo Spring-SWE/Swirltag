@@ -19,6 +19,7 @@ const confirmingUserDeletion = ref(false);
 const errorsWithSubmission = ref(false);
 const imagePreview = ref(null);
 const mediaId = ref(null);
+const uploadProgress = ref(0);
 
 // Form handling
 const form = useForm({
@@ -64,9 +65,6 @@ watch(editorContent, (newValue, oldValue) => {
     form.body = quillInstance.value.getText();
 })
 
-// Computed states
-const disabled = computed(() => editorContent.value?.isEmpty);
-
 // Methods
 const confirmUserDeletion = () => {
     confirmingUserDeletion.value = true;
@@ -74,9 +72,12 @@ const confirmUserDeletion = () => {
 
 const closeModal = () => {
     closeAlert();
+    form.reset();
     confirmingUserDeletion.value = false;
     quillInstance.value?.setText('');
     imagePreview.value = null;
+    mediaId.value = null;
+    uploadProgress.value = 0;
 };
 
 const closeAlert = () => {
@@ -123,6 +124,8 @@ const uploadFile = async () => {
         return;
     }
 
+    uploadProgress.value = 0;
+
     let formData = new FormData();
     formData.append('image', form.files);
 
@@ -131,11 +134,16 @@ const uploadFile = async () => {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
+            onUploadProgress: (progressEvent) => {
+                // Calculate the percentage and update uploadProgress
+                uploadProgress.value = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+            }
         });
 
         if (response.data && response.data.id) {
             mediaId.value = response.data.id;
-            // Now you can proceed to post the thread
+            // Now proceed to post the thread
+            uploadProgress.value = 0;
             storeThread();
         }
     } catch (error) {
@@ -157,6 +165,10 @@ const uploadFile = async () => {
             errorsWithSubmission.value = true; // Trigger the error alert
         }
     }
+
+    return {
+        uploadProgress,
+    };
 };
 
 // Handle post button click
@@ -177,7 +189,6 @@ const storeThread = () => {
     form.post(route('store-thread'), {
         preserveScroll: true,
         onSuccess: () => {
-            quillInstance.value?.setText('')
             closeModal();
         },
         onError: () => {
@@ -196,14 +207,28 @@ const storeThread = () => {
     <!-- Modal for creating new thread -->
     <Modal :show="confirmingUserDeletion" @close="closeModal">
         <!-- Modal content with max height and flex column layout -->
-        <div class="flex flex-col h-full max-h-[65vh]">
+        <div class="flex flex-col h-full min-h-[25vh] max-h-[65vh]">
 
             <!-- Error alert for form submission -->
             <div v-if="form.errors.body">
-                        <DangerAlert :show="errorsWithSubmission" @close="closeAlert">
-                            {{ form.errors.body }}
-                        </DangerAlert>
-                    </div>
+                <DangerAlert :show="errorsWithSubmission" @close="closeAlert">
+                    {{ form.errors.body }}
+                </DangerAlert>
+            </div>
+
+            <!-- Progress bar content -->
+            <div v-if="form.progress" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                <div class="h-3 text-center text-white bg-theme-purple"
+                    :style="{ width: form.progress.percentage + '%' }">
+                </div>
+            </div>
+
+            <!-- Progress bar Media -->
+            <div v-if="uploadProgress" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                <div class="h-3 text-center text-white bg-theme-purple"
+                    :style="{ width: uploadProgress + '%' }">
+                </div>
+            </div>
 
             <!-- Scrollable content area for form and image -->
             <div class="overflow-auto px-3 py-3">
@@ -257,7 +282,7 @@ const storeThread = () => {
                     </div>
 
                     <!-- Post button -->
-                    <PrimaryButton text-size="lg" @click="handlePost" :disabled="disabled">
+                    <PrimaryButton text-size="lg" @click="handlePost">
                         Post
                     </PrimaryButton>
                 </div>
@@ -284,7 +309,8 @@ const storeThread = () => {
 }
 
 .ql-editor::before {
-    color: #6B7280 !important; /* placeholder */
+    color: #6B7280 !important;
+    /* placeholder */
     left: 0;
 }
 
@@ -299,8 +325,7 @@ const storeThread = () => {
     line-height: 1.5;
     /* sm:leading-6 */
     outline: none;
-    /* Remove outline on focus */
-    overflow: hidden;
+    min-height: 20vh;
 }
 
 .ql-snow {
@@ -317,15 +342,9 @@ const storeThread = () => {
 /* Style the mention list container to be fixed relative to the viewport */
 .ql-mention-list-container {
     position: fixed;
-    z-index: 1000;
-    /* Make sure this is high enough to be above everything else */
+    z-index: 99999;
     max-height: 200px;
-    /* Set a max height */
-    overflow-y: auto;
-    /* Add scroll if the content is taller than max-height */
-    /* You may need to adjust width as per your requirements */
     width: auto;
-    /* Or a fixed width if you prefer */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid #ccc;
     background-color: #fff;
@@ -347,4 +366,5 @@ const storeThread = () => {
 /* Style for list items on hover */
 .ql-mention-list-item:hover {
     background-color: #f0f0f0;
-}</style>
+}
+</style>
