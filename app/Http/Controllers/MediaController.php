@@ -20,6 +20,7 @@ class MediaController extends Controller
         return response()->json([
             'id' => $media->id,
             'path' => $media->url,
+            'thumbnail' => $media->thumbnail_url,
         ]);
     }
 }

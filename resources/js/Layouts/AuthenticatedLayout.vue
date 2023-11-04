@@ -87,8 +87,8 @@ navigation.forEach(item => {
                                 class="flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-900 px-6 pb-2 ring-1 ring-white/10">
                                 <div class="flex h-16 shrink-0 items-center">
                                     <img class="h-8 w-auto"
-                                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                                        alt="Your Company" />
+                                        src="{{ public_path('media/logo/Original_Logo_Symbol-removebg.png') }}"
+                                        alt="SwirlTag Logo" />
                                 </div>
                                 <nav class="flex flex-1 flex-col">
                                     <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -119,8 +119,8 @@ navigation.forEach(item => {
             <!-- Sidebar component, swap this element with another sidebar if you like -->
             <div class="flex grow flex-col gap-y-5 overflow-y-auto bg:white dark:bg-gray-900 px-6">
                 <div class="flex h-16 shrink-0 items-center">
-                    <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company" />
+                    <img class="h-auto w-16 md:w-20 lg:w-24" src="http://localhost/storage/media/logo/Original_Logo_Symbol-removebg.png"
+                        alt="Swirltag Logo" />
                 </div>
                 <nav class="flex flex-1 flex-col">
                     <ul role="list" class="flex flex-1 flex-col gap-y-7">

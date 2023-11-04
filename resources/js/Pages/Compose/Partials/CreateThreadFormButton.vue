@@ -1,46 +1,19 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import { useEditor, EditorContent } from '@tiptap/vue-3';
-import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
-import Mention from '@tiptap/extension-mention';
-import Placeholder from '@tiptap/extension-placeholder';
-import suggestion from './suggestion.js';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Modal from '@/Components/Modal.vue';
 import DangerAlert from '@/Components/DangerAlert.vue';
 import { GifIcon, PhotoIcon, XMarkIcon } from '@heroicons/vue/24/solid';
 import axios from 'axios';
-
-// Editor setup
-const editor = useEditor({
-    content: '',
-    extensions: [
-        StarterKit,
-        suggestion,
-        Link,
-        Mention.configure({
-            HTMLAttributes: {
-                class: 'mention',
-            },
-            matcher: {
-                allowSpaces: false,
-                startOfLine: false,
-            },
-            suggestion: {
-                items: suggestion.items,
-                render: suggestion.render,
-            },
-        }),
-        Placeholder.configure({
-            emptyEditorClass: 'is-editor-empty',
-            placeholder: 'The world is waiting!',
-        }),
-    ],
-});
+import "quill-mention";
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import { QuillEditor } from '@vueup/vue-quill'
 
 // Reactive references
+const editorContent = ref('');
+const quillEditorRef = ref(null);
+const quillInstance = ref(null);
 const clickingAwayFromThread = ref(false);
 const confirmingUserDeletion = ref(false);
 const errorsWithSubmission = ref(false);
@@ -49,20 +22,50 @@ const mediaId = ref(null);
 
 // Form handling
 const form = useForm({
-    body: editor.value?.getText(),
+    body: '',
     files: null,
     media_id: null,
 });
 
-watch(
-    () => editor.value?.getText(),
-    (newValue) => {
-        form.body = newValue;
-    }
-);
+// Define the editor options
+const editorOptions = {
+    modules: {
+        mention: {
+            allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+            mentionDenotationChars: ["@", "#"],
+            source: async function (searchTerm, renderList) {
+                // Assuming `suggestPeople` is a function that returns an array of mentions
+                const matchedPeople = await suggestPeople(searchTerm);
+                renderList(matchedPeople);
+            },
+        },
+        toolbar: false, // disables the toolbar
+    },
+    placeholder: 'The world is waiting!'
+};
+
+async function suggestPeople(searchTerm) {
+    const allPeople = [
+        {
+            id: 1,
+            value: "Fredrik Sundqvist"
+        },
+        {
+            id: 2,
+            value: "Patrik Sjölin"
+        }
+    ];
+    return allPeople.filter(person => person.value.includes(searchTerm));
+}
+
+watch(editorContent, (newValue, oldValue) => {
+    // This will run whenever editorContent changes
+    quillInstance.value = quillEditorRef.value.getQuill();
+    form.body = quillInstance.value.getText();
+})
 
 // Computed states
-const disabled = computed(() => editor.value?.isEmpty);
+const disabled = computed(() => editorContent.value?.isEmpty);
 
 // Methods
 const confirmUserDeletion = () => {
@@ -72,7 +75,7 @@ const confirmUserDeletion = () => {
 const closeModal = () => {
     closeAlert();
     confirmingUserDeletion.value = false;
-    editor.value?.commands.setContent('');
+    quillInstance.value?.setText('');
     imagePreview.value = null;
 };
 
@@ -88,12 +91,20 @@ const showWarning = () => {
 function previewFile(event) {
     const file = event.target.files[0];
     if (file) {
-        form.files = file; // Update form.files with the selected file
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            imagePreview.value = e.target.result;
-        };
-        reader.readAsDataURL(file);
+        // Check if the file type is an image
+        if (file.type.startsWith('image/')) {
+            form.files = file; // Update form.files with the selected file
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.value = e.target.result; // This will be the image to display
+            };
+            reader.readAsDataURL(file);
+        } else {
+            form.files = null; // Reset the files if not an image
+            imagePreview.value = null; // Clear any previous image previews
+            // Optionally, alert the user that the file is not an image
+            alert('Please select an image file.');
+        }
     }
 }
 
@@ -106,7 +117,7 @@ function removeImage() {
     }
 }
 
-//Upload the file
+// Upload the file
 const uploadFile = async () => {
     if (!form.files) {
         return;
@@ -128,9 +139,23 @@ const uploadFile = async () => {
             storeThread();
         }
     } catch (error) {
-        // Handle the error case
-        console.error(error);
-        errorsWithSubmission.value = true;
+        if (error.response && error.response.status === 422) {
+            // Assign the body errors if they exist
+            if (error.response.data.errors && error.response.data.errors.image) {
+                form.errors.body = error.response.data.errors.image.join(' ');
+            }
+            // Set a general error message if there's no specific field error message
+            else if (error.response.data.message) {
+                form.errors.body = error.response.data.message;
+            }
+            errorsWithSubmission.value = true; // Trigger the error alert
+        } else {
+            // Handle other types of errors
+            console.error('An unexpected error occurred:', error);
+            // You can set a general error message for unexpected errors
+            form.errors.body = 'An unexpected error occurred. Please try again.';
+            errorsWithSubmission.value = true; // Trigger the error alert
+        }
     }
 };
 
@@ -152,7 +177,7 @@ const storeThread = () => {
     form.post(route('store-thread'), {
         preserveScroll: true,
         onSuccess: () => {
-            editor.value?.commands.setContent('');
+            quillInstance.value?.setText('')
             closeModal();
         },
         onError: () => {
@@ -165,101 +190,161 @@ const storeThread = () => {
 <template>
     <!-- Trigger button for post action -->
     <PrimaryButton text-size="lg" class="w-10/12" @click="confirmUserDeletion">
-      Post
+        Post
     </PrimaryButton>
 
     <!-- Modal for creating new thread -->
     <Modal :show="confirmingUserDeletion" @close="closeModal">
-      <!-- Modal content with max height and flex column layout -->
-      <div class="flex flex-col h-full max-h-[65vh]">
+        <!-- Modal content with max height and flex column layout -->
+        <div class="flex flex-col h-full max-h-[65vh]">
 
-        <!-- Scrollable content area for form and image -->
-        <div class="overflow-auto px-3 py-3">
-          <div class="flex gap-x-3">
-            <!-- User avatar -->
-            <img class="h-12 w-12 dark:bg-gray-50 rounded-full bg-gray-800"
-                 src="https://placewaifu.com/image/40" alt="" />
+            <!-- Error alert for form submission -->
+            <div v-if="form.errors.body">
+                        <DangerAlert :show="errorsWithSubmission" @close="closeAlert">
+                            {{ form.errors.body }}
+                        </DangerAlert>
+                    </div>
 
-            <!-- Form for new thread -->
-            <form @submit.prevent="onSubmit" action="#" class="flex flex-col flex-auto">
-              <div class="rounded-lg shadow-sm">
-                <!-- editor content -->
+            <!-- Scrollable content area for form and image -->
+            <div class="overflow-auto px-3 py-3">
+                <div class="flex gap-x-3">
+
+                    <!-- User avatar -->
+                    <img class="h-12 w-12 dark:bg-gray-50 rounded-full bg-gray-800" src="https://placewaifu.com/image/40"
+                        alt="" />
+
+                    <!-- Form for new thread -->
+                    <form @submit.prevent="onSubmit" action="#" class="flex flex-col flex-auto">
+                        <div class="rounded-lg shadow-sm">
+                            <!-- editor content
                 <editor-content :editor="editor"
-                                class="block w-full border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 lg:text-2xl sm:text-sm sm:leading-6 focus:ring-0 focus:outline-none" />
+                                class="block w-full border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 lg:text-2xl sm:text-sm sm:leading-6 focus:ring-0 focus:outline-none" /> -->
+                            <QuillEditor id="editor" ref="quillEditorRef" :options="editorOptions"
+                                v-model:content="editorContent" />
 
-                <!-- Image preview with close button -->
-                    <div class="relative" v-if="imagePreview">
-                    <button class="absolute top-0 right-0 mt-2 mr-2 bg-white rounded-full p-1 shadow-lg"
-                            @click="removeImage">
-                        <XMarkIcon class="h-5 w-5" aria-hidden="true" />
-                    </button>
-                  <img :src="imagePreview" alt="Image preview" class="rounded-lg mt-4" />
+                            <!-- Image preview with close button -->
+                            <div class="relative" v-if="imagePreview">
+                                <button class="absolute top-0 right-0 mt-2 mr-2 bg-white rounded-full p-1 shadow-lg"
+                                    @click="removeImage">
+                                    <XMarkIcon class="h-5 w-5" aria-hidden="true" />
+                                </button>
+                                <img :src="imagePreview" alt="Image preview" class="rounded-lg mt-4" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- Fixed area with action buttons and file input -->
-        <div class="mt-auto bg-white dark:bg-gray-800 p-3">
-          <div class="flex justify-between">
-            <!-- Attachment and GIF selection buttons -->
-            <div class="flex space-x-5">
-              <!-- Image upload button -->
-              <label for="file-upload"
-                     class="flex h-10 w-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500 cursor-pointer">
-                <PhotoIcon class="h-5 w-5" aria-hidden="true" />
-                <span class="sr-only">Upload image</span>
-              </label>
-              <input type="file" id="file-upload" class="hidden" @change="previewFile" />
-
-              <!-- GIF selection button (dummy for now) -->
-              <button type="button"
-                      class="flex h-10 w-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500">
-                <GifIcon class="h-5 w-5" aria-hidden="true" />
-                <span class="sr-only">Select a GIF</span>
-              </button>
             </div>
 
-            <!-- Post button -->
-            <PrimaryButton text-size="lg" @click="handlePost" :disabled="disabled">
-              Post
-            </PrimaryButton>
-          </div>
-        </div>
-      </div>
+            <!-- Fixed area with action buttons and file input -->
+            <div class="mt-auto bg-white dark:bg-gray-800 p-3">
+                <div class="flex justify-between">
+                    <!-- Attachment and GIF selection buttons -->
+                    <div class="flex space-x-5">
+                        <!-- Image upload button -->
+                        <label for="file-upload"
+                            class="flex h-10 w-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500 cursor-pointer">
+                            <PhotoIcon class="h-5 w-5" aria-hidden="true" />
+                            <span class="sr-only">Upload image</span>
+                        </label>
+                        <input type="file" id="file-upload" class="hidden" @change="previewFile" />
 
-      <!-- Error alert for form submission -->
-      <div v-if="form.errors.body">
-        <DangerAlert :show="errorsWithSubmission" @close="closeAlert">
-          {{ form.errors.body }}
-        </DangerAlert>
-      </div>
+                        <!-- GIF selection button (dummy for now) -->
+                        <button type="button"
+                            class="flex h-10 w-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500">
+                            <GifIcon class="h-5 w-5" aria-hidden="true" />
+                            <span class="sr-only">Select a GIF</span>
+                        </button>
+                    </div>
+
+                    <!-- Post button -->
+                    <PrimaryButton text-size="lg" @click="handlePost" :disabled="disabled">
+                        Post
+                    </PrimaryButton>
+                </div>
+            </div>
+        </div>
+
     </Modal>
 
     <!-- Confirmation modal for navigating away -->
     <Modal :show="clickingAwayFromThread" @close="closeModal">
-      bro are u sure?
+        bro are u sure?
     </Modal>
-  </template>
+</template>
 
 <style lang="scss">
-.tiptap {
-    >*+* {
-        margin-top: 0.75em;
-    }
-}
-
 .mention {
     border-radius: 0.4rem;
     padding: 0.1rem 0.3rem;
     box-decoration-break: clone;
 }
 
-.tiptap p.is-editor-empty:first-child::before {
-    color: #adb5bd;
-    content: attr(data-placeholder);
-    float: left;
-    height: 0;
-    pointer-events: none;
+.ql-container {
+    height: auto;
+}
+
+.ql-editor::before {
+    color: #6B7280 !important; /* placeholder */
+    left: 0;
+}
+
+.ql-editor {
+    width: 100%;
+    background: transparent;
+    padding: 1.5rem;
+    color: white;
+    /* Dark text color */
+    font-size: 2rem;
+    /* lg:text-2xl */
+    line-height: 1.5;
+    /* sm:leading-6 */
+    outline: none;
+    /* Remove outline on focus */
+    overflow: hidden;
+}
+
+.ql-snow {
+    border: none !important;
+}
+
+/* Sometimes the toolbar has a border you might want to remove */
+.ql-toolbar {
+    border: none !important;
+    border-bottom: none !important;
+}
+
+
+/* Style the mention list container to be fixed relative to the viewport */
+.ql-mention-list-container {
+    position: fixed;
+    z-index: 1000;
+    /* Make sure this is high enough to be above everything else */
+    max-height: 200px;
+    /* Set a max height */
+    overflow-y: auto;
+    /* Add scroll if the content is taller than max-height */
+    /* You may need to adjust width as per your requirements */
+    width: auto;
+    /* Or a fixed width if you prefer */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+/* Style each item in the mention list */
+.ql-mention-list-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+/* Highlighted state for mention list items */
+.ql-mention-list-item.selected {
+    background-color: #f0f0f0;
+}
+
+/* Style for list items on hover */
+.ql-mention-list-item:hover {
+    background-color: #f0f0f0;
 }</style>

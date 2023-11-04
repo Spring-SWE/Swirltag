@@ -24,7 +24,6 @@ const props = defineProps({
         type: Object
     }
 });
-
 </script>
 
 <template>
@@ -74,10 +73,10 @@ const props = defineProps({
                 </p>
             </div>
 
-            <div class="thread-media mt-2">
-                <img class="rounded-lg mx-auto" :width="props.threadData.media[0].width"
+            <div class="thread-media mt-2 pb-2">
+                <img class="rounded-lg mx-auto"
                     v-if="props.threadData.media && props.threadData.media.length > 0"
-                    :src="props.threadData.media[0].file_path" alt="">
+                    :src="props.threadData.media[0].thumbnail_path" alt="">
             </div>
 
             <div class="quoted-content">

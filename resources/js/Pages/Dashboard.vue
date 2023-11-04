@@ -12,9 +12,6 @@ const props = defineProps({
         type: Array
     }
 });
-
-console.log(props.threads)
-
 </script>
 
 <template>
