@@ -13,9 +13,9 @@ class StoreNewThread
     {
         $userId = $request->user()->id;
 
+        //Lock creating new threads for 5 seconds
         $lock = Cache::lock('user-posting:' . $userId, 5);
 
-        //Lock creating new threads for 5 seconds
         if ($lock->get())
         {
 

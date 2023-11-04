@@ -25,7 +25,8 @@ class StoreNewMedia
             //Untreat GIFs for now. Will Consider a path to resizing in the future.
             Storage::disk('public')->copy($originalPath, $thumbnailPath);
         } else {
-            // Handle non-GIF files with Intervention Image
+            // Non-GIFs will be resized to 1080P and compressed, keeping aspect Ratio.
+            //This will be used as the "ThumbnailL
             $image = Image::make($file->getRealPath())->orientate()->resize(1920, null, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
@@ -71,7 +72,7 @@ class StoreNewMedia
 
     protected function generateUniqueFilename(string $extension): string
     {
-        $uniqueId = (string) Str::uuid();
+        $uniqueId = (string) Str::uuid(); //generates random UUID.
         return "{$uniqueId}.{$extension}";
     }
 }
