@@ -20,6 +20,7 @@ const errorsWithSubmission = ref(false);
 const imagePreview = ref(null);
 const mediaId = ref(null);
 const uploadProgress = ref(0);
+const postingDisabled = ref(false);
 
 // Form handling
 const form = useForm({
@@ -70,6 +71,10 @@ const confirmUserDeletion = () => {
     confirmingUserDeletion.value = true;
 };
 
+const postDisabled = () => {
+    postingDisabled.value = true;
+}
+
 const closeModal = () => {
     closeAlert();
     form.reset();
@@ -78,10 +83,15 @@ const closeModal = () => {
     imagePreview.value = null;
     mediaId.value = null;
     uploadProgress.value = 0;
+    postingDisabled.value = false;
 };
 
 const closeAlert = () => {
     errorsWithSubmission.value = false;
+    //user saw error, allow posting again.
+    postingDisabled.value = false;
+    uploadProgress.value = 0;
+
 };
 
 const showWarning = () => {
@@ -120,6 +130,9 @@ function removeImage() {
 
 // Upload the file
 const uploadFile = async () => {
+
+    postDisabled();
+
     if (!form.files) {
         return;
     }
@@ -156,7 +169,7 @@ const uploadFile = async () => {
             else if (error.response.data.message) {
                 form.errors.body = error.response.data.message;
             }
-            errorsWithSubmission.value = true; // Trigger the error alert
+            errorsWithSubmission.value = true;
         } else {
             // Handle other types of errors
             console.error('An unexpected error occurred:', error);
@@ -182,6 +195,9 @@ const handlePost = () => {
 
 // Function to store the thread
 const storeThread = () => {
+
+    postDisabled();
+
     if (mediaId.value) {
         form.media_id = mediaId.value;
     }
@@ -218,15 +234,7 @@ const storeThread = () => {
 
             <!-- Progress bar content -->
             <div v-if="form.progress" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                <div class="h-3 text-center text-white bg-theme-purple"
-                    :style="{ width: form.progress.percentage + '%' }">
-                </div>
-            </div>
-
-            <!-- Progress bar Media -->
-            <div v-if="uploadProgress" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                <div class="h-3 text-center text-white bg-theme-purple"
-                    :style="{ width: uploadProgress + '%' }">
+                <div class="h-3 text-center text-white bg-theme-purple" :style="{ width: form.progress.percentage + '%' }">
                 </div>
             </div>
 
@@ -241,11 +249,24 @@ const storeThread = () => {
                     <!-- Form for new thread -->
                     <form @submit.prevent="onSubmit" action="#" class="flex flex-col flex-auto">
                         <div class="rounded-lg shadow-sm">
-                            <!-- editor content
-                <editor-content :editor="editor"
-                                class="block w-full border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 lg:text-2xl sm:text-sm sm:leading-6 focus:ring-0 focus:outline-none" /> -->
-                            <QuillEditor id="editor" ref="quillEditorRef" :options="editorOptions"
+
+                            <QuillEditor
+                                class="ql-editor block w-full border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:ring-0 focus:outline-none"
+                                id="editor"
+                                ref="quillEditorRef"
+                                :options="editorOptions"
                                 v-model:content="editorContent" />
+
+
+                            <!-- Progress bar Media -->
+                            <div v-if="uploadProgress && !errorsWithSubmission"
+                                class="p-2 text-sm text-theme-purple rounded-lg bg-blue-50 dark:bg-gray-700 dark:text-blue-400"
+                                role="alert">
+                                <span class="font-medium">We're processing your media...</span>
+                                <div class="h-3 text-center text-white bg-theme-purple"
+                                    :style="{ width: uploadProgress + '%' }">
+                                </div>
+                            </div>
 
                             <!-- Image preview with close button -->
                             <div class="relative" v-if="imagePreview">
@@ -279,10 +300,16 @@ const storeThread = () => {
                             <GifIcon class="h-5 w-5" aria-hidden="true" />
                             <span class="sr-only">Select a GIF</span>
                         </button>
+
+                        <div class="mt-1">
+                            <span class="text-gray-400 hover:text-gray-500 text-xs">
+                                {{ form.body.length }}/320
+                            </span>
+                        </div>
                     </div>
 
                     <!-- Post button -->
-                    <PrimaryButton text-size="lg" @click="handlePost">
+                    <PrimaryButton text-size="lg" :disabled="postingDisabled" @click="handlePost">
                         Post
                     </PrimaryButton>
                 </div>
@@ -315,24 +342,16 @@ const storeThread = () => {
 }
 
 .ql-editor {
-    width: 100%;
-    background: transparent;
-    padding: 1.5rem;
-    color: white;
-    /* Dark text color */
-    font-size: 2rem;
-    /* lg:text-2xl */
+    /* Tailwind classes wont work for some reason */
+    font-size: 1.5rem;
     line-height: 1.5;
-    /* sm:leading-6 */
-    outline: none;
-    min-height: 20vh;
 }
 
 .ql-snow {
     border: none !important;
 }
 
-/* Sometimes the toolbar has a border you might want to remove */
+/* Sometimes the toolbar has a border */
 .ql-toolbar {
     border: none !important;
     border-bottom: none !important;

@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Models\Thread;
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
 
 class GetLatestThreadsByUser
 {
@@ -17,6 +18,10 @@ class GetLatestThreadsByUser
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
+
+            foreach ($threads as $thread) {
+                $thread->created_at_human = $thread->created_at->diffForHumans();
+            }
 
         return $threads;
     }

@@ -53,9 +53,10 @@ const props = defineProps({
                         <CheckBadgeIcon class="h-6 w-6 text-theme-purple" />
                     </div>
                     <div class="flex-initial">
-                        <span class="ml-1 text-sm dark:text-gray-400"><span class="relative bottom-1.5"
+                        <span class="ml-1 text-sm dark:text-gray-400">
+                            <span class="relative bottom-1.5"
                                 style="font-size: 1.8rem;">.</span>
-                            <span class="relative bottom-0.5 dark:text-gray-400"> 5 hrs ago</span></span>
+                            <span class="relative bottom-0.5 dark:text-gray-400" style="left:2px;"> {{ props.threadData.created_at_human }}.</span></span>
                     </div>
                 </div>
 

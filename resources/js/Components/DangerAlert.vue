@@ -20,7 +20,6 @@ watchEffect(
 );
 
 const close = () => {
-    console.log('fired');
     if (props.closeable) {
         emit('close');
     }
