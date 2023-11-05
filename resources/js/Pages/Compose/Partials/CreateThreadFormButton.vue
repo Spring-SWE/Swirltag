@@ -262,7 +262,7 @@ const storeThread = () => {
                             <div v-if="uploadProgress && !errorsWithSubmission"
                                 class="p-2 text-sm text-theme-purple rounded-lg bg-blue-50 dark:bg-gray-700 dark:text-blue-400"
                                 role="alert">
-                                <span class="font-medium">We're processing your media...</span>
+                                <span class="font-medium text-theme-purple">We're processing your media...</span>
                                 <div class="h-3 text-center text-white bg-theme-purple"
                                     :style="{ width: uploadProgress + '%' }">
                                 </div>
@@ -301,11 +301,11 @@ const storeThread = () => {
                             <span class="sr-only">Select a GIF</span>
                         </button>
 
-                        <div class="mt-1">
+                        <!-- <div class="mt-1">
                             <span class="text-gray-400 hover:text-gray-500 text-xs">
                                 {{ form.body.length }}/320
                             </span>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Post button -->

@@ -3,6 +3,7 @@ const tabs = [
     { name: 'Threads', href: '#', current: true },
     { name: 'Replies', href: '#', current: false },
     { name: 'Media', href: '#', current: false },
+    { name: 'Swirls', href: '#', current: false },
 ]
 </script>
 

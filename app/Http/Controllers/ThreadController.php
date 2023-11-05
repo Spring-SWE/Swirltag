@@ -6,9 +6,23 @@ use App\Http\Requests\StoreThreadRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Actions\StoreNewThread;
 use App\Models\Media;
+use Inertia\Response;
+use Inertia\Inertia;
+
 
 class ThreadController extends Controller
 {
+
+    /**
+     * Show a Thread and the assiociated commebts.
+     */
+    public function show(string $id)
+    {
+        return Inertia::render('Thread/Show', [
+            //return page, lots of designing to do :)
+        ]);
+    }
+
     /**
      * Store a newly requested Thread.
      */

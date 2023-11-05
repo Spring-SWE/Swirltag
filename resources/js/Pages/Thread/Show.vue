@@ -16,28 +16,19 @@ const props = defineProps({
     }
 });
 
-const userName = props.user.name;
 
 </script>
 
 <template>
-    <Head :title="userName" />
+    <Head :title="huh" />
 
     <div v-if="$page.props.auth.user">
         <AuthenticatedLayout>
-            <div class="col-span-12">
-                <ProfileInlineTabs></ProfileInlineTabs>
-            </div>
             <div class="thread col-span-12 lg:col-span-8">
-                <Threads v-for="thread in threads"
-                    :key="thread.id"
-                    :user="userName"
-                    :threadData="thread"
-                    :class="[index !== threads.length - 1 ? 'border-b-0' : '', 'border']"
-                    />
+                left
             </div>
             <div class="col-span-12 lg:block lg:col-span-4 mr-2 h-16 sticky top-1">
-                <ProfileUserDetails />
+                right
             </div>
         </AuthenticatedLayout>
     </div>
@@ -45,13 +36,10 @@ const userName = props.user.name;
     <div v-else>
         <GuestLayout>
             <div class="thread col-span-12 lg:col-span-8">
-                <Threads v-for="thread in threads"
-                    :key="thread.id"
-                    :user="userName"
-                    :threadData="thread" />
+                right
             </div>
             <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1">
-                <ProfileUserDetails />
+                Left
             </div>
         </GuestLayout>
     </div>

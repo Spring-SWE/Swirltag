@@ -12,7 +12,7 @@ class DashboardController extends Controller
     /**
      * Show the popular threads on the Dashboard.
      */
-    public function showDashboardThreads(GetPopularThreads $getThreads): Response
+    public function show(GetPopularThreads $getThreads): Response
     {
          return Inertia::render('Dashboard', [
 

@@ -26,7 +26,7 @@ Route::get('/', function () {
     ]);
 })->middleware('guest');
 
-Route::get('/dashboard', [DashboardController::class, 'showDashboardThreads'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'show'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');

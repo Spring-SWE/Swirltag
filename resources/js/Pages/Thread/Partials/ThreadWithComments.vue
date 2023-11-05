@@ -28,8 +28,9 @@ const props = defineProps({
 
 <template>
     <!-- Thread -->
-    <div
-        class="hover:cursor-pointer thread p-3 rounded border border-gray-100 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 shadow">
+    <div class="thread p-3 border-gray-100 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 shadow">
+        <div>
+            <Link :href="`/thread/${threadData.id}`">
         <div class="thread-details grid grid-cols-12 gap-4">
             <div class="top-thread-left col-span-11">
                 <div class="flex justify-start pb-3">
@@ -76,6 +77,7 @@ const props = defineProps({
 
             <div class="thread-media mt-2 pb-2">
                 <img class="rounded-lg mx-auto"
+                     style="max-height: 700px;"
                     v-if="props.threadData.media && props.threadData.media.length > 0"
                     :src="props.threadData.media[0].thumbnail_path" alt="">
             </div>
@@ -116,7 +118,8 @@ const props = defineProps({
                     </div>
                 </div>
             </div>
-
+        </div>
+    </Link>
     </div>
 </div>
 <!-- Thread --></template>

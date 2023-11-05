@@ -12,7 +12,7 @@ class ProfileController extends Controller
     /**
      * Show the Users Threads posted on their timeline.
      */
-    public function showTimeline(string $name, GetLatestThreadsByUser $getThreads): Response
+    public function show(string $name, GetLatestThreadsByUser $getThreads): Response
     {
          return Inertia::render('Profile/Timeline', [
 
