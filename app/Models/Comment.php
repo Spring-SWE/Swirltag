@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
-class Thread extends Model
+class Comment extends Model
 {
     use HasFactory;
 
-    /**
+     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -19,18 +19,29 @@ class Thread extends Model
     protected $fillable = [
         'body',
         'user_id',
+        'thread_id',
+        'parent_id',
+        'is_edited',
+        'upvote_count',
+        'downvote_count',
         'comment_count',
         'view_count',
         'repost_count',
         'share_count',
+        'deboost_score',
+        'is_flagged',
     ];
 
-    /**
-     * The User that owns the Thread.
-     */
+    /** Comment belongs to a Thread **/
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /** Comment belongs to a Thread **/
+    public function thread(): BelongsTo
+    {
+        return $this->belongsTo(Thread::class);
     }
 
     /**
@@ -40,5 +51,4 @@ class Thread extends Model
     {
         return $this->morphToMany(Media::class, 'mediable');
     }
-
 }

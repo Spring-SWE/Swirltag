@@ -3,7 +3,6 @@ namespace App\Actions;
 
 use App\Models\Thread;
 use Illuminate\Support\Collection;
-use Carbon\Carbon;
 
 class GetPopularThreads {
 

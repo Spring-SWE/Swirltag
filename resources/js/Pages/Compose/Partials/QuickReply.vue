@@ -22,10 +22,18 @@ const uploadProgress = ref(0);
 const postingDisabled = ref(false);
 const postBarVisible = ref(false);
 
+const props = defineProps({
+    threadId: {
+        type: Number,
+    },
+});
+
 // Form handling
 const form = useForm({
     body: '',
     files: null,
+    media_id: null,
+    thread_id: props.threadId
 });
 
 // Define the editor options
@@ -75,16 +83,16 @@ const postDisabled = () => {
     postingDisabled.value = true;
 }
 
-// const closeModal = () => {
-//     closeAlert();
-//     form.reset();
-//     confirmingUserDeletion.value = false;
-//     quillInstance.value?.setText('');
-//     imagePreview.value = null;
-//     mediaId.value = null;
-//     uploadProgress.value = 0;
-//     postingDisabled.value = false;
-// };
+const resetEditor = () => {
+    closeAlert();
+    form.reset();
+    confirmingUserDeletion.value = false;
+    quillInstance.value?.setText('');
+    imagePreview.value = null;
+    mediaId.value = null;
+    uploadProgress.value = 0;
+    postingDisabled.value = false;
+};
 
 const handleFocus = () => {
     postBarVisible.value = true;
@@ -161,7 +169,7 @@ const uploadFile = async () => {
             mediaId.value = response.data.id;
             // Now proceed to post the thread
             uploadProgress.value = 0;
-            storeThread();
+            storeComment();
         }
     } catch (error) {
         if (error.response && error.response.status === 422) {
@@ -193,12 +201,12 @@ const handlePost = () => {
     if (form.files) {
         uploadFile();
     } else {
-        storeThread();
+        storeComment();
     }
 };
 
 // Function to store the thread
-const storeThread = () => {
+const storeComment = () => {
 
     postDisabled();
 
@@ -206,10 +214,10 @@ const storeThread = () => {
         form.media_id = mediaId.value;
     }
 
-    form.post(route('store-thread'), {
+    form.post(route(`store-comment`), {
         preserveScroll: true,
         onSuccess: () => {
-            closeModal();
+            resetEditor();
         },
         onError: () => {
             errorsWithSubmission.value = true;

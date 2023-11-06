@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Models\Thread;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -24,22 +25,57 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register rate limiters for API access.
+        $this->registerRateLimiters();
+
+        // Register routes.
+        $this->registerRoutes();
+
+        // Register custom route model bindings.
+        $this->registerRouteModelBindings();
+    }
+
+    /**
+     * Register the rate limiters for the application.
+     */
+    protected function registerRateLimiters(): void
+    {
+        // General API rate limiter.
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
-        //12 per minute = 5 seconds in 1 minute
+        // Specific rate limiter for posts to throttle at 10 requests per minute.
         RateLimiter::for('post_limit', function (Request $request) {
-            return Limit::perMinute(12)->by(optional($request->user())->id ?: $request->ip());
+            return Limit::perMinute(10)->by(optional($request->user())->id ?: $request->ip());
         });
+    }
 
+    /**
+     * Register the application's routes.
+     */
+    protected function registerRoutes(): void
+    {
+        // Register API routes with 'api' middleware and prefix.
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
+            // Register web routes with 'web' middleware.
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+        });
+    }
+
+    /**
+     * Register custom route model bindings.
+     */
+    protected function registerRouteModelBindings(): void
+    {
+        // Custom binding for 'thread' to automatically resolve with 'media & user' relationship.
+        Route::bind('thread', function ($value) {
+            return Thread::where('id', $value)->with(['user', 'media'])->firstOrFail();
         });
     }
 }

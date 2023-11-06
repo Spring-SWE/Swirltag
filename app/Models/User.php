@@ -52,4 +52,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Thread::class);
     }
+
+    /**
+     * Get the Comments from the User.
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

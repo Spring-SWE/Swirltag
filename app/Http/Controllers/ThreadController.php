@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\GetCommentsByThread;
 use App\Http\Requests\StoreThreadRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Actions\StoreNewThread;
 use App\Models\Media;
+use App\Models\Thread;
 use Inertia\Response;
 use Inertia\Inertia;
 
@@ -16,10 +18,11 @@ class ThreadController extends Controller
     /**
      * Show a Thread and the assiociated commebts.
      */
-    public function show(string $id)
+    public function show(Thread $thread, GetCommentsByThread $getCommentsByThread)
     {
         return Inertia::render('Thread/Show', [
-            //return page, lots of designing to do :)
+            'thread' => $thread,
+            'comments' => $getCommentsByThread->handle($thread->id, auth()->id()),
         ]);
     }
 

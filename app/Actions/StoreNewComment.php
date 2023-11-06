@@ -3,7 +3,7 @@
 namespace App\Actions;
 
 use Illuminate\Http\Request;
-use App\Models\Thread;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Cache;
 
 class StoreNewComment
@@ -18,20 +18,20 @@ class StoreNewComment
 
         if ($lock->get())
         {
-
-            $threadData = [
+            $commentData = [
                 'body' => $request->input('body'),
                 'user_id' => $userId,
+                'thread_id' => $request->input('thread_id'),
             ];
 
             if ($request->filled('media_id')) {
 
-                $threadData['media_id'] = $request->input('media_id');
+                $commentData['media_id'] = $request->input('media_id');
             }
 
-            $thread = Thread::create($threadData);
+            $comment = Comment::create($commentData);
 
-            return $thread;
+            return $comment;
         }
     }
 }

@@ -14,16 +14,17 @@ class CommentController extends Controller
     /**
      * Store a newly requested Thread.
      */
-    public function store(int $threadID, StoreCommentRequest $request, StoreNewComment $storeNewComment): RedirectResponse
+    public function store(StoreCommentRequest $request, StoreNewComment $storeNewComment): RedirectResponse
     {
-        $thread = $storeNewComment->handle($request);
+
+        $comment = $storeNewComment->handle($request);
 
         // Check if media was uploaded
         if ($request->filled('media_id')) {
 
             $media = Media::findOrFail($request->input('media_id'));
 
-            $thread->media()->attach($media);
+            $comment->media()->attach($media);
         }
 
         session()->flash('message', 'Your post was successful!');
