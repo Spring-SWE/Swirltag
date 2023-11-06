@@ -21,8 +21,11 @@ class ThreadController extends Controller
     public function show(Thread $thread, GetCommentsByThread $getCommentsByThread)
     {
         return Inertia::render('Thread/Show', [
+
             'thread' => $thread,
+
             'comments' => $getCommentsByThread->handle($thread->id, auth()->id()),
+
         ]);
     }
 
@@ -41,9 +44,11 @@ class ThreadController extends Controller
             $thread->media()->attach($media);
         }
 
-        session()->flash('message', 'Your post was successful!');
+        // Flash the message
+        session()->flash('success', "Your post was successful!");
 
         return back();
+
     }
 
 }

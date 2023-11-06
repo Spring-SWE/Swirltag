@@ -8,7 +8,7 @@ import { GifIcon, PhotoIcon, XMarkIcon } from '@heroicons/vue/24/solid';
 import axios from 'axios';
 import "quill-mention";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import { QuillEditor } from '@vueup/vue-quill'
+import { QuillEditor } from '@vueup/vue-quill';
 
 // Reactive references
 const editorContent = ref('');

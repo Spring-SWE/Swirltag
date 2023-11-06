@@ -38,7 +38,7 @@ const props = defineProps({
                         <img class="mx-auto rounded-full" src="https://placewaifu.com/image/40">
                     </div>
                     <div class="flex-none ml-3">
-                        <Link :href="`/profile/`" class=" ml-1 text-lg cursor-pointer underline decoration-2 decoration-theme-purple dark:text-white
+                        <Link :href="`/profile/${props.commentData.user.name}`" class=" ml-1 text-lg cursor-pointer underline decoration-2 decoration-theme-purple dark:text-white
             font-semibold">
                         {{ props.commentData.user.name }}
                         </Link>
@@ -66,7 +66,7 @@ const props = defineProps({
         </div>
         <div class="thread-content justify-center items-center">
             <div class="thread-text whitespace-pre-line overflow-wrap break-words">
-                <p class="mx-auto mt-2 ml-16 font-medium pb-3 dark:text-white">
+                <p class="mx-auto mt-2 ml-[56px] font-medium pb-3 dark:text-white">
                     {{ props.commentData.body }}
                 </p>
             </div>

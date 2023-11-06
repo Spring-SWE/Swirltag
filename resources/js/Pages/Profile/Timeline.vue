@@ -29,7 +29,7 @@ const userName = props.user.name;
                 <ProfileInlineTabs></ProfileInlineTabs>
             </div>
             <div class="thread col-span-12 lg:col-span-8">
-                <Threads v-for="thread in threads"
+                <Threads v-for="(thread, index) in threads"
                     :key="thread.id"
                     :user="userName"
                     :threadData="thread"

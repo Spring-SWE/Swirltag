@@ -26,14 +26,17 @@ const props = defineProps({
     },
 });
 
-console.log(props.thread);
-console.log(props.comments);
+function goBack() {
+  history.back();
+}
 
 </script>
 
 <template>
     <div class="flex border-gray-200 dark:border-gray-700  border-b pt-3 pb-3">
-        <ArrowLeftIcon class="h-6 w-6 cursor:pointer text-gray-600 dark:text-white" />
+        <div class="arrow-container hover:bg-gray-200 dark:hover:bg-gray-600 hover:rounded-full p-2 cursor-pointer">
+            <ArrowLeftIcon @click="goBack()" class="h-5 w-5 text-gray-600 dark:text-white" />
+        </div>
         <p class="dark:text-white text-theme-purple font-extrabold text-2xl ml-5">
             Post
         </p>

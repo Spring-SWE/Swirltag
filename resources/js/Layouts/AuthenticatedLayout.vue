@@ -2,10 +2,10 @@
 import ThemeSwitcher from '@/Components/ThemeSwitcher.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import Toast from '@/Components/Toast.vue';
 import CreateThreadFormButton from '@/Pages/Compose/Partials/CreateThreadFormButton.vue';
 import { Link, usePage, } from '@inertiajs/vue3';
-import { ref } from 'vue'
+import { useToast } from "vue-toastification";
+import { ref, watch } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import {
     Bars3Icon,
@@ -20,22 +20,9 @@ import {
     UserIcon,
 } from '@heroicons/vue/24/outline'
 
-
 const sidebarOpen = ref(false)
-const creatingNewThread = ref(false);
 const page = usePage().props;
 const userName = page.auth.user.name;
-
-const createNewThread = () => {
-    creatingNewThread.value = true;
-};
-
-const closeModal = () => {
-    creatingNewThread.value = false;
-
-    form.reset();
-};
-
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: false },
     { name: 'Notifications', href: '#', icon: BellIcon, current: false },
@@ -43,7 +30,6 @@ const navigation = [
     { name: 'Messages', href: '#', icon: EnvelopeIcon, current: false },
     { name: 'Profile', href: `/profile/${userName}`, icon: UserIcon, current: false },
 ]
-
 navigation.forEach(item => {
     if (item.name.toLowerCase() === 'profile') {
         item.current = page.ziggy.location.includes(item.name.toLowerCase());
@@ -52,6 +38,25 @@ navigation.forEach(item => {
     }
 });
 
+const toast = useToast();
+
+watch(() => usePage().props.flash, flash => {
+    let toastId = null;
+
+    if (flash.message) {
+        toast.message(flash.message);
+    }
+    if (flash.success) {
+        toast.success(flash.success);
+    }
+    if (flash.error) {
+        toast.error(flash.error);
+    }
+
+    if (toastId !== null) {
+        setTimeout(() => toast.dismiss(toastId), 5000)
+    }
+}, {deep: true})
 
 </script>
 
@@ -212,10 +217,8 @@ navigation.forEach(item => {
                             <PlusIcon class="h-6 w-6 text-gray-500" aria-hidden="true" />
                         </button>
                     </div>
-                    <!-- Flash messages -->
-                    <div v-if="$page.props.flash.message">
-                    <Toast>{{ $page.props.flash.message }}</Toast>
-                    </div>
+                    <!-- Toast -->
+
                 </div>
             </div>
         </div>
