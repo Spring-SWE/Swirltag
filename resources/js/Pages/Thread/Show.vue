@@ -1,7 +1,5 @@
 <script setup>
-import Threads from '@/Pages/Thread/Partials/Threads.vue';
-import ProfileInlineTabs from '@/Pages/Profile/Partials/ProfileInlineTabs.vue';
-import ProfileUserDetails from '@/Pages/Profile/Partials/ProfileUserDetails.vue';
+import ThreadWithComments from '@/Pages/Thread/Partials/ThreadWithComments.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head } from '@inertiajs/vue3';
@@ -20,15 +18,15 @@ const props = defineProps({
 </script>
 
 <template>
-    <Head :title="huh" />
+    <Head title="Viewing Thread" />
 
     <div v-if="$page.props.auth.user">
         <AuthenticatedLayout>
             <div class="thread col-span-12 lg:col-span-8">
-                left
+                <ThreadWithComments  />
             </div>
             <div class="col-span-12 lg:block lg:col-span-4 mr-2 h-16 sticky top-1">
-                right
+                Viewing Thread
             </div>
         </AuthenticatedLayout>
     </div>

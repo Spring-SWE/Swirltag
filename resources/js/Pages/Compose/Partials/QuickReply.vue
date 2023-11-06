@@ -2,7 +2,6 @@
 import { ref, computed, watch } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import Modal from '@/Components/Modal.vue';
 import DangerAlert from '@/Components/DangerAlert.vue';
 import { GifIcon, PhotoIcon, XMarkIcon } from '@heroicons/vue/24/solid';
 import axios from 'axios';
@@ -21,12 +20,12 @@ const imagePreview = ref(null);
 const mediaId = ref(null);
 const uploadProgress = ref(0);
 const postingDisabled = ref(false);
+const postBarVisible = ref(false);
 
 // Form handling
 const form = useForm({
     body: '',
     files: null,
-    media_id: null,
 });
 
 // Define the editor options
@@ -43,7 +42,7 @@ const editorOptions = {
         },
         toolbar: false, // disables the toolbar
     },
-    placeholder: 'The world is waiting!'
+    placeholder: 'Post your reply!'
 };
 
 async function suggestPeople(searchTerm) {
@@ -66,6 +65,7 @@ watch(editorContent, (newValue, oldValue) => {
     form.body = quillInstance.value.getText();
 })
 
+
 // Methods
 const confirmUserDeletion = () => {
     confirmingUserDeletion.value = true;
@@ -75,15 +75,19 @@ const postDisabled = () => {
     postingDisabled.value = true;
 }
 
-const closeModal = () => {
-    closeAlert();
-    form.reset();
-    confirmingUserDeletion.value = false;
-    quillInstance.value?.setText('');
-    imagePreview.value = null;
-    mediaId.value = null;
-    uploadProgress.value = 0;
-    postingDisabled.value = false;
+// const closeModal = () => {
+//     closeAlert();
+//     form.reset();
+//     confirmingUserDeletion.value = false;
+//     quillInstance.value?.setText('');
+//     imagePreview.value = null;
+//     mediaId.value = null;
+//     uploadProgress.value = 0;
+//     postingDisabled.value = false;
+// };
+
+const handleFocus = () => {
+    postBarVisible.value = true;
 };
 
 const closeAlert = () => {
@@ -215,15 +219,9 @@ const storeThread = () => {
 </script>
 
 <template>
-    <!-- Trigger button for post action -->
-    <PrimaryButton text-size="lg" class="w-10/12" @click="confirmUserDeletion">
-        Post
-    </PrimaryButton>
 
-    <!-- Modal for creating new thread -->
-    <Modal :show="confirmingUserDeletion" @close="closeModal">
-        <!-- Modal content with max height and flex column layout -->
-        <div class="flex flex-col h-full min-h-[25vh] max-h-[65vh]">
+        <!-- Quick Reply content with max height and flex column layout -->
+        <div class="flex flex-col h-full">
 
             <!-- Error alert for form submission -->
             <div v-if="form.errors.body">
@@ -250,19 +248,22 @@ const storeThread = () => {
                     <form @submit.prevent="onSubmit" action="#" class="flex flex-col flex-auto">
                         <div class="rounded-lg shadow-sm">
 
+                            <!--  Quill Editor -->
                             <QuillEditor
                                 class="ql-editor block w-full border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:ring-0 focus:outline-none"
                                 id="editor"
                                 ref="quillEditorRef"
                                 :options="editorOptions"
-                                v-model:content="editorContent" />
+                                v-model:content="editorContent"
+                                @click="handleFocus"/>
+
 
 
                             <!-- Progress bar Media -->
                             <div v-if="uploadProgress && !errorsWithSubmission"
-                                class="p-2 text-sm text-theme-purple rounded-lg"
+                                class="p-2 text-sm text-theme-purple rounded-lg bg-blue-50 dark:bg-gray-700 dark:text-blue-400"
                                 role="alert">
-                                <span class="text-white font-semibold">We're processing your media...</span>
+                                <span class="font-medium text-theme-purple">We're processing your media...</span>
                                 <div class="h-3 text-center text-white bg-theme-purple"
                                     :style="{ width: uploadProgress + '%' }">
                                 </div>
@@ -282,10 +283,10 @@ const storeThread = () => {
             </div>
 
             <!-- Fixed area with action buttons and file input -->
-            <div class="mt-auto bg-white dark:bg-gray-800 p-3">
+            <div class="mt-auto p-3 border-gray-200 dark:border-gray-700 border-b">
                 <div class="flex justify-between">
                     <!-- Attachment and GIF selection buttons -->
-                    <div class="flex space-x-5">
+                    <div v-if="postBarVisible" class="flex space-x-5">
                         <!-- Image upload button -->
                         <label for="file-upload"
                             class="flex h-10 w-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500 cursor-pointer">
@@ -309,19 +310,12 @@ const storeThread = () => {
                     </div>
 
                     <!-- Post button -->
-                    <PrimaryButton text-size="lg" :disabled="postingDisabled" @click="handlePost">
+                    <PrimaryButton v-if="postBarVisible" text-size="lg" :disabled="postingDisabled" @click="handlePost">
                         Post
                     </PrimaryButton>
                 </div>
             </div>
         </div>
-
-    </Modal>
-
-    <!-- Confirmation modal for navigating away -->
-    <Modal :show="clickingAwayFromThread" @close="closeModal">
-        bro are u sure?
-    </Modal>
 </template>
 
 <style lang="scss">
@@ -343,8 +337,8 @@ const storeThread = () => {
 
 .ql-editor {
     /* Tailwind classes wont work for some reason */
-    font-size: 1.5rem;
-    line-height: 1.5;
+    font-size: 1rem;
+    line-height: 1;
 }
 
 .ql-snow {
