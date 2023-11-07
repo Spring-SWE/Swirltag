@@ -72,10 +72,9 @@ const props = defineProps({
                 </p>
             </div>
 
-            <div class="thread-media mt-2 pb-2">
+            <div class="thread-media mt-2 pb-2" v-if="props.threadData.media && props.threadData.media.length > 0">
                 <img class="rounded-lg mx-auto"
                      style="max-height: 700px;"
-                    v-if="props.threadData.media && props.threadData.media.length > 0"
                     :src="props.threadData.media[0].thumbnail_path" alt="">
             </div>
 
@@ -83,7 +82,7 @@ const props = defineProps({
                 <!-- to & do-->
             </div>
 
-            <div class="thread-option-bar mt-2">
+            <div class="thread-option-bar">
                 <div class="flex flex-row gap-2">
                     <div class="vote-thread px-1 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                         <div>
@@ -100,7 +99,7 @@ const props = defineProps({
                         <div>
                             <ChatBubbleLeftIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
                         </div>
-                        <div class="font-semibold text-gray-600 dark:text-white"> {{ props.threadData.comment_count }}
+                        <div class="font-semibold text-gray-600 dark:text-white ml-1"> {{ props.threadData.comment_count }}
                         </div>
                     </div>
 
@@ -108,7 +107,7 @@ const props = defineProps({
                         <div>
                             <ArrowPathRoundedSquareIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
                         </div>
-                        <div class="font-semibold text-gray-600 dark:text-white"> {{ props.threadData.share_count }} </div>
+                        <div class="font-semibold text-gray-600 dark:text-white ml-1"> {{ props.threadData.share_count }} </div>
                     </div>
                     <div class="px-1 py-1">
                         <ArrowUpTrayIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />

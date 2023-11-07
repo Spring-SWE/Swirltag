@@ -247,7 +247,6 @@ const storeComment = () => {
             <!-- Scrollable content area for form and image -->
             <div class="overflow-auto px-3 py-3">
                 <div class="flex gap-x-3">
-
                     <!-- User avatar -->
                     <img class="h-12 w-12 dark:bg-gray-50 rounded-full bg-gray-800" src="https://placewaifu.com/image/40"
                         alt="" />
@@ -258,18 +257,16 @@ const storeComment = () => {
 
                             <!--  Quill Editor -->
                             <QuillEditor
-                                class="ql-editor block w-full border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:ring-0 focus:outline-none"
+                                class="ql-editor-qr block w-full border-0 bg-transparent dark:text-white placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:ring-0 focus:outline-none"
                                 id="editor"
                                 ref="quillEditorRef"
                                 :options="editorOptions"
                                 v-model:content="editorContent"
                                 @click="handleFocus"/>
 
-
-
                             <!-- Progress bar Media -->
                             <div v-if="uploadProgress && !errorsWithSubmission"
-                                class="p-2 text-sm text-theme-purple rounded-lg bg-blue-50 dark:bg-gray-700 dark:text-blue-400"
+                                class="p-2 text-sm text-theme-purple "
                                 role="alert">
                                 <span class="font-medium text-theme-purple">We're processing your media...</span>
                                 <div class="h-3 text-center text-white bg-theme-purple"
@@ -291,7 +288,7 @@ const storeComment = () => {
             </div>
 
             <!-- Fixed area with action buttons and file input -->
-            <div class="mt-auto p-3 border-gray-200 dark:border-gray-700 border-b">
+            <div class="mt-auto pl-3 pr-3 pb-3 border-gray-200 dark:border-gray-700 border-b">
                 <div class="flex justify-between">
                     <!-- Attachment and GIF selection buttons -->
                     <div v-if="postBarVisible" class="flex space-x-5">
@@ -337,16 +334,10 @@ const storeComment = () => {
     height: auto;
 }
 
-.ql-editor::before {
+.ql-editor-qr::before {
     color: #6B7280 !important;
     /* placeholder */
     left: 0;
-}
-
-.ql-editor {
-    /* Tailwind classes wont work for some reason */
-    font-size: 1rem;
-    line-height: 1;
 }
 
 .ql-snow {

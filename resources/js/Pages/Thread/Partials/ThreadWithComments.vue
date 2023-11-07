@@ -33,9 +33,11 @@ function goBack() {
 </script>
 
 <template>
-    <div class="flex border-gray-200 dark:border-gray-700  border-b pt-3 pb-3">
-        <div class="arrow-container hover:bg-gray-200 dark:hover:bg-gray-600 hover:rounded-full p-2 cursor-pointer">
-            <ArrowLeftIcon @click="goBack()" class="h-5 w-5 text-gray-600 dark:text-white" />
+    <div class="flex border-gray-200 dark:border-gray-700 border-r pt-3 pb-3">
+        <div class="arrow-container hover:bg-gray-200 dark:hover:bg-gray-600 hover:rounded-full p-2 cursor-pointer"
+             @click="goBack()"
+        >
+            <ArrowLeftIcon class="h-5 w-5 text-gray-600 dark:text-white" />
         </div>
         <p class="dark:text-white text-theme-purple font-extrabold text-2xl ml-5">
             Post
@@ -57,7 +59,7 @@ function goBack() {
                             <img class="mx-auto rounded-full" src="https://placewaifu.com/image/40">
                         </div>
                         <div class="flex-none ml-3">
-                            <Link :href="`/profile/`" class=" ml-1 text-lg cursor-pointer underline decoration-2 decoration-theme-purple dark:text-white
+                            <Link :href="`/profile/${props.thread.user.name}`" class=" ml-1 text-lg cursor-pointer underline decoration-2 decoration-theme-purple dark:text-white
                         font-semibold">
                             {{ props.thread.user.name }}
                             </Link>
@@ -118,7 +120,7 @@ function goBack() {
                             <div>
                                 <ChatBubbleLeftIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
                             </div>
-                            <div class="font-semibold text-gray-600 dark:text-white"> {{ props.thread.comment_count }}
+                            <div class="font-semibold text-gray-600 dark:text-white ml-1"> {{ props.thread.comment_count }}
                             </div>
                         </div>
 
@@ -127,7 +129,7 @@ function goBack() {
                             <div>
                                 <ArrowPathRoundedSquareIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
                             </div>
-                            <div class="font-semibold text-gray-600 dark:text-white"> {{ props.thread.repost_count }} </div>
+                            <div class="font-semibold text-gray-600 dark:text-white ml-1"> {{ props.thread.repost_count }} </div>
                         </div>
                         <div class="px-1 py-1">
                             <ArrowUpTrayIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />

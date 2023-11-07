@@ -45,7 +45,7 @@ const props = defineProps({
                 />
             </div>
             <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1">
-                Left
+                Right
             </div>
         </GuestLayout>
     </div>

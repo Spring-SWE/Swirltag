@@ -37,11 +37,11 @@ class Handler extends ExceptionHandler
         if ($exception instanceof TooManyRequestsHttpException) {
             // If the request expects JSON, return a JSON response
             if ($request->expectsJson()) {
-                return response()->json(['message' => 'You are posting too frequently. Please wait a bit.'], 429);
+                return session()->json(['message' => 'You are posting too frequently. Please wait a bit.'], 429);
             }
 
             // For web requests, redirect back with an error message
-            return redirect()->back()->with('error', 'You are posting too frequently. Please wait a bit.');
+            session()->flash('error', "You are posting too frequently. Please wait a bit.");
         }
 
         // Make sure to call the parent method if the exception is not the one we're looking for

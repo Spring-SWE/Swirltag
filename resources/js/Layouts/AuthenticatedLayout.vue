@@ -44,7 +44,7 @@ watch(() => usePage().props.flash, flash => {
     let toastId = null;
 
     if (flash.message) {
-        toast.message(flash.message);
+        toast(flash.message);
     }
     if (flash.success) {
         toast.success(flash.success);
@@ -56,7 +56,7 @@ watch(() => usePage().props.flash, flash => {
     if (toastId !== null) {
         setTimeout(() => toast.dismiss(toastId), 5000)
     }
-}, {deep: true})
+}, { deep: true })
 
 </script>
 
@@ -91,9 +91,9 @@ watch(() => usePage().props.flash, flash => {
                             <div
                                 class="flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-900 px-6 pb-2 ring-1 ring-white/10">
                                 <div class="flex h-16 shrink-0 items-center">
-                                    <img class="h-8 w-auto"
-                                        src="{{ public_path('media/logo/Original_Logo_Symbol-removebg.png') }}"
-                                        alt="SwirlTag Logo" />
+                                    <img class="h-auto w-16 md:w-20 lg:w-24"
+                                        src="http://localhost/storage/media/logo/Original_Logo_Symbol-removebg.png"
+                                        alt="Swirltag Logo" />
                                 </div>
                                 <nav class="flex flex-1 flex-col">
                                     <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -101,13 +101,51 @@ watch(() => usePage().props.flash, flash => {
                                             <ul role="list" class="-mx-2 space-y-1">
                                                 <li v-for="item in navigation" :key="item.name">
                                                     <Link :href="item.href"
-                                                        :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                                                        :class="[item.current ? 'bg-gray-300 dark:bg-gray-800 dark:text-white' : 'text-gray-400 hover:text-inherit dark:hover:text-white dark:hover:bg-gray-800 hover:bg-gray-300', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                                                     <component :is="item.icon" class="h-6 w-6 shrink-0"
                                                         aria-hidden="true" />
                                                     {{ item.name }}
                                                     </Link>
                                                 </li>
+                                                <li>
+                                                    <ThemeSwitcher />
+                                                </li>
                                             </ul>
+                                        </li>
+                                        <li class="-mx-5 mt-auto text-center">
+                                            <CreateThreadFormButton />
+                                        </li>
+                                        <!-- Dropdown component -->
+                                        <li class="-mx-6 mt-auto w-">
+                                            <Dropdown width="64">
+                                                <template #trigger>
+                                                    <button href="#"
+                                                        class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold min-w-full leading-6 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-800">
+                                                        <img class="h-8 w-8 rounded-full bg-gray-800"
+                                                            src="https://placewaifu.com/image/40" alt="" />
+                                                        <span class="sr-only">Your profile</span>
+                                                        <span aria-hidden="true">{{ userName }}</span>
+                                                    </button>
+                                                </template>
+
+                                                <template #content>
+                                                    <!-- Dropdown menu -->
+                                                    <div
+                                                        class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
+                                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                                                            <li>
+                                                                <DropdownLink href="/settings">Settings</DropdownLink>
+                                                            </li>
+                                                            <li>
+                                                                <Link
+                                                                    class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                                    href="/logout" method="post" as="button" type="button">
+                                                                Logout</Link>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </template>
+                                            </Dropdown>
                                         </li>
                                     </ul>
                                 </nav>
@@ -124,8 +162,8 @@ watch(() => usePage().props.flash, flash => {
             <!-- Sidebar component, swap this element with another sidebar if you like -->
             <div class="flex grow flex-col gap-y-5 overflow-y-auto bg:white dark:bg-gray-900 px-6">
                 <div class="flex h-16 shrink-0 items-center">
-                    <img class="h-auto w-16 md:w-20 lg:w-24" src="http://localhost/storage/media/logo/Original_Logo_Symbol-removebg.png"
-                        alt="Swirltag Logo" />
+                    <img class="h-auto w-16 md:w-20 lg:w-24"
+                        src="http://localhost/storage/media/logo/Original_Logo_Symbol-removebg.png" alt="Swirltag Logo" />
                 </div>
                 <nav class="flex flex-1 flex-col">
                     <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -167,7 +205,9 @@ watch(() => usePage().props.flash, flash => {
                                                 <DropdownLink href="/settings">Settings</DropdownLink>
                                             </li>
                                             <li>
-                                                <Link class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out" href="/logout" method="post" as="button" type="button">Logout</Link>
+                                                <Link
+                                                    class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                    href="/logout" method="post" as="button" type="button">Logout</Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -179,12 +219,12 @@ watch(() => usePage().props.flash, flash => {
             </div>
         </div>
 
-        <div class="sticky top-0 z-40 flex items-center gap-x-6 bg-gray-900 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+        <div class="sticky top-0 z-40 flex items-center gap-x-6 dark:bg-gray-900 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
             <button type="button" class="-m-2.5 p-2.5 text-gray-400 lg:hidden" @click="sidebarOpen = true">
                 <span class="sr-only">Open sidebar</span>
                 <Bars3Icon class="h-6 w-6" aria-hidden="true" />
             </button>
-            <div class="flex-1 text-sm font-semibold leading-6 text-white">Home</div>
+            <div class="flex-1 text-sm font-semibold leading-6 dark:text-white">Home</div>
             <a href="#">
                 <span class="sr-only">Your profile</span>
                 <img class="h-8 w-8 rounded-full bg-gray-800" src="https://placewaifu.com/image/40" alt="" />
@@ -225,9 +265,8 @@ watch(() => usePage().props.flash, flash => {
         <!-- Main content Area -->
         <div class="bg-white dark:bg-gray-900 pb-10 pt-3 ml-3 lg:pl-72 grid grid-cols-12 gap-4">
             <slot />
-        </div>
-
     </div>
-</template>
+
+</div></template>
 
 

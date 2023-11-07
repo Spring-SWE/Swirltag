@@ -27,7 +27,7 @@ class CommentController extends Controller
             $comment->media()->attach($media);
         }
 
-        session()->flash('message', 'Your post was successful!');
+        session()->flash('success', 'Your post was successful!');
 
         return back();
     }

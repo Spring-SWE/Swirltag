@@ -24,7 +24,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="border-gray-200 dark:border-gray-700  border-b">
+    <div class="border-gray-200 dark:border-gray-700  border-b" :id="`comment-${props.commentData.id}`">
         <div class="thread-details grid grid-cols-12 gap-4">
             <div class="top-thread-left col-span-11">
                 <div class="flex justify-start pb-3">
@@ -66,15 +66,14 @@ const props = defineProps({
         </div>
         <div class="thread-content justify-center items-center">
             <div class="thread-text whitespace-pre-line overflow-wrap break-words">
-                <p class="mx-auto mt-2 ml-[56px] font-medium pb-3 dark:text-white">
+                <p class="mx-auto mt-2 ml-[58px] font-medium pb-3 dark:text-white">
                     {{ props.commentData.body }}
                 </p>
             </div>
 
-            <div class="thread-media mt-2 pb-2">
+            <div class="thread-media mt-2 pb-2" v-if="props.commentData.media && props.commentData.media.length > 0">
                 <img class="rounded-lg mx-auto"
                      style="max-height: 700px;"
-                    v-if="props.commentData.media && props.commentData.media.length > 0"
                     :src="props.commentData.media[0].thumbnail_path" alt="User media">
             </div>
 
@@ -82,7 +81,7 @@ const props = defineProps({
                 <!-- to & do-->
             </div>
 
-            <div class="thread-option-bar mt-2  p-3">
+            <div class="thread-option-bar p-3">
                 <div class="flex flex-row gap-2 justify-between">
                     <div class="vote-thread px-1 py-1 flex ">
                         <div>
@@ -98,7 +97,7 @@ const props = defineProps({
                         <div>
                             <ChatBubbleLeftIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
                         </div>
-                        <div class="font-semibold text-gray-600 dark:text-white"> 0
+                        <div class="font-semibold text-gray-600 dark:text-white ml-1"> 0
                         </div>
                     </div>
 
@@ -106,7 +105,7 @@ const props = defineProps({
                         <div>
                             <ArrowPathRoundedSquareIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
                         </div>
-                        <div class="font-semibold text-gray-600 dark:text-white"> 0 </div>
+                        <div class="font-semibold text-gray-600 dark:text-white ml-1"> 0 </div>
                     </div>
                     <div class="px-1 py-1">
                         <ArrowUpTrayIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
