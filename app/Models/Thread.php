@@ -25,6 +25,24 @@ class Thread extends Model
         'share_count',
     ];
 
+    protected $appends = ['created_at_human'];
+
+    /**
+     * Create new human readable date on creation.
+     */
+    public function getCreatedAtHumanAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
+    /**
+     * The Comments related to the Thread.
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     /**
      * The User that owns the Thread.
      */

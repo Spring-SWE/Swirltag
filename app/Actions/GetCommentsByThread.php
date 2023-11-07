@@ -24,11 +24,6 @@ class GetCommentsByThread
 
         $comments = $commentsQuery->get();
 
-        // Add human-readable timestamps
-        $comments->each(function ($comment) {
-            $comment->created_at_human = $comment->created_at->diffForHumans();
-        });
-
         return $comments;
     }
 

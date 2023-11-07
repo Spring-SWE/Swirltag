@@ -11,7 +11,7 @@ class Comment extends Model
 {
     use HasFactory;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -31,6 +31,32 @@ class Comment extends Model
         'deboost_score',
         'is_flagged',
     ];
+
+    protected $appends = ['created_at_human'];
+
+    /**
+     * Create new human readable date on creation.
+     */
+    public function getCreatedAtHumanAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
+    /**
+     * When a new Comment is posted, increment/decrement the Thread count.
+     */
+    protected static function booted()
+    {
+        static::created(function ($comment) {
+
+            $comment->thread->increment('comment_count');
+        });
+
+        static::deleted(function ($comment) {
+
+            $comment->thread->decrement('comment_count');
+        });
+    }
 
     /** Comment belongs to a Thread **/
     public function user(): BelongsTo

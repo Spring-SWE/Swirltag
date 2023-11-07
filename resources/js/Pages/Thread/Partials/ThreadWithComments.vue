@@ -94,7 +94,7 @@ function goBack() {
                     <span class="ml-1 text-sm text-center dark:text-gray-400">
 
                         <span class="relative bottom-0.5 dark:text-gray-400" style="left:2px;">
-                            Posted {{ props.thread.created_at }}
+                            Posted {{ props.thread.created_at_human }}
                         </span></span>
                 </div>
 

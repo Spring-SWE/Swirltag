@@ -18,10 +18,6 @@ class GetLatestThreadsByUser
             ->limit(10)
             ->get();
 
-            foreach ($threads as $thread) {
-                $thread->created_at_human = $thread->created_at->diffForHumans();
-            }
-
         return $threads;
     }
 }
