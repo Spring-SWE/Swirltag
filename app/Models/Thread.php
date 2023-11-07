@@ -59,4 +59,12 @@ class Thread extends Model
         return $this->morphToMany(Media::class, 'mediable');
     }
 
+    /**
+     * The Tags related to the Thread.
+     */
+    public function tags(): MorphToMany
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
 }

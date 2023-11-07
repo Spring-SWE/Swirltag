@@ -34,3 +34,4 @@ require __DIR__ . '/profile.php';
 require __DIR__ . '/thread.php';
 require __DIR__ . '/comment.php';
 require __DIR__ . '/media.php';
+require __DIR__ . '/tag.php';

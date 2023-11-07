@@ -14,7 +14,6 @@ class Comment extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
      */
     protected $fillable = [
         'body',
@@ -64,17 +63,27 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    /** Comment belongs to a Thread **/
+    /**
+     * Comment belongs to a Thread
+     */
     public function thread(): BelongsTo
     {
         return $this->belongsTo(Thread::class);
     }
 
     /**
-     * The Media related to the Thread.
+     * The Media related to the Comment.
      */
     public function media(): MorphToMany
     {
         return $this->morphToMany(Media::class, 'mediable');
+    }
+
+    /**
+     * The Tags related to the Comment.
+     */
+    public function tags(): MorphToMany
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 }

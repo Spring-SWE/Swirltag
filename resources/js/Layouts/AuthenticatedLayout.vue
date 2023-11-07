@@ -2,7 +2,7 @@
 import ThemeSwitcher from '@/Components/ThemeSwitcher.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import CreateThreadFormButton from '@/Pages/Compose/Partials/CreateThreadFormButton.vue';
+import CreateThreadButton from '@/Pages/Compose/Partials/CreateThreadButton.vue';
 import { Link, usePage, } from '@inertiajs/vue3';
 import { useToast } from "vue-toastification";
 import { ref, watch } from 'vue'
@@ -113,7 +113,7 @@ watch(() => usePage().props.flash, flash => {
                                             </ul>
                                         </li>
                                         <li class="-mx-5 mt-auto text-center">
-                                            <CreateThreadFormButton />
+                                            <CreateThreadButton />
                                         </li>
                                         <!-- Dropdown component -->
                                         <li class="-mx-6 mt-auto w-">
@@ -182,7 +182,7 @@ watch(() => usePage().props.flash, flash => {
                             </ul>
                         </li>
                         <li class="-mx-5 mt-auto text-center">
-                            <CreateThreadFormButton />
+                            <CreateThreadButton />
                         </li>
                         <!-- Dropdown component -->
                         <li class="-mx-6 mt-auto w-">
