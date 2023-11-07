@@ -25,8 +25,11 @@ const userName = props.user.name;
 
     <div v-if="$page.props.auth.user">
         <AuthenticatedLayout>
-            <div class="col-span-12">
+            <div class="col-span-8">
                 <ProfileInlineTabs></ProfileInlineTabs>
+            </div>
+            <div class="hidden lg:block lg:col-span-4 mr-2 h-16 sticky top-2 mt-2">
+                <ProfileUserDetails />
             </div>
             <div class="thread col-span-12 lg:col-span-8">
                 <Threads v-for="(thread, index) in threads"
@@ -36,21 +39,19 @@ const userName = props.user.name;
                     :class="[index !== threads.length - 1 ? 'border-b-0' : '', 'border']"
                     />
             </div>
-            <div class="col-span-12 lg:block lg:col-span-4 mr-2 h-16 sticky top-1">
-                <ProfileUserDetails />
-            </div>
+
         </AuthenticatedLayout>
     </div>
 
     <div v-else>
         <GuestLayout>
-            <div class="thread col-span-12 lg:col-span-8">
+            <div class="thread col-span-12 lg:col-span-8 mt-1">
                 <Threads v-for="thread in threads"
                     :key="thread.id"
                     :user="userName"
                     :threadData="thread" />
             </div>
-            <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1">
+            <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1 mt-1">
                 <ProfileUserDetails />
             </div>
         </GuestLayout>

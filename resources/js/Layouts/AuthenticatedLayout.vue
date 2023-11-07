@@ -263,7 +263,7 @@ watch(() => usePage().props.flash, flash => {
             </div>
         </div>
         <!-- Main content Area -->
-        <div class="bg-white dark:bg-gray-900 pb-10 pt-3 ml-3 lg:pl-72 grid grid-cols-12 gap-4">
+        <div class="bg-white dark:bg-gray-900 pb-10 lg:ml-3 lg:pl-72 grid grid-cols-12 gap-4">
             <slot />
     </div>
 

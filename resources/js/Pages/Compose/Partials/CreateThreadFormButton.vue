@@ -63,7 +63,7 @@ async function suggestPeople(searchTerm) {
 watch(editorContent, (newValue, oldValue) => {
     // This will run whenever editorContent changes
     quillInstance.value = quillEditorRef.value.getQuill();
-    form.body = quillInstance.value.getContents();
+    form.body = quillInstance.value.getText();
     console.log(form.body);
 })
 

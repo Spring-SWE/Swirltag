@@ -23,7 +23,7 @@ class StoreThreadRequest extends FormRequest
     {
         return [
 
-            'body' => ['max:320'],
+            'body' => ['max:1000'],
         ];
     }
 

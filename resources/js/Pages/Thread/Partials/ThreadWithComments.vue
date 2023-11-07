@@ -33,7 +33,7 @@ function goBack() {
 </script>
 
 <template>
-    <div class="flex border-gray-200 dark:border-gray-700 border-r pt-3 pb-3">
+    <div class="flex border-gray-200 dark:border-gray-700 border-r pt-3">
         <div class="arrow-container hover:bg-gray-200 dark:hover:bg-gray-600 hover:rounded-full p-2 cursor-pointer"
              @click="goBack()"
         >
