@@ -1,13 +1,12 @@
 <script setup>
 import Editor from '@/Pages/Compose/Partials/Editor.vue';
 import ImagePreview from './ImagePreview.vue';
-import { ref } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import DangerAlert from '@/Components/DangerAlert.vue';
 import { GifIcon, PhotoIcon } from '@heroicons/vue/24/solid';
 import axios from 'axios';
-
 
 const props = defineProps({
     threadId: {
@@ -17,7 +16,7 @@ const props = defineProps({
 
 // Reactive references
 const editorText = ref('');
-const confirmingShowModal = ref(false);
+const editorRef = ref(null);
 const errorsWithSubmission = ref(false);
 const mediaId = ref(null);
 const uploadProgress = ref(0);
@@ -33,25 +32,24 @@ const form = useForm({
     thread_id: props.threadId,
 });
 
+// Methods
 const updateEditorContent = (newContent) => {
     editorText.value = newContent;
     form.body = newContent;
 };
 
-// Methods
-
 const postDisabled = () => {
     postingDisabled.value = true;
 }
 
-const closeModal = () => {
+const clearTextarea = () => {
     closeAlert();
     form.reset();
-    confirmingShowModal.value = false;
     mediaId.value = null;
     uploadProgress.value = 0;
     postingDisabled.value = false;
     imagePreviewSrc.value = null;
+    clearEditorInParent();
 };
 
 const closeAlert = () => {
@@ -62,6 +60,10 @@ const closeAlert = () => {
 
 };
 
+const clearEditorInParent = () => {
+  editorRef.value.clearEditor();
+};
+
 function handleFileChange(event) {
   const file = event.target.files[0];
   if (file) {
@@ -70,7 +72,6 @@ function handleFileChange(event) {
   }
 }
 
-// Method to handle image removal
 function removeImage() {
   imagePreviewSrc.value = null;
   // Reset the file input
@@ -85,7 +86,6 @@ const uploadFile = async () => {
     if (!imageFile.value) {
     return;
     }
-
     uploadProgress.value = 0;
     postingDisabled.value = true;
     let formData = new FormData();
@@ -155,13 +155,26 @@ if (mediaId.value) {
 form.post(route(`store-comment`), {
     preserveScroll: true,
     onSuccess: () => {
-        //
+        clearTextarea();
     },
     onError: () => {
         errorsWithSubmission.value = true;
     },
 });
 };
+
+/** needs refactor soon. */
+watch(() => form.body, (newBody, oldBody) => {
+  if (newBody.length < 2) {
+    postDisabled();
+  } else {
+    postingDisabled.value = false;
+  }
+}, { immediate: true });
+
+const progressPercentage = computed(() => {
+  return (form.body.length / 1000) * 100;
+});
 </script>
 
 <template>
@@ -170,7 +183,7 @@ form.post(route(`store-comment`), {
         <div class="flex flex-col h-full">
 
             <!-- Error alert for form submission -->
-            <div v-if="form.errors.body">
+            <div v-if="form.errors.body" class="mt-1">
                 <DangerAlert :show="errorsWithSubmission" @close="closeAlert">
                     {{ form.errors.body }}
                 </DangerAlert>
@@ -194,7 +207,7 @@ form.post(route(`store-comment`), {
                         <div class="rounded-lg shadow-sm">
 
                             <!--  Quill Editor -->
-                            <Editor v-model="editorText" @update:modelValue="updateEditorContent"/>
+                            <Editor ref="editorRef" v-model="editorText" @update:modelValue="updateEditorContent"/>
 
                             <!-- Progress bar Media -->
                             <div v-if="uploadProgress && !errorsWithSubmission"
@@ -206,8 +219,12 @@ form.post(route(`store-comment`), {
                                 </div>
                             </div>
 
-                            <!-- Image preview with close button -->
+                            <!-- Alert on too many chacerters-->
+                            <DangerAlert :show="progressPercentage >= 100" @close="closeAlert">
+                                You cannot post more than 1000 characters.
+                            </DangerAlert>
 
+                            <!-- Image preview with close button -->
                            <ImagePreview :imageSource="imagePreviewSrc" @remove="removeImage" />
                         </div>
                     </form>
@@ -234,11 +251,13 @@ form.post(route(`store-comment`), {
                             <span class="sr-only">Select a GIF</span>
                         </button>
 
-                         <div class="mt-1">
-                            <span class="text-gray-400 hover:text-gray-500 text-xs">
-                                {{ form.body.length }}/1000
-                            </span>
+                        <!-- Radial Progress percent -->
+                         <div class="mt-1" v-if="progressPercentage > 5">
+                            <div class="radial-progress text-theme-purple mt-[5px]"
+                            :style="{ '--value': progressPercentage, '--size': '1.5rem', '--thickness': '3px' }"></div>
                         </div>
+
+
                     </div>
 
                     <!-- Post button -->

@@ -26,5 +26,5 @@ export default {
         },
     },
 
-    plugins: [forms, 'flowbite/plugin'],
+    plugins: [forms, 'flowbite/plugin', require("daisyui")],
 };

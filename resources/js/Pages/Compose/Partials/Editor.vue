@@ -2,7 +2,7 @@
 import "quill-mention";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { QuillEditor } from '@vueup/vue-quill';
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 // Props for initial editor content
 const props = defineProps({
@@ -10,6 +10,7 @@ const props = defineProps({
 });
 
 const emits = defineEmits(['update:modelValue']);
+const quillEditorRef = ref(null);
 
 // Reactive references
 const editorContent = ref(props.modelValue);
@@ -40,6 +41,9 @@ const editorOptions = {
 
 // Watch for editor content changes and emit an update
 watch(editorContent, (newValue) => {
+    if (!newValue || newValue === '') {
+        clearEditor(); // Call the clearEditor method
+    }
     let textContentWithMentions = "";
     newValue.ops.forEach((op) => {
         if (op.insert) {
@@ -53,8 +57,6 @@ watch(editorContent, (newValue) => {
         }
     });
     emits('update:modelValue', textContentWithMentions);
-    console.log(textContentWithMentions);
-
 });
 
 async function fetchUserMentions(searchTerm) {
@@ -85,6 +87,20 @@ async function fetchHashtags(searchTerm) {
         console.error('Could not fetch hashtags:', error);
     }
 }
+
+const clearEditor = () => {
+  if (quillEditorRef.value) {
+    const quill = quillEditorRef.value.getQuill();
+    if (quill) {
+      quill.setText('');
+    }
+  }
+};
+
+defineExpose({
+  clearEditor
+});
+
 </script>
 
 
@@ -188,4 +204,5 @@ ql-editor ol,
     border-radius: 0.375rem;
     overflow: hidden;
     box-sizing: border-box
-}</style>
+}
+</style>

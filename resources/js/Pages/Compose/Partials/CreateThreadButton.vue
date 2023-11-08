@@ -1,7 +1,7 @@
 <script setup>
 import Editor from '@/Pages/Compose/Partials/Editor.vue';
 import ImagePreview from './ImagePreview.vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Modal from '@/Components/Modal.vue';
@@ -163,6 +163,10 @@ const storeThread = () => {
         },
     });
 };
+
+const progressPercentage = computed(() => {
+  return (form.body.length / 1000) * 100;
+});
 </script>
 
 <template>
@@ -213,6 +217,11 @@ const storeThread = () => {
                                 </div>
                             </div>
 
+                             <!-- Alert on too many chacerters-->
+                             <DangerAlert :show="progressPercentage >= 100" @close="closeAlert">
+                                You cannot post more than 1000 characters.
+                            </DangerAlert>
+
                             <!-- Image preview with close button -->
                             <ImagePreview :imageSource="imagePreviewSrc" @remove="removeImage" />
 
@@ -245,10 +254,10 @@ const storeThread = () => {
                             <span class="sr-only">Select a GIF</span>
                         </button>
 
-                        <div class="mt-1">
-                            <span class="text-gray-400 hover:text-gray-500 text-xs">
-                                {{ form.body.length }}/1000
-                            </span>
+                       <!-- Radial Progress percent -->
+                       <div class="mt-1" v-if="progressPercentage > 5">
+                            <div class="radial-progress text-theme-purple mt-[5px]"
+                            :style="{ '--value': progressPercentage, '--size': '1.5rem', '--thickness': '3px' }"></div>
                         </div>
                     </div>
 
