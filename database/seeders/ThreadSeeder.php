@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Thread;
+use App\Models\Status;
 
-class ThreadSeeder extends Seeder
+class StatusSeeder extends Seeder
 {
     public function run()
     {
@@ -14,17 +14,17 @@ class ThreadSeeder extends Seeder
 
         foreach ($users as $user) {
 
-            $threadsCount = rand(5, 15);
+            $statusCount = rand(5, 15);
 
-            for ($i = 0; $i < $threadsCount; $i++) {
+            for ($i = 0; $i < $statusCount; $i++) {
 
-                Thread::create([
+                Status::create([
 
-                    'body' => 'Sample thread body ',
+                    'body' => 'Sample Status body ',
 
                     'user_id' => $user->id,
 
-                    'comment_count' => rand(0, 100),
+                    'reply_count' => rand(0, 100),
 
                     'view_count' => rand(0, 500),
 

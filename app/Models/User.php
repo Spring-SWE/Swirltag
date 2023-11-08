@@ -46,18 +46,10 @@ class User extends Authenticatable
     ];
 
      /**
-     * Get the Threads from the User.
+     * Get the Statuses from the User.
      */
-    public function threads(): HasMany
+    public function statuses(): HasMany
     {
-        return $this->hasMany(Thread::class);
-    }
-
-    /**
-     * Get the Comments from the User.
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Status::class);
     }
 }

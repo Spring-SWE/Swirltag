@@ -7,28 +7,38 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class Status extends Model
 {
     use HasFactory;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // When a new status is created, increment the reply count on the parent status if it exists.
+        static::created(function ($status) {
+            if ($status->parent_id) {
+                $parent = $status->parent()->first();
+                if ($parent) {
+                    $parent->increment('reply_count');
+                }
+            }
+        });
+    }
 
     /**
      * The attributes that are mass assignable.
      *
+     * @var array<int, string>
      */
     protected $fillable = [
         'body',
         'user_id',
-        'thread_id',
         'parent_id',
-        'is_edited',
-        'upvote_count',
-        'downvote_count',
-        'comment_count',
+        'reply_count',
         'view_count',
         'repost_count',
         'share_count',
-        'deboost_score',
-        'is_flagged',
     ];
 
     protected $appends = ['created_at_human'];
@@ -42,37 +52,31 @@ class Comment extends Model
     }
 
     /**
-     * When a new Comment is posted, increment/decrement the Thread count.
+     * The Replies related to the Status.
      */
-    protected static function booted()
+    public function replies()
     {
-        static::created(function ($comment) {
-
-            $comment->thread->increment('comment_count');
-        });
-
-        static::deleted(function ($comment) {
-
-            $comment->thread->decrement('comment_count');
-        });
+        return $this->hasMany(Status::class, 'parent_id');
     }
 
-    /** Comment belongs to a Thread **/
+    /**
+     * The Replies related to the Status.
+     */
+     public function parent()
+     {
+         return $this->belongsTo(Status::class, 'parent_id');
+     }
+
+    /**
+     * The User that owns the Status.
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * Comment belongs to a Thread
-     */
-    public function thread(): BelongsTo
-    {
-        return $this->belongsTo(Thread::class);
-    }
-
-    /**
-     * The Media related to the Comment.
+     * The Media related to the Status.
      */
     public function media(): MorphToMany
     {
@@ -80,10 +84,11 @@ class Comment extends Model
     }
 
     /**
-     * The Tags related to the Comment.
+     * The Tags related to the Status.
      */
     public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
+
 }

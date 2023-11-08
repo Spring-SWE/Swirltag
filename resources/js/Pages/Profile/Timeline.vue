@@ -1,5 +1,5 @@
 <script setup>
-import Threads from '@/Pages/Thread/Partials/Threads.vue';
+import Status from '@/Pages/Status/Partials/Status.vue';
 import ProfileInlineTabs from '@/Pages/Profile/Partials/ProfileInlineTabs.vue';
 import ProfileUserDetails from '@/Pages/Profile/Partials/ProfileUserDetails.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -11,7 +11,7 @@ const props = defineProps({
     user: {
         type: Object,
     },
-    threads: {
+    statuses: {
         type: Array,
     }
 });
@@ -31,12 +31,12 @@ const userName = props.user.name;
             <div class="hidden lg:block lg:col-span-4 mr-2 h-16 sticky top-2 mt-2">
                 <ProfileUserDetails />
             </div>
-            <div class="thread col-span-12 lg:col-span-8">
-                <Threads v-for="(thread, index) in threads"
-                    :key="thread.id"
-                    :user="userName"
-                    :threadData="thread"
-                    :class="[index !== threads.length - 1 ? 'border-b-0' : '', 'border']"
+            <div class="status col-span-12 lg:col-span-8 mt-3 border dark:border-gray-700">
+
+                <Status v-for="(status) in statuses"
+                    :key="status.id"
+                    :statusData="status"
+                    :hasBorder="true"
                     />
             </div>
 
@@ -45,11 +45,12 @@ const userName = props.user.name;
 
     <div v-else>
         <GuestLayout>
-            <div class="thread col-span-12 lg:col-span-8 mt-1">
-                <Threads v-for="thread in threads"
-                    :key="thread.id"
-                    :user="userName"
-                    :threadData="thread" />
+            <div class="status col-span-12 lg:col-span-8 mt-1">
+                <Status v-for="(status) in statuses"
+                    :key="status.id"
+                    :statusData="status"
+                    :hasBorder="true"
+                    />
             </div>
             <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1 mt-1">
                 <ProfileUserDetails />

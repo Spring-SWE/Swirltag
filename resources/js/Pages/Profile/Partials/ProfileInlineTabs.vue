@@ -2,7 +2,7 @@
 import { BookOpenIcon, ChatBubbleBottomCenterIcon, PhotoIcon, UsersIcon } from '@heroicons/vue/24/outline'
 
 const tabs = [
-    { name: 'Threads', href: '#', current: true, icon: BookOpenIcon },
+    { name: 'Posts', href: '#', current: true, icon: BookOpenIcon },
     { name: 'Replies', href: '#', current: false, icon: ChatBubbleBottomCenterIcon },
     { name: 'Media', href: '#', current: false, icon: PhotoIcon},
     { name: 'Swirls', href: '#', current: false, icon: UsersIcon },

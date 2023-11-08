@@ -15,18 +15,11 @@ class Tag extends Model
     ];
 
     /**
-     * The Thread the Media is morphed to.
+     * The Status the Media is morphed to.
      */
-    public function threads(): MorphToMany
+    public function statuses(): MorphToMany
     {
-        return $this->morphedByMany(Thread::class, 'taggable');
+        return $this->morphedByMany(Status::class, 'taggable');
     }
 
-    /**
-     * The Thread the Media is morphed to.
-     */
-    public function comments(): MorphToMany
-    {
-        return $this->morphedByMany(Comment::class, 'taggable');
-    }
 }

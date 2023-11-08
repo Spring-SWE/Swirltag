@@ -2,7 +2,7 @@
 import ThemeSwitcher from '@/Components/ThemeSwitcher.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import CreateThreadButton from '@/Pages/Compose/Partials/CreateThreadButton.vue';
+import CreateStatusButton from '@/Pages/Compose/Partials/CreateStatusButton.vue';
 import { Link, usePage, } from '@inertiajs/vue3';
 import { useToast } from "vue-toastification";
 import { ref, watch } from 'vue'
@@ -28,7 +28,7 @@ const navigation = [
     { name: 'Notifications', href: '#', icon: BellIcon, current: false },
     { name: 'Swirls', href: '#', icon: UsersIcon, current: false },
     { name: 'Messages', href: '#', icon: EnvelopeIcon, current: false },
-    { name: 'Profile', href: `/profile/${userName}`, icon: UserIcon, current: false },
+    { name: 'Profile', href: `/${userName}`, icon: UserIcon, current: false },
 ]
 navigation.forEach(item => {
     if (item.name.toLowerCase() === 'profile') {
@@ -113,7 +113,7 @@ watch(() => usePage().props.flash, flash => {
                                             </ul>
                                         </li>
                                         <li class="-mx-5 mt-auto text-center">
-                                            <CreateThreadButton />
+                                            <CreateStatusButton />
                                         </li>
                                         <!-- Dropdown component -->
                                         <li class="-mx-6 mt-auto w-">
@@ -182,7 +182,7 @@ watch(() => usePage().props.flash, flash => {
                             </ul>
                         </li>
                         <li class="-mx-5 mt-auto text-center">
-                            <CreateThreadButton />
+                            <CreateStatusButton />
                         </li>
                         <!-- Dropdown component -->
                         <li class="-mx-6 mt-auto w-">

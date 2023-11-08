@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\GetPopularThreads;
+use App\Actions\GetPopularStatuses;
 use Inertia\Response;
 use Inertia\Inertia;
 
@@ -10,13 +10,13 @@ use Inertia\Inertia;
 class DashboardController extends Controller
 {
     /**
-     * Show the popular threads on the Dashboard.
+     * Show the popular Statuses on the Dashboard.
      */
-    public function show(GetPopularThreads $getThreads): Response
+    public function show(GetPopularStatuses $getStatuses): Response
     {
          return Inertia::render('Dashboard', [
 
-             'threads' => $getThreads->handle(),
+             'statuses' => $getStatuses->handle(),
 
          ]);
     }

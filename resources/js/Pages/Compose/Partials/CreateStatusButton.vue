@@ -153,7 +153,7 @@ const storeThread = () => {
         form.media_id = mediaId.value;
     }
 
-    form.post(route('store-thread'), {
+    form.post(route('store-status'), {
         preserveScroll: true,
         onSuccess: () => {
             closeModal();

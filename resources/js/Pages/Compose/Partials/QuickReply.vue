@@ -9,10 +9,12 @@ import { GifIcon, PhotoIcon } from '@heroicons/vue/24/solid';
 import axios from 'axios';
 
 const props = defineProps({
-    threadId: {
+    statusId: {
         type: Number,
     },
 });
+
+console.log(props.statusId);
 
 // Reactive references
 const editorText = ref('');
@@ -31,7 +33,7 @@ const form = useForm({
     body: '',
     files: null,
     media_id: null,
-    thread_id: props.threadId,
+    status_id: props.statusId,
 });
 
 // Methods
@@ -155,7 +157,7 @@ if (mediaId.value) {
     form.media_id = mediaId.value;
 }
 
-form.post(route(`store-comment`), {
+form.post(route(`store-status`), {
     preserveScroll: true,
     onSuccess: () => {
         clearTextarea();
@@ -191,14 +193,7 @@ const handleEditorBlur = () => {
 <template>
 
         <!-- Quick Reply content with max height and flex column layout -->
-        <div class="flex flex-col h-full">
-
-            <!-- Error alert for form submission -->
-            <div v-if="form.errors.body" class="mt-1">
-                <DangerAlert :show="errorsWithSubmission" @close="closeAlert">
-                    {{ form.errors.body }}
-                </DangerAlert>
-            </div>
+        <div class=" border-gray-100 dark:border-gray-700 mt-1">
 
             <!-- Progress bar content -->
             <div v-if="form.progress" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
@@ -235,6 +230,13 @@ const handleEditorBlur = () => {
                                 </div>
                             </div>
 
+                            <!-- Error alert for form submission -->
+                            <div v-if="form.errors.body" class="mt-1 pb-2">
+                                <DangerAlert :show="errorsWithSubmission" @close="closeAlert">
+                                    {{ form.errors.body }}
+                                </DangerAlert>
+                            </div>
+
                             <!-- Alert on too many chacerters-->
                             <DangerAlert :show="progressPercentage >= 100" @close="closeAlert">
                                 You cannot post more than 1000 characters.
@@ -248,7 +250,7 @@ const handleEditorBlur = () => {
             </div>
 
             <!-- Fixed area with action buttons and file input -->
-            <div class="mt-auto pl-3 pr-3 pb-3 border-gray-200 dark:border-gray-700 border-b">
+            <div class="mt-auto pl-3 pr-3  border-gray-200 dark:border-gray-700 border-b">
                 <div class="flex justify-between">
                     <!-- Attachment and GIF selection buttons -->
                     <div class="flex space-x-5" v-if="showPostingBar">
@@ -268,7 +270,7 @@ const handleEditorBlur = () => {
                         </button>
 
                         <!-- Radial Progress percent -->
-                         <div class="mt-1" v-if="progressPercentage > 5">
+                         <div class="" v-if="progressPercentage > 5">
                             <div class="radial-progress text-theme-purple mt-[5px]"
                             :style="{ '--value': progressPercentage, '--size': '1.5rem', '--thickness': '3px' }"></div>
                         </div>
@@ -277,6 +279,7 @@ const handleEditorBlur = () => {
 
                     <!-- Post button -->
                     <PrimaryButton text-size="lg"
+                    class="mb-2"
                     v-if="showPostingBar"
                     :disabled="postingDisabled"
                     @click="handlePost">

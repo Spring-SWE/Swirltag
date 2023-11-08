@@ -31,19 +31,11 @@ class Media extends Model
         'status',
     ];
 
-     /**
-     * The Comment the Media is morphed to.
-     */
-    public function comments(): MorphToMany
-    {
-        return $this->morphedByMany(Comment::class, 'mediable');
-    }
-
     /**
-     * The Thread the Media is morphed to.
+     * The Status the Media is morphed to.
      */
-    public function threads(): MorphToMany
+    public function statuses(): MorphToMany
     {
-        return $this->morphedByMany(Thread::class, 'mediable');
+        return $this->morphedByMany(Status::class, 'mediable');
     }
 }

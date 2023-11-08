@@ -13,7 +13,7 @@ class StoreNewMedia
 {
     public function handle(UploadedFile $file): Media
     {
-        //Lock creating new threads for 5 seconds
+        //Lock creating new Statuses for 5 seconds
         $userId = auth()->id();
 
         $lock = Cache::lock('user-uploading:' . $userId, 5);

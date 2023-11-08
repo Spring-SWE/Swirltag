@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('threads', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->text('body')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->boolean('is_edited')->default(0);
+            $table->bigInteger('parent_id')->nullable();
             $table->bigInteger('upvote_count')->default(0);
             $table->bigInteger('downvote_count')->default(0);
-            $table->bigInteger('comment_count')->default(0);
+            $table->bigInteger('reply_count')->default(0);
             $table->bigInteger('view_count')->default(0);
             $table->bigInteger('repost_count')->default(0);
             $table->bigInteger('share_count')->default(0);
@@ -38,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('threads');
+        Schema::dropIfExists('statues');
     }
 };

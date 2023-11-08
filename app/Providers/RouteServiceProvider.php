@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Models\Thread;
+use App\Models\Status;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -73,9 +73,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function registerRouteModelBindings(): void
     {
-        // Custom binding for 'thread' to automatically resolve with 'media & user' relationship.
-        Route::bind('thread', function ($value) {
-            return Thread::where('id', $value)->with(['user', 'media'])->firstOrFail();
+        // Custom binding for 'Status' to automatically resolve with 'media & user' relationship.
+        Route::bind('status', function ($value) {
+            return Status::where('id', $value)->with(['user', 'media'])->firstOrFail();
         });
     }
 }

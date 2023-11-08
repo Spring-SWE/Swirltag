@@ -2,15 +2,15 @@
 
 namespace App\Actions;
 
-use App\Models\Thread;
+use App\Models\Status;
 use Illuminate\Support\Collection;
 
-class GetLatestThreadsByUser
+class GetLatestStatusesByUser
 {
 
     public function handle(string $username): Collection
     {
-        $threads = Thread::with('media')
+        $statuses = Status::with(['user', 'media'])
             ->whereHas('user', function ($query) use ($username) {
                 $query->where('name', $username);
             })
@@ -18,6 +18,6 @@ class GetLatestThreadsByUser
             ->limit(10)
             ->get();
 
-        return $threads;
+        return $statuses;
     }
 }

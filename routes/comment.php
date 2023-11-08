@@ -6,3 +6,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth','throttle:post_limit'])->group(function () {
     Route::post('store-comment', [CommentController::class, 'store'])->name('store-comment');
 });
+
+Route::get('/comment/{comment}', [CommentController::class, 'show'])->name('show-comment');
