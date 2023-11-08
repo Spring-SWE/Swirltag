@@ -61,7 +61,7 @@ watch(() => usePage().props.flash, flash => {
 </script>
 
 <template>
-    <div class="dark:bg-gray-900">
+    <div class="bg-white dark:bg-gray-900">
         <TransitionRoot as="template" :show="sidebarOpen">
             <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
                 <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0"
@@ -122,7 +122,7 @@ watch(() => usePage().props.flash, flash => {
                                                     <button href="#"
                                                         class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold min-w-full leading-6 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-800">
                                                         <img class="h-8 w-8 rounded-full bg-gray-800"
-                                                            src="https://placewaifu.com/image/40" alt="" />
+                                                            src="https://i.pravatar.cc/40" alt="" />
                                                         <span class="sr-only">Your profile</span>
                                                         <span aria-hidden="true">{{ userName }}</span>
                                                     </button>
@@ -190,7 +190,7 @@ watch(() => usePage().props.flash, flash => {
                                 <template #trigger>
                                     <button href="#"
                                         class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold min-w-full leading-6 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-800">
-                                        <img class="h-8 w-8 rounded-full bg-gray-800" src="https://placewaifu.com/image/40"
+                                        <img class="h-8 w-8 rounded-full bg-gray-800" src="https://i.pravatar.cc/40"
                                             alt="" />
                                         <span class="sr-only">Your profile</span>
                                         <span aria-hidden="true">{{ userName }}</span>
@@ -227,7 +227,7 @@ watch(() => usePage().props.flash, flash => {
             <div class="flex-1 text-sm font-semibold leading-6 dark:text-white">Home</div>
             <a href="#">
                 <span class="sr-only">Your profile</span>
-                <img class="h-8 w-8 rounded-full bg-gray-800" src="https://placewaifu.com/image/40" alt="" />
+                <img class="h-8 w-8 rounded-full bg-gray-800" src="https://i.pravatar.cc/40" alt="" />
             </a>
         </div>
 

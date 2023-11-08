@@ -10,7 +10,7 @@ import {
     <div class="w-full relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <!-- Card Header with Background and User Image -->
         <div class="bg-theme-purple flex justify-between items-center border-b-1 w-full border-t-1 rounded-t-lg h-24 relative">
-            <img class="rounded-full absolute top-6 left-4 h-24" alt="user image" src="https://placewaifu.com/image/40">
+            <img class="rounded-full absolute top-6 left-4 h-24" alt="user image" src="https://i.pravatar.cc/40">
             <div class="flex items-center justify-center flex-grow">
                 <a href="#" class="text-3xl decoration-theme-purple dark:text-white font-semibold">
                     Spring

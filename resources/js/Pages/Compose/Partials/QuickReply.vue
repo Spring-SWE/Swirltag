@@ -23,6 +23,8 @@ const uploadProgress = ref(0);
 const postingDisabled = ref(false);
 const imageFile = ref(null);
 const imagePreviewSrc = ref(null);
+const showPostingBar = ref(false);
+const placeholder = ref("Post your reply")
 
 // Form handling
 const form = useForm({
@@ -61,6 +63,7 @@ const closeAlert = () => {
 };
 
 const clearEditorInParent = () => {
+    console.log("made it here...")
   editorRef.value.clearEditor();
 };
 
@@ -175,6 +178,14 @@ watch(() => form.body, (newBody, oldBody) => {
 const progressPercentage = computed(() => {
   return (form.body.length / 1000) * 100;
 });
+
+const handleEditorFocus = () => {
+    showPostingBar.value = true;
+};
+
+const handleEditorBlur = () => {
+  showPostingBar.value = false;
+};
 </script>
 
 <template>
@@ -199,7 +210,7 @@ const progressPercentage = computed(() => {
             <div class="overflow-auto px-3 py-3">
                 <div class="flex gap-x-3">
                     <!-- User avatar -->
-                    <img class="h-12 w-12 dark:bg-gray-50 rounded-full bg-gray-800" src="https://placewaifu.com/image/40"
+                    <img class="h-12 w-12 dark:bg-gray-50 rounded-full bg-gray-800" src="https://i.pravatar.cc/40"
                         alt="" />
 
                     <!-- Form for new thread -->
@@ -207,7 +218,12 @@ const progressPercentage = computed(() => {
                         <div class="rounded-lg shadow-sm">
 
                             <!--  Quill Editor -->
-                            <Editor ref="editorRef" v-model="editorText" @update:modelValue="updateEditorContent"/>
+                            <Editor ref="editorRef"
+                                    v-model="editorText"
+                                    @update:modelValue="updateEditorContent"
+                                    @editorFocus="handleEditorFocus"
+                                    @editorBlur="handleEditorBlur"
+                                    :placeholder="placeholder"/>
 
                             <!-- Progress bar Media -->
                             <div v-if="uploadProgress && !errorsWithSubmission"
@@ -235,7 +251,7 @@ const progressPercentage = computed(() => {
             <div class="mt-auto pl-3 pr-3 pb-3 border-gray-200 dark:border-gray-700 border-b">
                 <div class="flex justify-between">
                     <!-- Attachment and GIF selection buttons -->
-                    <div class="flex space-x-5">
+                    <div class="flex space-x-5" v-if="showPostingBar">
                         <!-- Image upload button -->
                         <label for="file-upload"
                             class="flex h-10 w-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500 cursor-pointer">
@@ -257,11 +273,13 @@ const progressPercentage = computed(() => {
                             :style="{ '--value': progressPercentage, '--size': '1.5rem', '--thickness': '3px' }"></div>
                         </div>
 
-
                     </div>
 
                     <!-- Post button -->
-                    <PrimaryButton text-size="lg" :disabled="postingDisabled" @click="handlePost">
+                    <PrimaryButton text-size="lg"
+                    v-if="showPostingBar"
+                    :disabled="postingDisabled"
+                    @click="handlePost">
                         Post
                     </PrimaryButton>
                 </div>

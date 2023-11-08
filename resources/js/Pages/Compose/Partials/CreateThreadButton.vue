@@ -198,7 +198,7 @@ const progressPercentage = computed(() => {
                 <div class="flex gap-x-3">
 
                     <!-- User avatar -->
-                    <img class="h-12 w-12 lg:block dark:bg-gray-50 rounded-full bg-gray-800 hidden" src="https://placewaifu.com/image/40"
+                    <img class="h-12 w-12 lg:block dark:bg-gray-50 rounded-full bg-gray-800 hidden" src="https://i.pravatar.cc/40"
                         alt="" />
 
                     <!-- Form for new thread -->

@@ -9,7 +9,7 @@ class GetPopularThreads {
     public function handle(): Collection
     {
         $threads = Thread::with(['user', 'media'])
-        ->orderBy('comment_count', 'desc')->limit(15)
+        ->orderBy('comment_count', 'desc')->limit(50)
         ->get();
 
         return $threads;

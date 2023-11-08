@@ -38,7 +38,7 @@ const props = defineProps({
                 </div>
                 <div class="flex">
                     <div class="flex-none">
-                        <img class="mx-auto rounded-full" src="https://placewaifu.com/image/40">
+                        <img class="mx-auto rounded-full" src="https://i.pravatar.cc/40">
                     </div>
                     <div class="flex-none">
                         <Link :href="`/profile/${props.user}`"
@@ -48,7 +48,7 @@ const props = defineProps({
                         </Link>
                     </div>
                     <div class="flex-none">
-                        <CheckBadgeIcon class="h-6 w-6 text-theme-purple" />
+                        <CheckBadgeIcon class="h-6 w-6 text-theme-purple mt-[2px]" />
                     </div>
                     <div class="flex-initial">
                         <span class="ml-1 text-sm dark:text-gray-400">
@@ -67,7 +67,7 @@ const props = defineProps({
         </div>
         <div class="thread-content justify-center items-center">
             <div class="thread-text whitespace-pre-line overflow-wrap break-words">
-                <p class="mx-auto mt-2 font-medium pb-3 dark:text-white">
+                <p class="mx-auto mt-2 font-medium pb-2 dark:text-white">
                     {{ props.threadData.body }}
                 </p>
             </div>

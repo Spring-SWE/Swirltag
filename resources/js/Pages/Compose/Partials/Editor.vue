@@ -9,8 +9,9 @@ const props = defineProps({
     modelValue: String
 });
 
-const emits = defineEmits(['update:modelValue']);
+const emits = defineEmits(['update:modelValue', 'editorFocus', 'editorBlur']);
 const quillEditorRef = ref(null);
+const editorFocused = ref(false);
 
 // Reactive references
 const editorContent = ref(props.modelValue);
@@ -97,6 +98,19 @@ const clearEditor = () => {
   }
 };
 
+const handleFocus = () => {
+  editorFocused.value = true;
+  emits('editorFocus');
+};
+
+const handleBlur = () => {
+  editorFocused.value = false;
+  // Wait for 3 seconds before emitting the event
+  setTimeout(() => {
+    emits('editorBlur');
+  }, 5000);
+};
+
 defineExpose({
   clearEditor
 });
@@ -107,7 +121,12 @@ defineExpose({
 <template>
     <QuillEditor
         class="ql-editor block w-full border-0 bg-transparent py-1.5 dark:text-white placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:ring-0 focus:outline-none"
-        id="editor" ref="quillEditorRef" :options="editorOptions" v-model:content="editorContent" />
+        id="editor"
+        ref="quillEditorRef"
+        :options="editorOptions"
+        v-model:content="editorContent"
+        @focus="handleFocus"
+        @blur="handleBlur" />
 </template>
 
 <style lang="scss">

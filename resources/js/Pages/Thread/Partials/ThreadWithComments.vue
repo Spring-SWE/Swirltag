@@ -56,7 +56,7 @@ function goBack() {
                     </div>
                     <div class="flex">
                         <div class="flex-none">
-                            <img class="mx-auto rounded-full" src="https://placewaifu.com/image/40">
+                            <img class="mx-auto rounded-full" src="https://i.pravatar.cc/40">
                         </div>
                         <div class="flex-none ml-3">
                             <Link :href="`/profile/${props.thread.user.name}`" class=" ml-1 text-lg cursor-pointer underline decoration-2 decoration-theme-purple dark:text-white
@@ -65,7 +65,7 @@ function goBack() {
                             </Link>
                         </div>
                         <div class="flex-none">
-                            <CheckBadgeIcon class="h-6 w-6 text-theme-purple" />
+                            <CheckBadgeIcon class="h-6 w-6 text-theme-purple mt-[2px]" />
                         </div>
                     </div>
 
@@ -141,7 +141,8 @@ function goBack() {
 
         <!--Quick reply Component -->
     <QuickReply
-     :threadId="props.thread.id"/>
+     :threadId="props.thread.id"
+     />
 
     <!-- Comments Component -->
     <Comments v-for="(comment, index) in props.comments"

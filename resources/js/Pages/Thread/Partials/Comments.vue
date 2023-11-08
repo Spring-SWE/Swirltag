@@ -35,7 +35,7 @@ const props = defineProps({
                 </div>
                 <div class="flex">
                     <div class="flex-none">
-                        <img class="mx-auto rounded-full" src="https://placewaifu.com/image/40">
+                        <img class="mx-auto rounded-full" src="https://i.pravatar.cc/40">
                     </div>
                     <div class="flex-none ml-3">
                         <Link :href="`/profile/${props.commentData.user.name}`" class=" ml-1 text-lg cursor-pointer underline decoration-2 decoration-theme-purple dark:text-white
@@ -45,7 +45,7 @@ const props = defineProps({
                     </div>
 
                     <div class="flex-none">
-                        <CheckBadgeIcon class="h-6 w-6 text-theme-purple" />
+                        <CheckBadgeIcon class="h-6 w-6 text-theme-purple mt-[2px]" />
                     </div>
 
                     <div class="flex-initial">
@@ -54,7 +54,6 @@ const props = defineProps({
                             <span class="relative bottom-0.5 dark:text-gray-400" style="left:2px;">
                                 Posted {{ props.commentData.created_at_human }} </span></span>
                     </div>
-
                 </div>
 
             </div>
@@ -66,12 +65,12 @@ const props = defineProps({
         </div>
         <div class="thread-content justify-center items-center">
             <div class="thread-text whitespace-pre-line overflow-wrap break-words">
-                <p class="mx-auto mt-2 ml-[58px] font-medium pb-3 dark:text-white">
+                <p class="mx-auto ml-[58px] font-medium dark:text-white">
                     {{ props.commentData.body }}
                 </p>
             </div>
 
-            <div class="thread-media mt-2 pb-2" v-if="props.commentData.media && props.commentData.media.length > 0">
+            <div class="thread-media mt-1 " v-if="props.commentData.media && props.commentData.media.length > 0">
                 <img class="rounded-lg mx-auto"
                      style="max-height: 700px;"
                     :src="props.commentData.media[0].thumbnail_path" alt="User media">
