@@ -14,7 +14,7 @@ class StatusSeeder extends Seeder
 
         foreach ($users as $user) {
 
-            $statusCount = rand(5, 15);
+            $statusCount = rand(5,100);
 
             for ($i = 0; $i < $statusCount; $i++) {
 

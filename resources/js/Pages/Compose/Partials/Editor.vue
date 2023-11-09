@@ -108,7 +108,7 @@ const handleBlur = () => {
   // Wait for 3 seconds before emitting the event
   setTimeout(() => {
     emits('editorBlur');
-  }, 10000);
+  }, 15000);
 };
 
 defineExpose({

@@ -25,6 +25,7 @@
         "@headlessui/vue": "^1.7.16",
         "@heroicons/vue": "^2.0.18",
         "@vueup/vue-quill": "^1.2.0",
+        "@vueuse/core": "^10.5.0",
         "floating-vue": "^2.0.0-beta.24",
         "flowbite-vue": "^0.1.0",
         "lodash.debounce": "^4.0.8",
