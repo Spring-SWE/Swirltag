@@ -1,39 +1,43 @@
 <script setup>
+import { ref, computed, watch } from 'vue';
 import InfiniteLoader from '@/Pages/Status/Partials/InfiniteLoader.vue';
-import { reactive, computed } from 'vue';
-import Status from '@/Pages/Status/Partials/Status.vue'
+import Status from '@/Pages/Status/Partials/Status.vue';
 import QuickReply from '@/Pages/Compose/Partials/QuickReply.vue';
-import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
+import { ArrowLeftIcon } from '@heroicons/vue/24/outline';
+import { usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
-
-status: {
-    type: Object,
-},
-
-replies: {
-    type: Array
-},
-
-conversation: {
-    type: Array
-}
+  status: Object,
+  replies: Object,
+  conversation: Array,
 });
 
-console.log(props.replies);
+const { data: pageData } = usePage();
+const localStatuses = ref({
+  data: props.replies.data || [],
+  meta: props.replies.meta || {},
+});
+
+// Watch for changes in the Inertia page props
+watch(() => pageData?.value?.props?.replies, (newReplies) => {
+  if (newReplies) {
+    localStatuses.value.data = newReplies.data;
+    localStatuses.value.meta = newReplies.meta;
+  }
+}, {
+  deep: true,
+  immediate: true
+});
 
 function goBack() {
   history.back();
 }
 
-const localStatuses = reactive({
-    data: [],
-    meta: props.replies.meta,
-});
+const apiEndpoint = computed(() => localStatuses.value.meta?.path ?? '');
 
-const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
 
 </script>
+
 
 <template>
     <div class="flex border-gray-200 dark:border-gray-700 pt-3">
@@ -46,7 +50,8 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
             Post
         </p>
     </div>
-    <!-- Statuses -->
+
+    <!-- Conversation -->
     <Status
     class=""
     :conversation="props.conversation"
@@ -61,5 +66,6 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
             <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="false" />
         </template>
     </InfiniteLoader>
+    <div class="h-12"></div> <!-- What the fuck? -->
 
 </template>

@@ -10,7 +10,7 @@ const props = defineProps({
         type: Object,
     },
     replies: {
-        type: Array
+        type: Object
     },
     conversation: {
         type: Array

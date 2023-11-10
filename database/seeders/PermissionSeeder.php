@@ -18,7 +18,10 @@ class PermissionSeeder extends Seeder
             'create status',
             'edit status',
             'delete status',
-
+            'create swirl',
+            'edit swirl',
+            'delete swirl',
+            'report',
         ];
 
         // Insert the permissions into the permissions table

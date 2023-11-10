@@ -48,6 +48,7 @@ const { stop } = useIntersectionObserver(
 );
 
 onMounted(() => {
+    console.log('Initial data for replies:', props.initialData);
   if (!props.initialData.length && hasMore.value) {
     loadMoreItems();
   }
@@ -67,6 +68,6 @@ watch(() => props.initialData, (newData) => {
     <slot :items="items" />
     <div v-if="isLoading" class="col-span-12 lg:col-span-8 flex justify-center items-center h-16">
         <span class="loading loading-spinner loading-lg text-primary"></span></div>
-    <div ref="lastElement" v-if="hasMore" class="infinite-scroll-trigger"></div>
+        <div ref="lastElement" v-if="hasMore" class="infinite-scroll-trigger border:1px solid red;"></div>
   </div>
 </template>

@@ -126,7 +126,7 @@ defineExpose({
         :options="editorOptions"
         v-model:content="editorContent"
         @focus="handleFocus"
-        @blur="handleBlur" />
+         />
 </template>
 
 <style lang="scss">
