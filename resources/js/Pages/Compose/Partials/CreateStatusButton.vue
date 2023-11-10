@@ -211,7 +211,7 @@ const progressPercentage = computed(() => {
                             <!-- Progress bar Media -->
                             <div v-if="uploadProgress && !errorsWithSubmission"
                                 class="p-2 text-sm text-theme-purple rounded-lg" role="alert">
-                                <span class="text-white font-semibold">We're processing your media...</span>
+
                                 <div class="h-3 text-center text-white bg-theme-purple"
                                     :style="{ width: uploadProgress + '%' }">
                                 </div>

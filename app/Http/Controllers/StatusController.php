@@ -47,6 +47,9 @@ class StatusController extends Controller
             $status->media()->attach($media);
         }
 
+        // Check authorization before proceeding.
+        $this->authorize('create', Status::class);
+
         // Flash a success message.
         session()->flash('success', "Your post was successful!");
 

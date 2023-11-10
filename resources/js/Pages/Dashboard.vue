@@ -84,15 +84,21 @@ const { stop } = useIntersectionObserver(last, ([{ isIntersecting }]) => {
 
     <div v-else>
         <GuestLayout>
-            <div class="status col-span-12 lg:col-span-8 mt-3">
-                <Status v-for="(status, index) in statuses"
-                        key="status.id"
+            <div class="status col-span-12 lg:col-span-8 mt-3 border dark:border-gray-700">
+                <Status v-for="(status) in localStatuses.data"
+                        :key="status.id"
                         :statusData="status"
                         :hasBorder="true" />
             </div>
+
             <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1 mt-3">
                 <StatusTrendingBar />
             </div>
+
+            <div v-if="isLoading" class="col-span-12 lg:col-span-8 flex justify-center items-center h-16">
+                <span class="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+            <span ref="last" class="-translate-y-40"></span>
         </GuestLayout>
     </div>
 </template>

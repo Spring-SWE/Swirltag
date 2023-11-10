@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Actions\GetPopularStatuses;
 use App\Http\Resources\StatusResource;
-use Inertia\Response;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+
 
 class DashboardController extends Controller
 {

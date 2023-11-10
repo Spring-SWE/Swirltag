@@ -29,7 +29,7 @@ const props = defineProps({
 
                 <!-- Connector line; not shown after the last item, which is the current status -->
             <span v-if="index !== conversation.length - 1"
-                  class="absolute left-5 top-5 -ml-px h-full w-0.5 bg-gray-200 dark:bg-gray-700"
+                  class="absolute left-5 top-5 -ml-px h-full w-0.5 bg-gray-300 dark:bg-gray-700"
                   aria-hidden="true"></span>
 
             <!-- Status content -->
@@ -44,7 +44,7 @@ const props = defineProps({
                   <!-- Username & Badge -->
                   <div class="text-base flex justify-between items-center">
                     <div class="flex-none">
-                      <Link :href="`/${status.user.name}`" class="ml-1 cursor-pointer underline decoration-2 decoration-theme-purple dark:text-white font-semibold">
+                      <Link :href="`/${status.user.name}`" class="ml-1 cursor-pointer underline decoration-2 decoration-theme-purple text-gray-900 dark:text-white font-semibold">
                         {{ status.user.name }}
                       </Link>
                     </div>
@@ -56,7 +56,7 @@ const props = defineProps({
                     </div>
                   </div>
                   <!-- Posted Date -->
-                  <p class="mt-0.5 text-sm text-gray-500">{{ status.created_at_human }}</p>
+                  <p class=" text-sm text-gray-500">{{ status.created_at_human }}</p>
                 </div>
                 <div class="mt-2 text-base text-gray-700 font-medium dark:text-white whitespace-pre-line overflow-wrap break-words">
                   <p>{{ status.body }}</p>
@@ -116,7 +116,7 @@ const props = defineProps({
                   <!-- Username & Badge -->
                   <div class="text-base flex justify-between items-center">
                     <div class="flex-none">
-                      <Link :href="`/${statusData.user.name}`" class="ml-1 cursor-pointer underline decoration-2 decoration-theme-purple dark:text-white font-semibold">
+                      <Link :href="`/${statusData.user.name}`" class="ml-1 text-gray-900 cursor-pointer underline decoration-2 decoration-theme-purple dark:text-white font-semibold">
                         {{ statusData.user.name }}
                       </Link>
                     </div>
@@ -128,9 +128,9 @@ const props = defineProps({
                     </div>
                   </div>
                   <!-- Posted Date -->
-                  <p class="mt-0.5 text-sm text-gray-500">{{ statusData.created_at_human }}</p>
+                  <p class=" text-sm text-gray-500">{{ statusData.created_at_human }}</p>
                 </div>
-                <div class="mt-2 text-base text-gray-700 font-medium dark:text-white whitespace-pre-line overflow-wrap break-words">
+                <div class="mt-2 text-base text-gray-900 font-medium dark:text-white whitespace-pre-line overflow-wrap break-words">
                   <p>{{ statusData.body }}</p>
                 </div>
                 <!-- Media area -->

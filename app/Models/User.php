@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
@@ -45,11 +46,25 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function hasRole(...$roleNames): bool
+    {
+        return $this->roles->pluck('name')->intersect($roleNames)->isNotEmpty();
+    }
+
+
      /**
-     * Get the Statuses from the User.
+     * The Statuses from the User.
      */
     public function statuses(): HasMany
     {
         return $this->hasMany(Status::class);
+    }
+
+      /**
+     * The Roles of the User.
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
     }
 }

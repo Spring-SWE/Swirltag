@@ -20,7 +20,7 @@ const sidebarOpen = ref(false)
 </script>
 
 <template>
-    <div class="dark:bg-gray-900">
+    <div class="bg-white dark:bg-gray-900">
         <TransitionRoot as="template" :show="sidebarOpen">
             <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
                 <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0"

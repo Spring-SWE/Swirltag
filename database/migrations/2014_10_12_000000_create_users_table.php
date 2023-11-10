@@ -18,6 +18,16 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('post_count')->default(0);
+            $table->integer('role')->default(0);
+            $table->string('avatar')->nullable();
+            $table->string('cover')->nullable();
+            $table->string('description')->nullable();
+            $table->string('website')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->integer('is_banned');
+            $table->integer('is_active');
+            $table->integer('is_verified');
             $table->rememberToken();
             $table->timestamps();
         });

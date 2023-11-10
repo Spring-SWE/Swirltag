@@ -185,9 +185,9 @@ const handleEditorFocus = () => {
     showPostingBar.value = true;
 };
 
-const handleEditorBlur = () => {
-  showPostingBar.value = false;
-};
+// const handleEditorBlur = () => {
+//   showPostingBar.value = false;
+// };
 </script>
 
 <template>
@@ -217,14 +217,13 @@ const handleEditorBlur = () => {
                                     v-model="editorText"
                                     @update:modelValue="updateEditorContent"
                                     @editorFocus="handleEditorFocus"
-                                    @editorBlur="handleEditorBlur"
                                     :placeholder="placeholder"/>
 
                             <!-- Progress bar Media -->
                             <div v-if="uploadProgress && !errorsWithSubmission"
                                 class="p-2 text-sm text-theme-purple "
                                 role="alert">
-                                <span class="font-medium text-theme-purple">We're processing your media...</span>
+
                                 <div class="h-3 text-center text-white bg-theme-purple"
                                     :style="{ width: uploadProgress + '%' }">
                                 </div>

@@ -31,7 +31,7 @@ const userName = props.user.name;
             <div class="hidden lg:block lg:col-span-4 mr-2 h-16 sticky top-2 mt-2">
                 <ProfileUserDetails />
             </div>
-            <div class="status col-span-12 lg:col-span-8 mt-3 border dark:border-gray-700">
+            <div class="status col-span-12 lg:col-span-8 border dark:border-gray-700">
 
                 <Status v-for="(status) in statuses"
                     :key="status.id"
@@ -45,14 +45,15 @@ const userName = props.user.name;
 
     <div v-else>
         <GuestLayout>
-            <div class="status col-span-12 lg:col-span-8 mt-1">
+            <div class="status col-span-12 lg:col-span-8 border dark:border-gray-700">
+
                 <Status v-for="(status) in statuses"
                     :key="status.id"
                     :statusData="status"
                     :hasBorder="true"
                     />
             </div>
-            <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1 mt-1">
+            <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1 ">
                 <ProfileUserDetails />
             </div>
         </GuestLayout>
