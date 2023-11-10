@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\GetPopularStatuses;
 use App\Http\Resources\StatusResource;
-use Inertia\Inertia;
+use App\Actions\GetPopularStatuses;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+
 
 
 class DashboardController extends Controller

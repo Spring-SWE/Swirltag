@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\GetLatestStatusesByUser;
+use App\Http\Resources\StatusResource;
+use Illuminate\Http\Request;
 use Inertia\Response;
 use Inertia\Inertia;
 use App\Models\User;
@@ -12,13 +14,19 @@ class ProfileController extends Controller
     /**
      * Show the Users Statuses posted on their timeline.
      */
-    public function show(string $name, GetLatestStatusesByUser $getStatuses): Response
+    public function show(string $name, GetLatestStatusesByUser $getStatuses, Request $request)
     {
+        if($request->wantsJson()) {
+
+            return StatusResource::collection($getStatuses->handle($name))->response()->getData(true);
+
+         }
+
          return Inertia::render('Profile/Timeline', [
 
              'user' => User::where('name', $name)->firstOrFail(),
 
-             'statuses' => $getStatuses->handle($name)
+             'statuses' => StatusResource::collection($getStatuses->handle($name))
 
          ]);
     }

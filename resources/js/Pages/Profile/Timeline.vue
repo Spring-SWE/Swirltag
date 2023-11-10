@@ -1,4 +1,6 @@
 <script setup>
+import InfiniteLoader from '@/Pages/Status/Partials/InfiniteLoader.vue';
+import { reactive, computed } from 'vue';
 import Status from '@/Pages/Status/Partials/Status.vue';
 import ProfileInlineTabs from '@/Pages/Profile/Partials/ProfileInlineTabs.vue';
 import ProfileUserDetails from '@/Pages/Profile/Partials/ProfileUserDetails.vue';
@@ -12,11 +14,18 @@ const props = defineProps({
         type: Object,
     },
     statuses: {
-        type: Array,
+        type: Object,
     }
 });
 
 const userName = props.user.name;
+
+const localStatuses = reactive({
+    data: [],
+    meta: props.statuses.meta,
+});
+
+const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
 
 </script>
 
@@ -33,11 +42,11 @@ const userName = props.user.name;
             </div>
             <div class="status col-span-12 lg:col-span-8 border dark:border-gray-700">
 
-                <Status v-for="(status) in statuses"
-                    :key="status.id"
-                    :statusData="status"
-                    :hasBorder="true"
-                    />
+                <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data" :hasMore="localStatuses.meta.next_cursor">
+                    <template #default="{ items }">
+                    <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="true" />
+                    </template>
+                </InfiniteLoader>
             </div>
 
         </AuthenticatedLayout>

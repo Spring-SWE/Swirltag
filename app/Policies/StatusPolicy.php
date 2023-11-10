@@ -40,11 +40,7 @@ class StatusPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(
-                Role::USER,
-                Role::ADMIN,
-                Role::MODERATOR,
-                Role::PREMIUM);
+        return true;
     }
 
     /**

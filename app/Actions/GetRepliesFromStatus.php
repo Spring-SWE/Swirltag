@@ -8,13 +8,12 @@ use Illuminate\Support\Collection;
 class GetRepliesFromStatus
 {
 
-    public function handle(string $statusId): Collection
+    public function handle(string $statusId)
     {
         $statuses = Status::with(['user', 'media'])
             ->where('parent_id', $statusId)
             ->orderBy('created_at', 'desc')
-            ->limit(10)
-            ->get();
+            ->cursorPaginate(10);
 
         return $statuses;
     }

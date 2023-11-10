@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\GetConversation;
 use App\Http\Requests\StoreStatusRequest;
+use App\Http\Resources\StatusResource;
 use Illuminate\Http\RedirectResponse;
-use App\Actions\StoreNewStatus;
 use App\Actions\GetRepliesFromStatus;
-use App\Models\Media;
+use App\Actions\GetConversation;
+use App\Actions\StoreNewStatus;
+use Illuminate\Http\Request;
 use App\Models\Status;
+use App\Models\Media;
 use Inertia\Response;
 use Inertia\Inertia;
 
@@ -17,15 +19,21 @@ class StatusController extends Controller
 {
 
     /**
-     * Show a Status and the assiociated commebts.
+     * Show a Status and the assiociated replies.
      */
-    public function show(Status $status, GetConversation $conversations, GetRepliesFromStatus $replies)
+    public function show(Status $status, GetConversation $conversations, GetRepliesFromStatus $replies, Request $request)
     {
+        if($request->wantsJson()) {
+
+            return StatusResource::collection($replies->handle($status->id))->response()->getData(true);
+
+         }
+
         return Inertia::render('Status/Show', [
 
             'status' => $status,
 
-            'replies' => $replies->handle($status->id),
+            'replies' => StatusResource::collection($replies->handle($status->id)),
 
             'conversation' => $conversations->handle($status->id, auth()->id()),
 

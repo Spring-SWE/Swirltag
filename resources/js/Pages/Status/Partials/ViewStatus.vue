@@ -1,4 +1,6 @@
 <script setup>
+import InfiniteLoader from '@/Pages/Status/Partials/InfiniteLoader.vue';
+import { reactive, computed } from 'vue';
 import Status from '@/Pages/Status/Partials/Status.vue'
 import QuickReply from '@/Pages/Compose/Partials/QuickReply.vue';
 import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
@@ -24,6 +26,13 @@ function goBack() {
   history.back();
 }
 
+const localStatuses = reactive({
+    data: [],
+    meta: props.replies.meta,
+});
+
+const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
+
 </script>
 
 <template>
@@ -47,10 +56,10 @@ function goBack() {
         :statusId="props.status.id"/>
 
     <!-- Status Replies -->
-    <Status v-for="(reply) in props.replies"
-        class=""
-        :key="reply.id"
-        :statusData="reply"
-        :hasBorder="false" />
+    <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data" :hasMore="localStatuses.meta.next_cursor">
+        <template #default="{ items }">
+            <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="false" />
+        </template>
+    </InfiniteLoader>
 
 </template>
