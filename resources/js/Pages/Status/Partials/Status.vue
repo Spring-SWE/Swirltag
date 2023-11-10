@@ -137,18 +137,18 @@ const props = defineProps({
                                     <div
                                         class="vote-status px-1 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <HandThumbUpIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
+                                            <HandThumbUpIcon class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-600 dark:hover:text-green-600 text-gray-600 dark:text-slate-400" />
                                         </div>
                                         <div class="font-semibold px-2 text-gray-600 dark:text-white"> 17k</div>
                                         <div>
-                                            <HandThumbDownIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
+                                            <HandThumbDownIcon class="h-6 w-6 hover:scale-125 transition-transform hover:text-red-600 dark:hover:text-red-600 text-gray-600 dark:text-slate-400" />
                                         </div>
                                     </div>
                                     <Link :href="`/status/${status.id}#${status.id}`">
                                     <div
                                         class="comment-status px-2 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <ChatBubbleLeftIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
+                                            <ChatBubbleLeftIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                         </div>
                                         <div class="font-semibold text-gray-600 dark:text-white ml-1">{{ status.reply_count
                                         }}</div>
@@ -157,13 +157,13 @@ const props = defineProps({
                                     <div
                                         class="repost-status px-2 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <ArrowPathRoundedSquareIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
+                                            <ArrowPathRoundedSquareIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                         </div>
                                         <div class="font-semibold text-gray-600 dark:text-white ml-1">{{ status.share_count
                                         }}</div>
                                     </div>
                                     <div class="px-1 py-1">
-                                        <ArrowUpTrayIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
+                                        <ArrowUpTrayIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                     </div>
                                 </div>
                             </div>
@@ -283,18 +283,18 @@ const props = defineProps({
                                     <div
                                         class="vote-status px-1 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <HandThumbUpIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
+                                            <HandThumbUpIcon class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-700 dark:hover:text-green-700 text-gray-600 dark:text-slate-400" />
                                         </div>
                                         <div class="font-semibold px-2 text-gray-600 dark:text-white"> 17k</div>
                                         <div>
-                                            <HandThumbDownIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
+                                            <HandThumbDownIcon class="h-6 w-6  hover:scale-125 transition-transform hover:text-red-700 dark:hover:text-red-700 text-gray-600 dark:text-slate-400" />
                                         </div>
                                     </div>
                                     <Link  :href="`/status/${statusData.id}#${statusData.id}`">
                                     <div
                                         class="comment-status px-2 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <ChatBubbleLeftIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
+                                            <ChatBubbleLeftIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                         </div>
                                         <div class="font-semibold text-gray-600 dark:text-white ml-1">{{
                                             statusData.reply_count }}</div>
@@ -303,13 +303,13 @@ const props = defineProps({
                                     <div
                                         class="repost-status px-2 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <ArrowPathRoundedSquareIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
+                                            <ArrowPathRoundedSquareIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                         </div>
                                         <div class="font-semibold text-gray-600 dark:text-white ml-1">{{
                                             statusData.share_count }}</div>
                                     </div>
                                     <div class="px-1 py-1">
-                                        <ArrowUpTrayIcon class="h-6 w-6 text-gray-600 dark:text-slate-400" />
+                                        <ArrowUpTrayIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                     </div>
                                 </div>
                             </div>

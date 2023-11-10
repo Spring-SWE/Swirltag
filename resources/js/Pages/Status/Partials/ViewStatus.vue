@@ -1,10 +1,10 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { reactive, ref, computed, watch } from 'vue';
 import InfiniteLoader from '@/Pages/Status/Partials/InfiniteLoader.vue';
 import Status from '@/Pages/Status/Partials/Status.vue';
 import QuickReply from '@/Pages/Compose/Partials/QuickReply.vue';
 import { ArrowLeftIcon } from '@heroicons/vue/24/outline';
-import { usePage } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
   status: Object,
@@ -12,29 +12,25 @@ const props = defineProps({
   conversation: Array,
 });
 
-const { data: pageData } = usePage();
-const localStatuses = ref({
-  data: props.replies.data || [],
-  meta: props.replies.meta || {},
-});
-
-// Watch for changes in the Inertia page props
-watch(() => pageData?.value?.props?.replies, (newReplies) => {
-  if (newReplies) {
-    localStatuses.value.data = newReplies.data;
-    localStatuses.value.meta = newReplies.meta;
-  }
-}, {
-  deep: true,
-  immediate: true
-});
-
 function goBack() {
   history.back();
 }
 
-const apiEndpoint = computed(() => localStatuses.value.meta?.path ?? '');
+const infiniteLoaderKey = ref(0);
 
+const localStatuses = reactive({
+    data: [],
+    meta: props.replies.meta,
+});
+
+const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
+
+const updateInfiniteLoaderKey = () => {
+  // Increment the 'infiniteLoaderKey' to trigger a re-render of the InfiniteLoader component
+  infiniteLoaderKey.value += 1;
+
+  localStatuses.data = [];
+};
 
 </script>
 
@@ -55,17 +51,26 @@ const apiEndpoint = computed(() => localStatuses.value.meta?.path ?? '');
     <Status
     class=""
     :conversation="props.conversation"
-    :hasBorder="false" />
+    :hasBorder="false"
+     />
 
     <QuickReply
-        :statusId="props.status.id"/>
+        :statusId="props.status.id"
+        @quick-replied="updateInfiniteLoaderKey"/>
 
     <!-- Status Replies -->
-    <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data" :hasMore="localStatuses.meta.next_cursor">
+    <InfiniteLoader :apiEndpoint="apiEndpoint"
+                    :initialData="localStatuses.data"
+                    :hasMore="localStatuses.meta.next_cursor"
+                    :key="infiniteLoaderKey">
         <template #default="{ items }">
-            <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="false" />
+            <Status v-for="status in items"
+            :key="status.id"
+            :statusData="status"
+            :hasBorder="false" />
         </template>
     </InfiniteLoader>
+
     <div class="h-12"></div> <!-- What the fuck? -->
 
 </template>

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->bigInteger('repost_count')->default(0);
             $table->bigInteger('share_count')->default(0);
             $table->bigInteger('deboost_score')->default(0);
+            $table->bigInteger('like_count')->default(0);
             $table->boolean("is_archived")->default(0);
             $table->boolean('is_flagged')->default(0);
             $table->json('metadata')->nullable();
@@ -39,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('statues');
+        Schema::dropIfExists('statuses');
     }
 };

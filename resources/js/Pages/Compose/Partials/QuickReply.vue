@@ -14,7 +14,7 @@ const props = defineProps({
     },
 });
 
-console.log(props.statusId);
+const emit = defineEmits(['quick-replied']);
 
 // Reactive references
 const editorText = ref('');
@@ -53,6 +53,7 @@ const clearTextarea = () => {
     uploadProgress.value = 0;
     postingDisabled.value = false;
     imagePreviewSrc.value = null;
+    imageFile.value = null;
     clearEditorInParent();
 };
 
@@ -65,7 +66,6 @@ const closeAlert = () => {
 };
 
 const clearEditorInParent = () => {
-    console.log("made it here...")
   editorRef.value.clearEditor();
 };
 
@@ -161,6 +161,7 @@ form.post(route(`store-status`), {
     preserveScroll: true,
     onSuccess: () => {
         clearTextarea();
+        emit('quick-replied');
     },
     onError: () => {
         errorsWithSubmission.value = true;

@@ -16,7 +16,7 @@ const hasMore = ref(props.hasMore);
 const nextCursor = ref(''); // Add a ref to keep track of the next cursor
 
 const loadMoreItems = async () => {
-  if (!hasMore.value || isLoading.value) return;
+  if (isLoading.value) return;
 
   isLoading.value = true;
 
@@ -48,10 +48,7 @@ const { stop } = useIntersectionObserver(
 );
 
 onMounted(() => {
-    console.log('Initial data for replies:', props.initialData);
-  if (!props.initialData.length && hasMore.value) {
-    loadMoreItems();
-  }
+  loadMoreItems();
 });
 
 onUnmounted(() => {
@@ -59,7 +56,7 @@ onUnmounted(() => {
 });
 
 watch(() => props.initialData, (newData) => {
-  items.value = newData;
+    items.value = newData;
 });
 </script>
 

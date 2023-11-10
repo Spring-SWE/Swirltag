@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -16,18 +15,21 @@ class StatusSeeder extends Seeder
         $users = User::all();
 
         foreach ($users as $user) {
-            $statusCount = rand(5, 100);
+            $statusCount = rand(30, 200);
 
             for ($i = 0; $i < $statusCount; $i++) {
                 Status::create([
                     'body' => $faker->text,
                     'user_id' => $user->id,
-                    'reply_count' => $faker->numberBetween(0, 100),
+                    'reply_count' => 0,
                     'view_count' => $faker->numberBetween(0, 500),
                     'repost_count' => $faker->numberBetween(0, 50),
                     'share_count' => $faker->numberBetween(0, 50),
-                    'is_archived' => $faker->boolean(50), // 50% chance of being true
+                    'is_archived' => 0, // 50% chance of being true
                 ]);
+
+                // Introduce a 100-millisecond (0.1 second) delay between each status creation
+                usleep(100000); // 100,000 microseconds = 100 milliseconds
             }
         }
     }
