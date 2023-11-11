@@ -35,14 +35,14 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
     <Head title="Dashboard" />
     <div v-if="$page.props.auth.user">
         <AuthenticatedLayout>
-            <div class="status col-span-12 lg:col-span-8 mt-3 border dark:border-gray-700">
+            <div class="status col-span-12 lg:col-span-8 border dark:border-gray-700 mt-2">
                 <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data" :hasMore="localStatuses.meta.next_cursor">
                     <template #default="{ items }">
                     <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="true" />
                     </template>
                 </InfiniteLoader>
             </div>
-            <div class="hidden lg:block col-span-4 mr-2 mt-3 ">
+            <div class="hidden lg:block col-span-4 mr-2 mt-2">
                 <StatusTrendingBar />
                 <Create />
                 <Footer />
@@ -52,7 +52,7 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
 
     <div v-else>
         <GuestLayout>
-            <div class="status col-span-12 lg:col-span-8 mt-3 border dark:border-gray-700">
+            <div class="status col-span-12 lg:col-span-8 border dark:border-gray-700 mt-2">
                 <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data" :hasMore="localStatuses.meta.next_cursor">
                     <template #default="{ items }">
                     <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="true" />
@@ -60,7 +60,7 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
                 </InfiniteLoader>
             </div>
 
-            <div class="hidden lg:block col-span-4 mr-2 mt-3">
+            <div class="hidden lg:block col-span-4 mr-2 mt-2">
                 <StatusTrendingBar />
                 <Footer />
             </div>

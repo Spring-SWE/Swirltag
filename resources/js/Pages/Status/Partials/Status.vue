@@ -25,25 +25,71 @@ const statusDataRef = ref(props.statusData);
 
 
 const likeStatus = (status_id) => {
-    axios.post('/like', {
-        status_id: status_id,
+  axios.post('/like', {
+    status_id: status_id,
+  })
+    .then(function (response) {
+      if (response.data.message === 'Status liked') {
+        if (statusDataRef.value.like_count === 1) {
+          // If already liked, toggle to neutral
+          statusDataRef.value.like_count = 0;
+        } else {
+          // If neutral or disliked, toggle to like
+          statusDataRef.value.like_count = 1;
+        }
+      } else if (response.data.message === 'Status unliked') {
+        // Toggle to neutral if already liked
+        if (statusDataRef.value.like_count === 1) {
+          statusDataRef.value.like_count = 0;
+        } else {
+          // Decrement like_count if not liked
+          statusDataRef.value.like_count--;
+        }
+      }
     })
-        .then(function (response) {
-            if (response.data.message === 'Status liked') {
-                statusDataRef.value.like_count++;
-            } else if (response.data.message === 'Status unliked') {
-                statusDataRef.value.like_count--;
-            }
-        }).catch(function (error) {
-            if (error.response.status === 401) {
-                toast.error("You need to log in to do that.");
-                console.log(error);
-            } else {
-                toast.error("Something went wrong, please try again later.");
-                console.log(error);
-            }
-        });
+    .catch(function (error) {
+      if (error.response.status === 401) {
+        toast.error("You need to log in to do that.");
+      } else {
+        toast.error("Something went wrong, please try again later.");
+        console.log(error);
+      }
+    });
 }
+
+const dislikeStatus = (status_id) => {
+  axios.post('/dislike', {
+    status_id: status_id,
+  })
+    .then(function (response) {
+      if (response.data.message === 'Status disliked') {
+        if (statusDataRef.value.like_count === -1) {
+          // If already disliked, toggle to neutral
+          statusDataRef.value.like_count = 0;
+        } else {
+          // If neutral or liked, toggle to dislike
+          statusDataRef.value.like_count = -1;
+        }
+      } else if (response.data.message === 'Status undisliked') {
+        // Toggle to neutral if already disliked
+        if (statusDataRef.value.like_count === -1) {
+          statusDataRef.value.like_count = 0;
+        } else {
+          // Increment like_count if not disliked
+          statusDataRef.value.like_count++;
+        }
+      }
+    })
+    .catch(function (error) {
+      if (error.response.status === 401) {
+        toast.error("You need to log in to do that.");
+      } else {
+        toast.error("Something went wrong, please try again later.");
+        console.log(error);
+      }
+    });
+}
+
 
 </script>
 
@@ -156,7 +202,7 @@ const likeStatus = (status_id) => {
                             </div>
                             <!-- Media area -->
                             <div class="status-media mt-1" v-if="status.media && status.media.length > 0">
-                                <img class="rounded-lg mx-auto" style="max-height: 700px;"
+                                <img class="rounded-lg mx-auto border" style="max-height: 700px;"
                                     :src="status.media[0].thumbnail_path" alt="">
                             </div>
                             <!-- Option Bar -->
@@ -306,7 +352,7 @@ const likeStatus = (status_id) => {
                             </div>
                             <!-- Media area -->
                             <div class="status-media mt-1" v-if="statusData.media && statusData.media.length > 0">
-                                <img class="rounded-lg mx-auto" style="max-height: 700px;"
+                                <img class="rounded-lg mx-auto border border-gray-700" style="max-height: 700px;"
                                     :src="statusData.media[0].thumbnail_path" alt="">
                             </div>
                             </Link>
@@ -320,9 +366,9 @@ const likeStatus = (status_id) => {
                                                 class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-700 dark:hover:text-green-700 text-gray-600 dark:text-slate-400" />
                                         </div>
                                         <div class="font-semibold px-2 text-gray-600 dark:text-white"> {{
-                                            statusDataRef.like_count }}</div>
+                                            statusData.like_count }}</div>
                                         <div>
-                                            <HandThumbDownIcon
+                                            <HandThumbDownIcon @click="dislikeStatus(statusData.id)"
                                                 class="h-6 w-6  hover:scale-125 transition-transform hover:text-red-700 dark:hover:text-red-700 text-gray-600 dark:text-slate-400" />
                                         </div>
                                     </div>

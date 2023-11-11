@@ -41,7 +41,6 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
                 <ProfileUserDetails />
             </div>
             <div class="status col-span-12 lg:col-span-8 border dark:border-gray-700">
-
                 <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data" :hasMore="localStatuses.meta.next_cursor">
                     <template #default="{ items }">
                     <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="true" />

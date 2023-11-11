@@ -16,7 +16,7 @@ class GetLatestStatusesByUser
                 $query->where('parent_id', null);
             })
             ->orderBy('created_at', 'desc')
-            ->cursorPaginate(10);
+            ->cursorPaginate(50);
 
         return $statuses;
     }

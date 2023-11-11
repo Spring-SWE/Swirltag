@@ -12,7 +12,7 @@ class GetPopularStatuses {
         ->orderBy('reply_count', 'desc')
         ->orderBy('created_at', 'asc')
         ->orderBy('id', 'desc')
-        ->cursorPaginate(10);
+        ->cursorPaginate(50);
 
         return $statuses;
     }
