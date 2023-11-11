@@ -1,6 +1,8 @@
 <script setup>
 import ThemeSwitcher from '@/Components/ThemeSwitcher.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import LoginComponent from '@/Pages/Auth/LoginInput.vue';
+import Modal from '@/Components/Modal.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
@@ -17,10 +19,30 @@ const navigation = [
 
 const sidebarOpen = ref(false)
 
+
+// Define a ref for controlling the modal's visibility
+const isLoginModalOpen = ref(false);
+
+// Method to open the login modal
+const openLoginModal = () => {
+  isLoginModalOpen.value = true;
+};
+
+// Method to close the login modal
+const closeLoginModal = () => {
+  isLoginModalOpen.value = false;
+};
+
 </script>
 
 <template>
     <div class="bg-white dark:bg-gray-900">
+
+        <Modal :show="isLoginModalOpen" @close="closeLoginModal">
+        <!-- Login modal -->
+        <LoginComponent />
+        </Modal>
+
         <TransitionRoot as="template" :show="sidebarOpen">
             <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
                 <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0"
@@ -131,9 +153,7 @@ const sidebarOpen = ref(false)
                             placeholder="Search..." type="search" name="search" />
                     </form>
                     <div class="flex items-center gap-x-4 lg:gap-x-6">
-                        <Link href='/login'>
-                        <PrimaryButton>Login</PrimaryButton>
-                        </Link>
+                        <PrimaryButton @click="openLoginModal">Login</PrimaryButton>
 
                         <Link href='/register'>
                         <PrimaryButton>Join now</PrimaryButton>

@@ -9,10 +9,10 @@ import {
 <template>
 <!-- Thread Trending Tab-->
     <div
-        class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        class="w-full max-w-md p-4 bg-white border-gray-100 shadow rounded-lg  sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="flex items-center mb-3">
             <ArrowTrendingUpIcon class="h-10 w-10 pr-2 flex-none text-theme-purple" />
-            <h5 class="text-xl grow font-bold leading-none text-gray-900 dark:text-white">Trending Swirls
+            <h5 class="text-2xl grow font-bold leading-none text-gray-900 dark:text-white">Trending Swirls
             </h5>
             <a href="#" class="text-sm flex-none font-medium text-blue-600 hover:underline dark:text-blue-500">
                 More
@@ -117,4 +117,5 @@ import {
             </ul>
         </div>
     </div>
+
 </template>

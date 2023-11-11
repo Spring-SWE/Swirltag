@@ -21,7 +21,7 @@ const props = defineProps({
 
 <template>
     <div
-        :class="['Status p-3 border-gray-100 dark:border-gray-700 border-b  ', hasBorder ? 'shadow hover:bg-gray-50 dark:hover:bg-gray-800' : '']">
+        :class="['Status p-3 border-gray-100 dark:border-gray-700 border-b  ', hasBorder ? 'hover:shadow hover:bg-gray-50 dark:hover:bg-gray-800' : '']">
         <div class="flow-root">
             <ul v-if="conversation" role="list" class="-mb-8 list-none">
                 <!-- Loop through the entire conversation including the current status -->
