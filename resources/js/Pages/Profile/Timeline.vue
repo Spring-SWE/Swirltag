@@ -54,16 +54,19 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
 
     <div v-else>
         <GuestLayout>
+            <div class="col-span-8">
+                <ProfileInlineTabs></ProfileInlineTabs>
+            </div>
+            <div class="hidden lg:block lg:col-span-4 mr-2 h-16 sticky top-2 mt-2">
+                <ProfileUserDetails />
+            </div>
             <div class="status col-span-12 lg:col-span-8 border dark:border-gray-700">
 
-                <Status v-for="(status) in statuses"
-                    :key="status.id"
-                    :statusData="status"
-                    :hasBorder="true"
-                    />
-            </div>
-            <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1 ">
-                <ProfileUserDetails />
+                <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data" :hasMore="localStatuses.meta.next_cursor">
+                    <template #default="{ items }">
+                    <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="true" />
+                    </template>
+                </InfiniteLoader>
             </div>
         </GuestLayout>
     </div>

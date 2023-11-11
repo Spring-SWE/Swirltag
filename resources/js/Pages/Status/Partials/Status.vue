@@ -10,12 +10,40 @@ import {
     HandThumbUpIcon,
     HandThumbDownIcon,
 } from '@heroicons/vue/24/outline';
+import { useToast } from "vue-toastification";
+import axios from 'axios';
+
+const toast = useToast();
 
 const props = defineProps({
     conversation: Array, // The entire conversation up to the current status
     hasBorder: Boolean,
     statusData: Object,
 });
+
+const statusDataRef = ref(props.statusData);
+
+
+const likeStatus = (status_id) => {
+    axios.post('/like', {
+        status_id: status_id,
+    })
+        .then(function (response) {
+            if (response.data.message === 'Status liked') {
+                statusDataRef.value.like_count++;
+            } else if (response.data.message === 'Status unliked') {
+                statusDataRef.value.like_count--;
+            }
+        }).catch(function (error) {
+            if (error.response.status === 401) {
+                toast.error("You need to log in to do that.");
+                console.log(error);
+            } else {
+                toast.error("Something went wrong, please try again later.");
+                console.log(error);
+            }
+        });
+}
 
 </script>
 
@@ -137,18 +165,21 @@ const props = defineProps({
                                     <div
                                         class="vote-status px-1 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <HandThumbUpIcon class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-600 dark:hover:text-green-600 text-gray-600 dark:text-slate-400" />
+                                            <HandThumbUpIcon
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-600 dark:hover:text-green-600 text-gray-600 dark:text-slate-400" />
                                         </div>
-                                        <div class="font-semibold px-2 text-gray-600 dark:text-white"> 17k</div>
+                                        <div class="font-semibold px-2 text-gray-600 dark:text-white"> {{ status.like_count }}</div>
                                         <div>
-                                            <HandThumbDownIcon class="h-6 w-6 hover:scale-125 transition-transform hover:text-red-600 dark:hover:text-red-600 text-gray-600 dark:text-slate-400" />
+                                            <HandThumbDownIcon
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-red-600 dark:hover:text-red-600 text-gray-600 dark:text-slate-400" />
                                         </div>
                                     </div>
                                     <Link :href="`/status/${status.id}#${status.id}`">
                                     <div
                                         class="comment-status px-2 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <ChatBubbleLeftIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
+                                            <ChatBubbleLeftIcon
+                                                class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                         </div>
                                         <div class="font-semibold text-gray-600 dark:text-white ml-1">{{ status.reply_count
                                         }}</div>
@@ -157,13 +188,15 @@ const props = defineProps({
                                     <div
                                         class="repost-status px-2 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <ArrowPathRoundedSquareIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
+                                            <ArrowPathRoundedSquareIcon
+                                                class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                         </div>
                                         <div class="font-semibold text-gray-600 dark:text-white ml-1">{{ status.share_count
                                         }}</div>
                                     </div>
                                     <div class="px-1 py-1">
-                                        <ArrowUpTrayIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
+                                        <ArrowUpTrayIcon
+                                            class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                     </div>
                                 </div>
                             </div>
@@ -173,7 +206,7 @@ const props = defineProps({
             </ul>
             <!-- Single Status -->
             <template v-else>
-                <li :id="`${statusData.id}`"  class="relativ cursor-pointer list-none">
+                <li :id="`${statusData.id}`" class="relativ cursor-pointer list-none">
                     <!-- Status content -->
                     <div class="relative flex items-start space-x-3">
                         <div class="relative">
@@ -283,18 +316,22 @@ const props = defineProps({
                                     <div
                                         class="vote-status px-1 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <HandThumbUpIcon class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-700 dark:hover:text-green-700 text-gray-600 dark:text-slate-400" />
+                                            <HandThumbUpIcon @click="likeStatus(statusData.id)"
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-700 dark:hover:text-green-700 text-gray-600 dark:text-slate-400" />
                                         </div>
-                                        <div class="font-semibold px-2 text-gray-600 dark:text-white"> 17k</div>
+                                        <div class="font-semibold px-2 text-gray-600 dark:text-white"> {{
+                                            statusDataRef.like_count }}</div>
                                         <div>
-                                            <HandThumbDownIcon class="h-6 w-6  hover:scale-125 transition-transform hover:text-red-700 dark:hover:text-red-700 text-gray-600 dark:text-slate-400" />
+                                            <HandThumbDownIcon
+                                                class="h-6 w-6  hover:scale-125 transition-transform hover:text-red-700 dark:hover:text-red-700 text-gray-600 dark:text-slate-400" />
                                         </div>
                                     </div>
-                                    <Link  :href="`/status/${statusData.id}#${statusData.id}`">
+                                    <Link :href="`/status/${statusData.id}#${statusData.id}`">
                                     <div
                                         class="comment-status px-2 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <ChatBubbleLeftIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
+                                            <ChatBubbleLeftIcon
+                                                class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                         </div>
                                         <div class="font-semibold text-gray-600 dark:text-white ml-1">{{
                                             statusData.reply_count }}</div>
@@ -303,13 +340,15 @@ const props = defineProps({
                                     <div
                                         class="repost-status px-2 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
                                         <div>
-                                            <ArrowPathRoundedSquareIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
+                                            <ArrowPathRoundedSquareIcon
+                                                class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                         </div>
                                         <div class="font-semibold text-gray-600 dark:text-white ml-1">{{
                                             statusData.share_count }}</div>
                                     </div>
                                     <div class="px-1 py-1">
-                                        <ArrowUpTrayIcon class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
+                                        <ArrowUpTrayIcon
+                                            class="h-6 w-6 text-gray-600 dark:text-slate-400 hover:scale-125 transition-transform hover:text-theme-purple dark:hover:text-theme-purple" />
                                     </div>
                                 </div>
                             </div>

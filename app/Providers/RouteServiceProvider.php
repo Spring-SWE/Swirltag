@@ -49,6 +49,11 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('post_limit', function (Request $request) {
             return Limit::perMinute(10)->by(optional($request->user())->id ?: $request->ip());
         });
+
+         // Limit likes to 60 per minute.
+         RateLimiter::for('like_limit', function (Request $request) {
+            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+        });
     }
 
     /**
