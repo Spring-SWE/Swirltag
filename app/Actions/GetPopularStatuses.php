@@ -10,7 +10,7 @@ class GetPopularStatuses {
         $statuses = Status::with(['user', 'media'])
         ->where('parent_id', null)
         ->orderBy('reply_count', 'desc')
-        ->orderBy('created_at', 'asc')
+        ->orderBy('created_at', 'desc')
         ->orderBy('id', 'desc')
         ->cursorPaginate(50);
 

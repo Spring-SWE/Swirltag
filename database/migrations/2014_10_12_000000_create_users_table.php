@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
+            $table->integer('creds')->default(0);
             $table->integer('is_banned')->default(0);
             $table->integer('is_active')->default(1);
             $table->integer('is_verified')->default(0);

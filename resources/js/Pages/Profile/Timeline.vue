@@ -38,7 +38,9 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
                 <ProfileInlineTabs></ProfileInlineTabs>
             </div>
             <div class="hidden lg:block lg:col-span-4 mr-2 h-16 sticky top-2 mt-2">
-                <ProfileUserDetails />
+                <ProfileUserDetails
+                :userData="props.user"
+                />
             </div>
             <div class="status col-span-12 lg:col-span-8 border dark:border-gray-700">
                 <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data" :hasMore="localStatuses.meta.next_cursor">
@@ -57,7 +59,9 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
                 <ProfileInlineTabs></ProfileInlineTabs>
             </div>
             <div class="hidden lg:block lg:col-span-4 mr-2 h-16 sticky top-2 mt-2">
-                <ProfileUserDetails />
+                <ProfileUserDetails
+                    :userData="props.user"
+                />
             </div>
             <div class="status col-span-12 lg:col-span-8 border dark:border-gray-700">
 

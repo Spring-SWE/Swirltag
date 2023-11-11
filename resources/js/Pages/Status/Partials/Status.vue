@@ -90,7 +90,6 @@ const dislikeStatus = (status_id) => {
     });
 }
 
-
 </script>
 
 <template>
@@ -202,7 +201,7 @@ const dislikeStatus = (status_id) => {
                             </div>
                             <!-- Media area -->
                             <div class="status-media mt-1" v-if="status.media && status.media.length > 0">
-                                <img class="rounded-lg mx-auto border" style="max-height: 700px;"
+                                <img class="rounded-lg mx-auto border border-gray-100 dark:border-gray-700" style="max-height: 700px;"
                                     :src="status.media[0].thumbnail_path" alt="">
                             </div>
                             <!-- Option Bar -->
@@ -352,7 +351,7 @@ const dislikeStatus = (status_id) => {
                             </div>
                             <!-- Media area -->
                             <div class="status-media mt-1" v-if="statusData.media && statusData.media.length > 0">
-                                <img class="rounded-lg mx-auto border border-gray-700" style="max-height: 700px;"
+                                <img class="rounded-lg mx-auto border border-gray-100 dark:border-gray-700" style="max-height: 700px;"
                                     :src="statusData.media[0].thumbnail_path" alt="">
                             </div>
                             </Link>

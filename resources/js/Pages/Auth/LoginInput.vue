@@ -30,10 +30,15 @@ const submit = () => {
 </script>
 
 <template>
+
     <div
         class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
 
         <Head title="Log in" />
+
+        <div class="w-full">
+            <img class="h-48 mx-auto" src="http://localhost/storage/media/logo/Transparent Logo.png" alt="Swirltag logo">
+        </div>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}

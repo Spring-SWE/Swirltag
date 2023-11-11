@@ -19,7 +19,6 @@ const navigation = [
 
 const sidebarOpen = ref(false)
 
-
 // Define a ref for controlling the modal's visibility
 const isLoginModalOpen = ref(false);
 
@@ -138,12 +137,11 @@ const closeLoginModal = () => {
 
         <div class="lg:pl-72">
             <div
-                class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white dark:border-slate-700 dark:bg-gray-900 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-
+            class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white dark:border-slate-700 dark:bg-gray-900 px-4 shadow sm:gap-x-6 sm:px-6 lg:px-8">
                 <!-- Search & Header -->
                 <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
 
-                <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
+                <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6" >
                     <form class="relative flex flex-1" action="#" method="GET">
                         <label for="search-field" class="sr-only">Search</label>
                         <MagnifyingGlassIcon class="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
