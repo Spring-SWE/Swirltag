@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->unsignedBigInteger('post_count')->default(0);
             $table->integer('role')->default(0);
-            $table->string('avatar')->nullable();
+            $table->string('avatar')->default('/media/avatars/usericon.png');
             $table->string('cover')->nullable();
             $table->string('description')->nullable();
             $table->string('website')->nullable();

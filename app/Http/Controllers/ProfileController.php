@@ -34,7 +34,7 @@ class ProfileController extends Controller
          ]);
     }
 
-    public function update(UpdateProfileRequest $request, UpdateProfile $updateProfile)
+    public function update(Request $request, UpdateProfile $updateProfile)
     {
 
         $update = $updateProfile->handle($request);

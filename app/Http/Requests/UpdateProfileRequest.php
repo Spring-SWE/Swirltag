@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -14,16 +13,17 @@ class UpdateProfileRequest extends FormRequest
      */
     public function rules(): array
     {
+        $nameRule = ['required', 'string', 'max:255'];
+
+        if ($this->input('name') == auth()->user()->name) {
+            $nameRule = array_diff($nameRule, ['unique:' . User::class]);
+        }
+
         return [
-
-            'name' => ['required', 'string', 'max:255', 'unique:' . User::class],
-
-            'bio' => ['max:300'],
-
-            //'avatar' => ['image', 'max:2048', 'mimes:jpeg,png,webp'],
-
+            'name' => $nameRule,
+            'about' => ['max:300'],
+            'avatar' => ['image', 'max:2048', 'mimes:jpg,png,webp'], // Updated validation rules for 'avatar'
             'website' => ['url'],
         ];
     }
-
 }

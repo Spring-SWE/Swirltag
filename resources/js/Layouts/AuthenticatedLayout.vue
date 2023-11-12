@@ -23,6 +23,7 @@ import {
 const sidebarOpen = ref(false)
 const page = usePage().props;
 const userName = page.auth.user.name;
+const userAvatar = page.auth.user.avatar;
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: false },
     { name: 'Notifications', href: '#', icon: BellIcon, current: false },
@@ -122,7 +123,7 @@ watch(() => usePage().props.flash, flash => {
                                                     <button href="#"
                                                         class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold min-w-full leading-6 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-800">
                                                         <img class="h-8 w-8 rounded-full bg-gray-800"
-                                                            src="https://i.pravatar.cc/40" alt="" />
+                                                        :src="`/storage/${userAvatar}`" alt="" />
                                                         <span class="sr-only">Your profile</span>
                                                         <span aria-hidden="true">{{ userName }}</span>
                                                     </button>
@@ -190,7 +191,7 @@ watch(() => usePage().props.flash, flash => {
                                 <template #trigger>
                                     <button href="#"
                                         class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold min-w-full leading-6 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-800">
-                                        <img class="h-8 w-8 rounded-full bg-gray-800" src="https://i.pravatar.cc/40"
+                                        <img class="h-8 w-8 rounded-full bg-gray-800" :src="`/storage/${userAvatar}`"
                                             alt="" />
                                         <span class="sr-only">Your profile</span>
                                         <span aria-hidden="true">{{ userName }}</span>
@@ -227,7 +228,7 @@ watch(() => usePage().props.flash, flash => {
             <div class="flex-1 text-sm font-semibold leading-6 dark:text-white">Home</div>
             <a href="#">
                 <span class="sr-only">Your profile</span>
-                <img class="h-8 w-8 rounded-full bg-gray-800" src="https://i.pravatar.cc/40" alt="" />
+                <img class="h-8 w-8 rounded-full bg-gray-800" :src="`/storage/${userAvatar}`" alt="" />
             </a>
         </div>
 

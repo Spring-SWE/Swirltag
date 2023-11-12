@@ -41,7 +41,7 @@ const props = defineProps({
             <!-- <img class="rounded-full absolute top-6 left-4 h-24" alt="user image" src="https://i.pravatar.cc/150"> -->
             <div class="avatar">
                 <div class="absolute top-[-34px] left-4 w-24 rounded-full ring ring-gray-800 ring-offset-base-50 ring-offset-2">
-                    <img src="https://i.pravatar.cc/150" class="" />
+                    <img :src="`/storage/${props.userData.avatar}`" class="" />
                 </div>
             </div>
 

@@ -2,11 +2,12 @@
 import Editor from '@/Pages/Compose/Partials/Editor.vue';
 import ImagePreview from './ImagePreview.vue';
 import { ref, watch, computed } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import DangerAlert from '@/Components/DangerAlert.vue';
 import { GifIcon, PhotoIcon } from '@heroicons/vue/24/solid';
 import axios from 'axios';
+const page = usePage().props;
 
 const props = defineProps({
     statusId: {
@@ -206,8 +207,17 @@ const handleEditorFocus = () => {
             <div class="overflow-auto px-3 py-3">
                 <div class="flex gap-x-3">
                     <!-- User avatar -->
-                    <img class="h-12 w-12 dark:bg-gray-50 rounded-full bg-gray-800" src="https://i.pravatar.cc/40"
-                        alt="" />
+                    <div v-if="page.auth?.user?.avatar">
+                        <img class="h-12 w-12 dark:bg-gray-50 rounded-full bg-gray-800"
+                        :src="`/storage/${page.auth.user.avatar}`"
+                        alt="user avatar" />
+                    </div>
+                    <div v-else>
+                        <img class="h-12 w-12 dark:bg-gray-50 rounded-full bg-gray-800"
+                        :src="`/storage/media/avatars/usericon.png`"
+                         alt="User Avatar"
+                        />
+                    </div>
 
                     <!-- Form for new thread -->
                     <form @submit.prevent="onSubmit" action="#" class="flex flex-col flex-auto">

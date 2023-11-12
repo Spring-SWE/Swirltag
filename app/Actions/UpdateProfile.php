@@ -3,6 +3,8 @@
 namespace App\Actions;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+
 
 class UpdateProfile
 {
@@ -11,22 +13,36 @@ class UpdateProfile
     {
         $user = User::find($request->input('userId'));
 
-        //validate the user is the same as the logged in user
-        if($user->id == auth()->user()->id){
+        // Validate the user is the same as the logged-in user
+        if ($user->id == $request->user()->id) {
+            $user->description = $request->input('description');
+            $user->website = $request->input('website');
+            $user->name = $request->input('name');
 
-           $user->description = $request->input('description');
-           $user->website = $request->input('website');
-           //$user->avatar = $request->input('avatar');
-           $user->name = $request->input('name');
-           $user->save();
+            if ($request->hasFile('avatar')) {
+                // Get the uploaded file
+                $avatarFile = $request->file('avatar');
 
-           return $user;
+                // Check if the uploaded file is not the default usericon.png
+                if ($user->avatar !== '/media/avatars/usericon.png') {
+                    // Remove the previous avatar unless it's the default usericon.png
+                    Storage::disk('public')->delete($user->avatar);
+                }
 
+                // Store the new avatar
+                $avatarPath = $avatarFile->store('media/avatars', 'public');
+                $user->avatar = $avatarPath;
+                $user->save();
+            } else {
+                // No new avatar uploaded, keep the existing one
+            }
+
+            $user->save();
+
+            return $user;
         } else {
-            //return back with error message
+            // Return back with an error message
             return back()->with('error', 'You can only update your own profile');
         }
-
     }
-
 }

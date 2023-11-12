@@ -25,9 +25,7 @@ const statusDataRef = ref(props.statusData);
 
 
 const likeStatus = (status_id) => {
-  axios.post('/like', {
-    status_id: status_id,
-  })
+    axios.post('/like', { status_id: status_id })
     .then(function (response) {
       if (response.data.message === 'Status liked') {
         if (statusDataRef.value.like_count === 1) {
@@ -58,9 +56,7 @@ const likeStatus = (status_id) => {
 }
 
 const dislikeStatus = (status_id) => {
-  axios.post('/dislike', {
-    status_id: status_id,
-  })
+    axios.post('/dislike', { status_id: status_id })
     .then(function (response) {
       if (response.data.message === 'Status disliked') {
         if (statusDataRef.value.like_count === -1) {
@@ -108,7 +104,7 @@ const dislikeStatus = (status_id) => {
                     <div :id="`${status.id}`" class="relative flex items-start space-x-3">
                         <div class="relative">
                             <img class="h-10 w-10 items-center justify-center rounded-full"
-                                :src="'https://i.pravatar.cc/100'" alt="User Avatar" />
+                            :src="`/storage/${status.user.avatar}`" alt="User Avatar" />
                         </div>
                         <div class="min-w-0 flex-1">
                             <div>
@@ -256,7 +252,7 @@ const dislikeStatus = (status_id) => {
                     <div class="relative flex items-start space-x-3">
                         <div class="relative">
                             <img class="h-10 w-10 items-center justify-center rounded-full"
-                                :src="'https://i.pravatar.cc/100'" alt="User Avatar" />
+                            :src="`/storage/${statusData.user.avatar}`" alt="User Avatar" />
                         </div>
                         <div class="min-w-0 flex-1">
                             <div>
