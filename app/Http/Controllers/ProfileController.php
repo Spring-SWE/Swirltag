@@ -30,4 +30,15 @@ class ProfileController extends Controller
 
          ]);
     }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'bio' => 'nullable|string|max:255',
+        ]);
+
+
+
+        return redirect()->back();
+    }
 }

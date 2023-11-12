@@ -4,8 +4,6 @@ import {
     CheckBadgeIcon,
     LinkIcon,
     CalendarIcon,
-    EnvelopeIcon,
-    HandRaisedIcon,
     EllipsisHorizontalIcon,
     PencilIcon,
 } from '@heroicons/vue/24/solid'
@@ -25,16 +23,13 @@ const closeProfileEditModal = () => {
 const props = defineProps({
     userData: {
         type: Object,
-    },
-    statuses: {
-        type: Object,
     }
 });
 </script>
 
 <template>
     <Modal :show="isProfileEditModalOpen" @close="closeProfileEditModal">
-        <Edit />
+        <Edit :userData="props.userData" />
     </Modal>
 
     <div class="w-full relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -82,7 +77,7 @@ const props = defineProps({
 
             <!-- About Text -->
             <div class="flex justify-between mt-3">
-                <div class="flex">
+                <div v-if="props.userData.website" class="flex">
                     <LinkIcon class="h-4 w-4 text-gray-800 dark:text-gray-400"/>
                     <a class="text-sm text-theme-purple pl-1" :href="props.userData.website">
 
@@ -92,7 +87,7 @@ const props = defineProps({
                 </div>
                 <!-- Edit -->
                 <div>
-                    <PencilIcon @click="openProfileEditModal" class="h-5 w-5 text-gray-800 dark:text-gray-400"/>
+                    <PencilIcon @click="openProfileEditModal" class="cursor-pointer h-5 w-5 text-gray-800 dark:text-gray-400"/>
                 </div>
             </div>
 
