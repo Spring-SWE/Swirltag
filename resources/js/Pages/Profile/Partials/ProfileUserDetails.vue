@@ -23,13 +23,16 @@ const closeProfileEditModal = () => {
 const props = defineProps({
     userData: {
         type: Object,
+    },
+    userId: {
+        type: Number,
     }
 });
 </script>
 
 <template>
     <Modal :show="isProfileEditModalOpen" @close="closeProfileEditModal">
-        <Edit :userData="props.userData" />
+        <Edit :userData="props.userData"/>
     </Modal>
 
     <div class="w-full relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -85,8 +88,9 @@ const props = defineProps({
 
                     </a>
                 </div>
+
                 <!-- Edit -->
-                <div>
+                <div v-if="props.userId === props.userData.id">
                     <PencilIcon @click="openProfileEditModal" class="cursor-pointer h-5 w-5 text-gray-800 dark:text-gray-400"/>
                 </div>
             </div>

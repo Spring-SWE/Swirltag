@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProfileRequest;
 use App\Actions\GetLatestStatusesByUser;
 use App\Http\Resources\StatusResource;
+use App\Actions\UpdateProfile;
 use Illuminate\Http\Request;
-use Inertia\Response;
 use Inertia\Inertia;
 use App\Models\User;
 
@@ -26,19 +27,21 @@ class ProfileController extends Controller
 
              'user' => User::where('name', $name)->firstOrFail(),
 
+             'userId' => auth()->id(),
+
              'statuses' => StatusResource::collection($getStatuses->handle($name))
 
          ]);
     }
 
-    public function update(Request $request)
+    public function update(UpdateProfileRequest $request, UpdateProfile $updateProfile)
     {
-        $request->validate([
-            'bio' => 'nullable|string|max:255',
-        ]);
 
+        $update = $updateProfile->handle($request);
 
+        session()->flash('success', "Your profile has been updated.");
 
-        return redirect()->back();
+        return redirect()->route('profile-show', $update->name);
+
     }
 }

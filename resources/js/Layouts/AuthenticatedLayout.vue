@@ -101,7 +101,7 @@ watch(() => usePage().props.flash, flash => {
                                             <ul role="list" class="-mx-2 space-y-1">
                                                 <li v-for="item in navigation" :key="item.name">
                                                     <Link :href="item.href"
-                                                        :class="[item.current ? 'bg-gray-300 dark:bg-gray-800 dark:text-white' : 'text-gray-400 hover:text-inherit dark:hover:text-white dark:hover:bg-gray-800 hover:bg-gray-300', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                                                        :class="[item.current ? 'bg-gray-300 text-gray-800 dark:bg-gray-800 dark:text-white' : 'text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 hover:bg-gray-300', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                                                     <component :is="item.icon" class="h-6 w-6 shrink-0"
                                                         aria-hidden="true" />
                                                     {{ item.name }}
@@ -171,7 +171,7 @@ watch(() => usePage().props.flash, flash => {
                             <ul role="list" class="-mx-2 space-y-1">
                                 <li v-for="item in navigation" :key="item.name">
                                     <Link :href="item.href"
-                                        :class="[item.current ? 'bg-gray-300 dark:bg-gray-800 dark:text-white' : 'text-gray-400 hover:text-inherit dark:hover:text-white dark:hover:bg-gray-800 hover:bg-gray-300', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                                        :class="[item.current ? 'bg-gray-300 text-gray-800 dark:bg-gray-800 dark:text-white' : 'text-gray-600 dark:hover:text-white dark:hover:bg-gray-800 hover:bg-gray-300', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                                     <component :is="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
                                     {{ item.name }}
                                     </Link>
@@ -220,7 +220,7 @@ watch(() => usePage().props.flash, flash => {
         </div>
 
         <div class="sticky top-0 z-40 flex items-center gap-x-6 dark:bg-gray-900 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
-            <button type="button" class="-m-2.5 p-2.5 text-gray-400 lg:hidden" @click="sidebarOpen = true">
+            <button type="button" class="-m-2.5 p-2.5 text-gray-600 lg:hidden" @click="sidebarOpen = true">
                 <span class="sr-only">Open sidebar</span>
                 <Bars3Icon class="h-6 w-6" aria-hidden="true" />
             </button>

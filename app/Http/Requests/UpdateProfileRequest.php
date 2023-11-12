@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\User;
 
 class UpdateProfileRequest extends FormRequest
 {
@@ -15,11 +16,13 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
 
-            'name' => ['required|string|max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:' . User::class],
 
-            'body' => ['max:1000'],
+            'bio' => ['max:300'],
 
-            'avatar' => ['image|max:2048'],
+            //'avatar' => ['image', 'max:2048', 'mimes:jpeg,png,webp'],
+
+            'website' => ['url'],
         ];
     }
 

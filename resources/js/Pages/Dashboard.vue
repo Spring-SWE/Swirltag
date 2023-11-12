@@ -60,25 +60,22 @@ console.log(props.statuses);
 
     <div v-else>
         <GuestLayout>
-            <div v-if="props.statuses.data.length > 0">
-
-                <div class="status col-span-12 lg:col-span-8 border dark:border-gray-700 mt-2">
-                    <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data"
-                        :hasMore="localStatuses.meta.next_cursor">
-                        <template #default="{ items }">
-                            <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="true" />
-                        </template>
-                    </InfiniteLoader>
-                </div>
-
-
-                <div class="hidden lg:block col-span-4 mr-2 mt-2">
-                    <StatusTrendingBar />
-                    <Footer />
-                </div>
+            <div v-if="props.statuses.data.length > 0"
+                class="status col-span-12 lg:col-span-8 border dark:border-gray-700 mt-2">
+                <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data"
+                    :hasMore="localStatuses.meta.next_cursor">
+                    <template #default="{ items }">
+                        <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="true" />
+                    </template>
+                </InfiniteLoader>
             </div>
-            <div v-else class="col-span-12">
+            <div v-else class=" col-span-12 lg:col-span-8">
                 <cta />
+            </div>
+            <div class="hidden lg:block col-span-4 mr-2 mt-2">
+                <StatusTrendingBar />
+                <Create />
+                <Footer />
             </div>
 
 
