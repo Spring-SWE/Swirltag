@@ -72,10 +72,10 @@ const props = defineProps({
             <div class="flex space-x-1 justify-between mt-1">
                 <p class="text-base text-gray-800 dark:text-white">Followers <a href="#" class="text-theme-purple">0</a></p>
                 <p class="text-base text-gray-800 dark:text-white">Following <a href="#" class="text-theme-purple">0</a></p>
-                <p class="text-base text-gray-800 dark:text-white">Posts <a href="#" class="text-theme-purple">
+                <p class="text-base text-gray-800 dark:text-white">Posts
                     {{ props.userData.post_count }}
-                </a></p>
-                <p class="text-base text-gray-800 dark:text-white">Creds <a href="#" class="text-theme-purple">0</a></p>
+                </p>
+                <p class="text-base text-gray-800 dark:text-white">Creds 0</p>
             </div>
 
             <!-- About Text -->

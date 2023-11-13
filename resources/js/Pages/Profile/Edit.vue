@@ -22,7 +22,7 @@ const form = useForm({
   name: props.userData.name,
   description: props.userData.description,
   website: props.userData.website,
-  avatar: props.userData.avatar,
+  avatar: null,
   userId: props.userData.id,
 });
 

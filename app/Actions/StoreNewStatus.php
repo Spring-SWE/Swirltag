@@ -6,12 +6,14 @@ use App\Actions\ProcessHashtags;
 use Illuminate\Http\Request;
 use App\Models\Status;
 use Illuminate\Support\Facades\Cache;
+use App\Models\User;
 
 class StoreNewStatus
 {
     public function handle(Request $request)
     {
-        $userId = $request->user()->id;
+        $user = $request->user();
+        $userId = $user->id;
         $body = $request->input('body');
         $parent_id = $request->input('status_id') ? $request->input('status_id') : null;
 
@@ -35,6 +37,11 @@ class StoreNewStatus
 
             // Create the Status
             $status = Status::create($statusData);
+
+            $user = User::find($userId);
+
+            // Increment the user's post count
+            $user->increment('post_count');
 
             // Always release the lock after the operation
             $lock->release();

@@ -21,9 +21,9 @@ class UpdateProfileRequest extends FormRequest
 
         return [
             'name' => $nameRule,
-            'about' => ['max:300'],
-            'avatar' => ['image', 'max:2048', 'mimes:jpg,png,webp'], // Updated validation rules for 'avatar'
-            'website' => ['url'],
+            'description' => ['max:300', 'nullable'],
+            'avatar' => ['image', 'max:2048', 'mimes:jpg,png,webp', 'nullable'], // Updated validation rules for 'avatar'
+            'website' => ['url', 'nullable'],
         ];
     }
 }

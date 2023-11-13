@@ -53,6 +53,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * Check if the User has a Role.
+     */
     public function hasRole(...$roleNames): bool
     {
         return $this->roles->pluck('name')->intersect($roleNames)->isNotEmpty();
