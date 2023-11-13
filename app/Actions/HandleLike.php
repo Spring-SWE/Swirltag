@@ -29,7 +29,7 @@ class HandleLike
                 // User disliked the status, so toggle to like
                 $existingLike->value = 1; // Set it as like
                 $status->like_count += 2; // Increment like_count
-                $message = 'Status liked';
+                $message = 'Status liked from dislike';
             } else {
                 // User left the status as neutral, so toggle to like
                 $existingLike->value = 1; // Set it as like

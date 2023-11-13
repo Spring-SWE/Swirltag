@@ -15,7 +15,7 @@ class ProcessHashtags
             // Normalize the hashtag to lowercase for consistency
             $hashtag = strtolower($hashtag);
 
-            // FirstOrCreate will check if the hashtag exists, and if not, create it
+            // check if the hashtag exists, and if not, create it
             Tag::firstOrCreate(['name' => $hashtag]);
         }
     }

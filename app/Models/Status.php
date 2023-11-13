@@ -91,4 +91,12 @@ class Status extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
+    /**
+     * The Likes related to the Status.
+     */
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'status_id');
+    }
+
 }
