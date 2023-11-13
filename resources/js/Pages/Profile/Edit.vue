@@ -80,14 +80,13 @@ const submitProfileUpdate = () => {
           <input id="avatar" type="file" class="hidden" @change="handleAvatarUpload" />
         </div>
       </div>
-
-
+        <InputError class="" :message="form.errors.avatar" />
         <div>
-          <InputLabel for="name" value="name" />
+          <InputLabel for="name" value="Display name" />
           <TextInput
             id="name"
             type="text"
-            class="mt-1 block w-full"
+            class="mt-1 block w-full text-gray-900"
             v-model="form.name"
             required
             autofocus
@@ -98,22 +97,22 @@ const submitProfileUpdate = () => {
         </div>
 
         <div class="mt-4">
-          <InputLabel for="description" value="description" />
+          <InputLabel for="description" value="Bio" />
           <textarea
             id="description"
-            class="block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+            class="block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
             v-model="form.description"
             rows="5"
           ></textarea>
           <InputError class="mt-2" :message="form.errors.description" />
         </div>
 
-        <div>
+        <div class="mt-4">
           <InputLabel for="website" value="Website" />
           <TextInput
             id="website"
             type="text"
-            class="mt-1 block w-full"
+            class="mt-1 block w-full text-gray-900"
             v-model="form.website"
             required
             autofocus

@@ -72,12 +72,12 @@ const dislikeStatus = (status_id) => {
     });
 }
 
+//Set the user like status when the component is mounted.
 onMounted(() => {
 
     const currentUserID = usePage().props.auth.user?.id;
-    const likedStatus = props.statusData.likes.find(like => like.user_id === currentUserID);
+    const likedStatus = props.statusData?.likes.find(like => like.user_id === currentUserID);
 
-    // Set userLikedValue accordingly
     if (likedStatus) {
         userLikedInitialValue.value = likedStatus.value;
     }
