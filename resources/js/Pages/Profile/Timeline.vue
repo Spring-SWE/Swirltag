@@ -74,6 +74,7 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
                     <Status v-for="status in items" :key="status.id" :statusData="status" :hasBorder="true" />
                     </template>
                 </InfiniteLoader>
+
             </div>
         </GuestLayout>
     </div>

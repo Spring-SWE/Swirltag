@@ -1,10 +1,16 @@
 <script setup>
-import { BookOpenIcon, ChatBubbleBottomCenterIcon, PhotoIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { BookOpenIcon,
+         ChatBubbleBottomCenterIcon,
+         PhotoIcon,
+         UsersIcon,
+         HandThumbUpIcon }
+from '@heroicons/vue/24/outline'
 
 const tabs = [
     { name: 'Posts', href: '#', current: true, icon: BookOpenIcon },
     { name: 'Replies', href: '#', current: false, icon: ChatBubbleBottomCenterIcon },
     { name: 'Media', href: '#', current: false, icon: PhotoIcon},
+    { name: 'Likes', href: '#', current: false, icon: HandThumbUpIcon},
     { name: 'Swirls', href: '#', current: false, icon: UsersIcon },
 ]
 </script>
