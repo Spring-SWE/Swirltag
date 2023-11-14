@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Notifications\LikeNotification;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Status;
 use App\Models\Like;
@@ -50,6 +51,10 @@ class HandleLike
             $status->like_count++;
             $message = 'Status liked';
         }
+
+        $userToNotify = $status->user;
+
+        $userToNotify->notify(new LikeNotification($like));
 
         $status->save();
 
