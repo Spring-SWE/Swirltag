@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
  * Load routes
  */
 require __DIR__ . '/auth.php';
+require __DIR__ . '/notification.php';
 require __DIR__ . '/status.php';
 require __DIR__ . '/media.php';
 require __DIR__ . '/likes.php';

@@ -2,52 +2,48 @@
 
 namespace App\Notifications;
 
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Broadcasting\PrivateChannel;
 
-class LikeNotification extends Notification
+class LikeNotification extends Notification implements ShouldBroadcast
 {
-    use Queueable, Notifiable;
+    use Queueable;
 
     protected $like;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct($like) // Pass the like information
+    public function __construct($like)
     {
         $this->like = $like;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     */
-    public function via(object $notifiable): array
+    public function via($notifiable)
     {
         return ['database', 'broadcast'];
     }
 
-    /**
-     * Get the array representation of the notification for database storage.
-     */
-    public function toDatabase(object $notifiable): array
+    public function toDatabase($notifiable)
     {
         return [
-            'liked_by' => $this->like->user_id, // Example data
+            'liked_by' => $this->like->user_id,
             'status_id' => $this->like->status_id,
         ];
     }
 
-    /**
-     * Get the broadcastable representation of the notification.
-     */
-    public function toBroadcast(object $notifiable): BroadcastMessage
+    public function toBroadcast($notifiable)
     {
+        \Log::info("Broadcasting like notification to user: " . $this->like->user_id);
+
         return new BroadcastMessage([
-            'liked_by' => $this->like->user_id, // Example data
+            'liked_by' => $this->like->user_id,
             'status_id' => $this->like->status_id,
         ]);
+    }
+
+    public function broadcastOn()
+    {
+        return new PrivateChannel('App.Models.User.' . $this->like->user_id);
     }
 }

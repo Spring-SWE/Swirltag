@@ -52,6 +52,7 @@ class HandleLike
             $message = 'Status liked';
         }
 
+        //Notify user of Like
         $userToNotify = $status->user;
 
         $userToNotify->notify(new LikeNotification($like));
