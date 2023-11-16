@@ -51,10 +51,13 @@ class HandleLike
             $status->like_count++;
             $message = 'Status liked';
 
-             //Notify user of new Like
-            $userToNotify = $status->user;
+            //dont send notification if user is the owner of the status
+            if ($status->user_id != Auth::id()) {
+                 //Notify user of new Like
+                $userToNotify = $status->user;
+                $userToNotify->notify(new LikeNotification($like));
+            }
 
-            $userToNotify->notify(new LikeNotification($like));
         }
 
         $status->save();

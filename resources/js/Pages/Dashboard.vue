@@ -30,8 +30,6 @@ const localStatuses = reactive({
 
 const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
 
-console.log(props.statuses);
-
 </script>
 
 <template>

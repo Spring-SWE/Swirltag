@@ -5,7 +5,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import CreateStatusButton from '@/Pages/Compose/Partials/CreateStatusButton.vue';
 import { Link, usePage, } from '@inertiajs/vue3';
 import { useToast } from "vue-toastification";
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import {
     Bars3Icon,
@@ -31,6 +31,10 @@ const navigation = [
     { name: 'Messages', href: '#', icon: EnvelopeIcon, current: false },
     { name: 'Profile', href: `/${userName}`, icon: UserIcon, current: false },
 ]
+const notificationCount = ref(0);
+const toast = useToast();
+
+//Methods.
 navigation.forEach(item => {
     if (item.name.toLowerCase() === 'profile') {
         item.current = page.ziggy.location.includes(item.name.toLowerCase());
@@ -38,8 +42,6 @@ navigation.forEach(item => {
         item.current = page.ziggy.location.endsWith(item.href);
     }
 });
-
-const toast = useToast();
 
 watch(() => usePage().props.flash, flash => {
     let toastId = null;
@@ -58,6 +60,29 @@ watch(() => usePage().props.flash, flash => {
         setTimeout(() => toast.dismiss(toastId), 5000)
     }
 }, { deep: true })
+
+
+//Notification handling
+axios.get('/getunreadnotifications')
+    .then(response => {
+        notificationCount.value = response.data.unreadCount;
+    })
+    .catch(error => {
+        console.error('Error fetching notifications:', error);
+        toast.error('Something went wrong with pulling your notifications count.');
+});
+
+
+onMounted(() => {
+    Echo.private(`App.Models.User.${page.auth.user.id}`)
+        .notification((notification) => {
+
+            if(notification.liked_by !== page.auth.user.id) {
+                notificationCount.value++;
+            }
+        });
+});
+
 
 </script>
 
@@ -123,7 +148,7 @@ watch(() => usePage().props.flash, flash => {
                                                     <button href="#"
                                                         class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold min-w-full leading-6 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-800">
                                                         <img class="h-8 w-8 rounded-full bg-gray-800"
-                                                        :src="`/storage/${userAvatar}`" alt="" />
+                                                            :src="`/storage/${userAvatar}`" alt="" />
                                                         <span class="sr-only">Your profile</span>
                                                         <span aria-hidden="true">{{ userName }}</span>
                                                     </button>
@@ -175,6 +200,11 @@ watch(() => usePage().props.flash, flash => {
                                         :class="[item.current ? 'bg-gray-300 text-gray-800 dark:bg-gray-800 dark:text-white' : 'text-gray-600 dark:hover:text-white dark:hover:bg-gray-800 hover:bg-gray-300', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                                     <component :is="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
                                     {{ item.name }}
+                                    <!-- Notification Badge -->
+                                    <span v-if="notificationCount > 0 && item.name === 'Notifications'"
+                                        class="inline-flex items-center justify-center px-2 py-1 ml-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                                        {{ notificationCount }}
+                                    </span>
                                     </Link>
                                 </li>
                                 <li>
@@ -266,8 +296,9 @@ watch(() => usePage().props.flash, flash => {
         <!-- Main content Area -->
         <div class="bg-white dark:bg-gray-900 pb-10 lg:ml-3 lg:pl-72 grid grid-cols-12 gap-4">
             <slot />
-    </div>
+        </div>
 
-</div></template>
+    </div>
+</template>
 
 

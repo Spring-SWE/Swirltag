@@ -14,78 +14,116 @@ import { useToast } from "vue-toastification";
 import axios from 'axios';
 
 const toast = useToast();
-const userLikedInitialValue = ref(null);
 const props = defineProps({
     conversation: Array, // The entire conversation up to the current status
     hasBorder: Boolean,
     statusData: Object,
 });
-const statusDataRef = ref(props.statusData);
 
+// Helper function to update the like/dislike status
+const updateStatus = (status, response) => {
+    if (response.data.message === 'Status liked') {
+        status.like_count++;
+        status.userLiked = 1;
+    } else if (response.data.message === 'Status unliked') {
+        status.like_count--;
+        status.userLiked = 0;
+    } else if (response.data.message === 'Status liked from dislike') {
+        status.like_count += 2;
+        status.userLiked = 1;
+    } else if (response.data.message === 'Status disliked') {
+        status.like_count--;
+        status.userLiked = -1;
+    } else if (response.data.message === 'Status undisliked') {
+        status.like_count++;
+        status.userLiked = 0;
+    } else if (response.data.message === 'Status disliked from like') {
+        status.like_count -= 2;
+        status.userLiked = -1;
+    }
+};
 
+// Function to like a status
 const likeStatus = (status_id) => {
     axios.post('/like', { status_id: status_id })
-    .then(function (response) {
-      if (response.data.message === 'Status liked') {
-          statusDataRef.value.like_count++;
-          userLikedInitialValue.value = 1;
-      } else if (response.data.message === 'Status unliked') {
-          statusDataRef.value.like_count--;
-          userLikedInitialValue.value = 0;
-      } else if(response.data.message === 'Status liked from dislike') {
-          statusDataRef.value.like_count +=2;
-          userLikedInitialValue.value = 1;
-      }
-    })
-    .catch(function (error) {
-      if (error.response?.status === 401) {
-        toast.error("You need to log in to do that.");
-        console.log(error);
-      } else {
-        toast.error("Something went wrong, please try again later.");
-        console.log(error);
-      }
-    });
-}
+        .then(function (response) {
+            if (props.statusData && props.statusData.id === status_id) {
+                updateStatus(props.statusData, response);
+            }
+            if (props.conversation) {
+                props.conversation.forEach(status => {
+                    if (status.id === status_id) {
+                        updateStatus(status, response);
+                    }
+                });
+            }
 
+        })
+        .catch(handleError);
+};
+
+// Function to dislike a status
 const dislikeStatus = (status_id) => {
     axios.post('/dislike', { status_id: status_id })
-    .then(function (response) {
-      if (response.data.message === 'Status disliked') {
-       statusDataRef.value.like_count--;
-       userLikedInitialValue.value = -1;
-      } else if (response.data.message === 'Status undisliked') {
-        statusDataRef.value.like_count++;
-        userLikedInitialValue.value = 0;
-      } else if(response.data.message === 'Status disliked from like') {
-        statusDataRef.value.like_count -=2;
-        userLikedInitialValue.value = -1;
-      }
-    })
-    .catch(function (error) {
-      if (error.response?.status === 401) {
+        .then(function (response) {
+            if (props.statusData && props.statusData.id === status_id) {
+                updateStatus(props.statusData, response);
+            }
+
+            if (props.conversation) {
+                props.conversation.forEach(status => {
+                    if (status.id === status_id) {
+                        updateStatus(status, response);
+                    }
+                });
+            }
+        })
+        .catch(handleError);
+};
+
+// Error handling function
+const handleError = (error) => {
+    if (error.response?.status === 401) {
         toast.error("You need to log in to do that.");
-      } else {
+    } else {
         toast.error("Something went wrong, please try again later.");
-        console.log(error);
-      }
-    });
-}
+    }
+    console.log(error);
+};
 
-//Set the user like status when the component is mounted.
+// Set the user like status when the component is mounted.
 onMounted(() => {
-
     const currentUserID = usePage().props.auth.user?.id;
-    const likedStatus = props.statusData?.likes.find(like => like.user_id === currentUserID);
 
-    if (likedStatus) {
-        userLikedInitialValue.value = likedStatus.value;
+    if (props.statusData && Array.isArray(props.statusData.likes)) {
+        // Initialize for a single status
+        const likedStatus = props.statusData.likes.find(like => like.user_id === currentUserID);
+        if (likedStatus) {
+            props.statusData.userLiked = likedStatus.value;
+        } else {
+            props.statusData.userLiked = 0; // Not liked or disliked
+        }
+    }
+
+    if (props.conversation && props.conversation.length > 0) {
+        props.conversation.forEach(status => {
+            if (Array.isArray(status.likes)) {
+                const likedStatus = status.likes.find(like => like.user_id === currentUserID);
+                if (likedStatus) {
+                    status.userLiked = likedStatus.value;
+                } else {
+                    status.userLiked = 0; // Not liked or disliked
+                }
+            }
+        });
     }
 });
 
+
 </script>
 
-<template>
+
+<template >
     <div
         :class="['Status p-3 border-gray-100 dark:border-gray-700 border-b  ', hasBorder ? 'hover:shadow hover:bg-gray-50 dark:hover:bg-gray-800' : '']">
         <div class="flow-root">
@@ -101,7 +139,7 @@ onMounted(() => {
                     <div :id="`${status.id}`" class="relative flex items-start space-x-3">
                         <div class="relative">
                             <img class="h-10 w-10 items-center justify-center rounded-full"
-                            :src="`/storage/${status.user.avatar}`" alt="User Avatar" />
+                                :src="`/storage/${status.user.avatar}`" alt="User Avatar" />
                         </div>
                         <div class="min-w-0 flex-1">
                             <div>
@@ -194,23 +232,56 @@ onMounted(() => {
                             </div>
                             <!-- Media area -->
                             <div class="status-media mt-1" v-if="status.media && status.media.length > 0">
-                                <img class="rounded-lg mx-auto border border-gray-100 dark:border-gray-700" style="max-height: 700px;"
-                                    :src="status.media[0].thumbnail_path" alt="">
+                                <img class="rounded-lg mx-auto border border-gray-100 dark:border-gray-700"
+                                    style="max-height: 700px;" :src="status.media[0].thumbnail_path" alt="">
                             </div>
                             <!-- Option Bar -->
                             <div class="status-option-bar mt-2">
                                 <div class="flex flex-row gap-3">
                                     <div
-                                        class="vote-status px-1 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
-                                        <div>
-                                            <HandThumbUpIcon
-                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-600 dark:hover:text-green-600 text-gray-600 dark:text-slate-400" />
+                                        class="vote-status cursor-pointer px-1 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
+
+                                        <!-- Like -->
+                                        <div v-if="status.userLiked === 1">
+                                            <SolidHandThumbUpIcon @click="likeStatus(status.id)"
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-gray-600 dark:hover:text-slate-400 text-green-700 dark:text-green-700" />
                                         </div>
-                                        <div class="font-semibold px-2 text-gray-600 dark:text-white"> {{ status.like_count }}</div>
-                                        <div>
-                                            <HandThumbDownIcon
-                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-red-600 dark:hover:text-red-600 text-gray-600 dark:text-slate-400" />
+
+                                        <div v-else-if="status.userLiked === -1">
+                                            <HandThumbUpIcon @click="likeStatus(status.id)"
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-700 dark:hover:text-green-700 text-gray-600 dark:text-slate-400" />
                                         </div>
+
+                                        <div v-else>
+                                            <HandThumbUpIcon @click="likeStatus(status.id)"
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-700 dark:hover:text-green-700 text-gray-600 dark:text-slate-400" />
+                                        </div>
+
+
+                                        <div class="font-semibold px-2 text-gray-600 dark:text-white"> {{ status.like_count
+                                        }}</div>
+
+
+
+                                        <!-- Dislike -->
+                                        <div v-if="status.userLiked === -1">
+                                            <SolidHandThumbDownIcon @click="dislikeStatus(status.id)"
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-gray-600 dark:hover:text-slate-400 text-red-700 dark:text-red-700" />
+                                        </div>
+
+                                        <div v-else-if="status.userLiked === 1">
+                                            <HandThumbDownIcon @click="dislikeStatus(status.id)"
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-red-700 dark:hover:text-red-700 text-gray-600 dark:text-slate-400" />
+                                        </div>
+
+                                        <div v-else>
+                                            <HandThumbDownIcon @click="dislikeStatus(status.id)"
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-red-700 dark:hover:text-red-700 text-gray-600 dark:text-slate-400" />
+                                        </div>
+
+
+
+
                                     </div>
                                     <Link :href="`/status/${status.id}#${status.id}`">
                                     <div
@@ -249,7 +320,7 @@ onMounted(() => {
                     <div class="relative flex items-start space-x-3">
                         <div class="relative">
                             <img class="h-10 w-10 items-center justify-center rounded-full"
-                            :src="`/storage/${statusData.user.avatar}`" alt="User Avatar" />
+                                :src="`/storage/${statusData.user.avatar}`" alt="User Avatar" />
                         </div>
                         <div class="min-w-0 flex-1">
                             <div>
@@ -344,8 +415,8 @@ onMounted(() => {
                             </div>
                             <!-- Media area -->
                             <div class="status-media mt-1" v-if="statusData.media && statusData.media.length > 0">
-                                <img class="rounded-lg mx-auto border border-gray-100 dark:border-gray-700" style="max-height: 700px;"
-                                    :src="statusData.media[0].thumbnail_path" alt="">
+                                <img class="rounded-lg mx-auto border border-gray-100 dark:border-gray-700"
+                                    style="max-height: 700px;" :src="statusData.media[0].thumbnail_path" alt="">
                             </div>
                             </Link>
                             <!-- Option Bar -->
@@ -355,25 +426,19 @@ onMounted(() => {
                                         class="vote-status px-1 py-1 flex dark:border dark:border-gray-800 rounded-2xl dark:bg-gray-800">
 
                                         <!-- Like -->
-                                        <div v-if="userLikedInitialValue === 1">
-                                            <SolidHandThumbUpIcon
-                                            @click="likeStatus(statusData.id)"
-                                            class="h-6 w-6 hover:scale-125 transition-transform hover:text-gray-600 dark:hover:text-slate-400 text-green-700 dark:text-green-700"
-                                            />
+                                        <div v-if="props.statusData.userLiked === 1">
+                                            <SolidHandThumbUpIcon @click="likeStatus(statusData.id)"
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-gray-600 dark:hover:text-slate-400 text-green-700 dark:text-green-700" />
                                         </div>
 
-                                        <div v-else-if="userLikedInitialValue === -1">
-                                            <HandThumbUpIcon
-                                            @click="likeStatus(statusData.id)"
-                                            class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-700 dark:hover:text-green-700 text-gray-600 dark:text-slate-400"
-                                            />
+                                        <div v-else-if="props.statusData.userLiked === -1">
+                                            <HandThumbUpIcon @click="likeStatus(statusData.id)"
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-700 dark:hover:text-green-700 text-gray-600 dark:text-slate-400" />
                                         </div>
 
                                         <div v-else>
-                                            <HandThumbUpIcon
-                                            @click="likeStatus(statusData.id)"
-                                            class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-700 dark:hover:text-green-700 text-gray-600 dark:text-slate-400"
-                                            />
+                                            <HandThumbUpIcon @click="likeStatus(statusData.id)"
+                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-green-700 dark:hover:text-green-700 text-gray-600 dark:text-slate-400" />
                                         </div>
 
 
@@ -385,25 +450,19 @@ onMounted(() => {
 
 
                                             <!-- Dislike -->
-                                            <div v-if="userLikedInitialValue === -1">
-                                                <SolidHandThumbDownIcon
-                                                @click="dislikeStatus(statusData.id)"
-                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-gray-600 dark:hover:text-slate-400 text-red-700 dark:text-red-700"
-                                                />
+                                            <div v-if="props.statusData.userLiked === -1">
+                                                <SolidHandThumbDownIcon @click="dislikeStatus(statusData.id)"
+                                                    class="h-6 w-6 hover:scale-125 transition-transform hover:text-gray-600 dark:hover:text-slate-400 text-red-700 dark:text-red-700" />
                                             </div>
 
-                                            <div v-else-if="userLikedInitialValue === 1">
-                                                <HandThumbDownIcon
-                                                @click="dislikeStatus(statusData.id)"
-                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-red-700 dark:hover:text-red-700 text-gray-600 dark:text-slate-400"
-                                                />
+                                            <div v-else-if="props.statusData.userLiked === 1">
+                                                <HandThumbDownIcon @click="dislikeStatus(statusData.id)"
+                                                    class="h-6 w-6 hover:scale-125 transition-transform hover:text-red-700 dark:hover:text-red-700 text-gray-600 dark:text-slate-400" />
                                             </div>
 
                                             <div v-else>
-                                                <HandThumbDownIcon
-                                                @click="dislikeStatus(statusData.id)"
-                                                class="h-6 w-6 hover:scale-125 transition-transform hover:text-red-700 dark:hover:text-red-700 text-gray-600 dark:text-slate-400"
-                                                />
+                                                <HandThumbDownIcon @click="dislikeStatus(statusData.id)"
+                                                    class="h-6 w-6 hover:scale-125 transition-transform hover:text-red-700 dark:hover:text-red-700 text-gray-600 dark:text-slate-400" />
                                             </div>
 
                                         </div>

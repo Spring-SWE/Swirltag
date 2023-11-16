@@ -20,7 +20,7 @@ class GetConversation
         $conversation = new Collection();
 
         // Starting with the current status, walk up the chain to the top-most parent.
-        $currentStatus = Status::with(['user', 'media'])->find($statusId);
+        $currentStatus = Status::with(['user', 'media', 'likes'])->find($statusId);
 
         while ($currentStatus) {
             // Prepend the current status to the start of the conversation collection.
@@ -32,7 +32,7 @@ class GetConversation
             }
 
             // Move up the chain to the parent of the current status.
-            $currentStatus = $currentStatus->parent()->with(['user', 'media'])->first();
+            $currentStatus = $currentStatus->parent()->with(['user', 'media', 'likes'])->first();
         }
 
         // Now $conversation contains the entire chain from the top parent to the status.
