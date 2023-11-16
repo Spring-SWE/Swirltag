@@ -26,7 +26,7 @@ const userName = page.auth.user.name;
 const userAvatar = page.auth.user.avatar;
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: false },
-    { name: 'Notifications', href: '#', icon: BellIcon, current: false },
+    { name: 'Notifications', href: '/notifications', icon: BellIcon, current: false },
     { name: 'Swirls', href: '#', icon: UsersIcon, current: false },
     { name: 'Messages', href: '#', icon: EnvelopeIcon, current: false },
     { name: 'Profile', href: `/${userName}`, icon: UserIcon, current: false },

@@ -15,7 +15,7 @@ class GetPopularStatuses {
         ->orderBy('reply_count', 'desc')
         ->orderBy('created_at', 'desc')
         ->orderBy('id', 'desc')
-        ->cursorPaginate(50);
+        ->cursorPaginate(10);
 
         // Conditionally load the user's likes for the retrieved statuses if a user is authenticated
         if ($user) {

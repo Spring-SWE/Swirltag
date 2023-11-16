@@ -50,12 +50,12 @@ class HandleLike
             // Update the status to increment the number of likes
             $status->like_count++;
             $message = 'Status liked';
+
+             //Notify user of new Like
+            $userToNotify = $status->user;
+
+            $userToNotify->notify(new LikeNotification($like));
         }
-
-        //Notify user of Like
-        $userToNotify = $status->user;
-
-        $userToNotify->notify(new LikeNotification($like));
 
         $status->save();
 

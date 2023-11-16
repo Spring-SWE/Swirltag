@@ -59,7 +59,7 @@ class StatusPolicy
      */
     public function delete(User $user, Status $status): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -67,7 +67,7 @@ class StatusPolicy
      */
     public function restore(User $user, Status $status): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -75,6 +75,6 @@ class StatusPolicy
      */
     public function forceDelete(User $user, Status $status): bool
     {
-        //
+        return true;
     }
 }
