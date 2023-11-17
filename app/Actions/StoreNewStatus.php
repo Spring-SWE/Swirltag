@@ -43,7 +43,18 @@ class StoreNewStatus
             // Increment the user's post count
             $user->increment('post_count');
 
-            // Always release the lock after the operation
+            //Send a notification if its a reply.
+            //Also, no point in sending a notification if a user replies to own status.
+            if($parent_id) {
+                $parent = Status::find($parent_id);
+
+                if($userId !== $parent->user->id) {
+
+                    $parent->user->notify(new \App\Notifications\ReplyNotification($status, $parent, $userId));
+                }
+            }
+
+            // release the lock after the operation
             $lock->release();
 
             return $status;

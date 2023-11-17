@@ -34,8 +34,6 @@ class LikeNotification extends Notification implements ShouldBroadcast
 
     public function toBroadcast($notifiable)
     {
-        \Log::info("Broadcasting like notification to user: " . $this->like->user_id);
-
         return new BroadcastMessage([
             'liked_by' => $this->like->user_id,
             'status_id' => $this->like->status_id,
@@ -44,6 +42,6 @@ class LikeNotification extends Notification implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new PrivateChannel('App.Models.User.' . $this->like->user_id);
+        return new PrivateChannel('App.Models.User.' . $this->like->status->user_id); //Broadcast to the user who created the Status.
     }
 }

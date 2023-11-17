@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\morphToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected static function boot()
     {

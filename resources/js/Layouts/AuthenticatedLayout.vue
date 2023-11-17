@@ -62,27 +62,27 @@ watch(() => usePage().props.flash, flash => {
 }, { deep: true })
 
 
-//Notification handling
-axios.get('/getunreadnotifications')
-    .then(response => {
-        notificationCount.value = response.data.unreadCount;
-    })
-    .catch(error => {
-        console.error('Error fetching notifications:', error);
-        toast.error('Something went wrong with pulling your notifications count.');
-});
-
+const fetchInitialNotifications = () => {
+    axios.get('/getunreadnotifications')
+        .then(response => {
+            notificationCount.value = response.data.unreadCount;
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+            // Handle the error as needed, e.g., showing a toast notification
+        });
+};
 
 onMounted(() => {
+    fetchInitialNotifications();
     Echo.private(`App.Models.User.${page.auth.user.id}`)
         .notification((notification) => {
-
-            if(notification.liked_by !== page.auth.user.id) {
+            if (notification.liked_by !== page.auth.user.id) {
+                console.log(notification);
                 notificationCount.value++;
             }
         });
 });
-
 
 </script>
 

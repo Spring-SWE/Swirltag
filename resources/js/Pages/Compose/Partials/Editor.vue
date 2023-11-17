@@ -103,13 +103,6 @@ const handleFocus = () => {
   emits('editorFocus');
 };
 
-// const handleBlur = () => {
-//   editorFocused.value = false;
-//   // Wait for 3 seconds before emitting the event
-//   setTimeout(() => {
-//     emits('editorBlur');
-//   }, 15000);
-// };
 
 defineExpose({
   clearEditor

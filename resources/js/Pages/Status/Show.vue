@@ -1,6 +1,8 @@
 <script setup>
 import ViewStatus from '@/Pages/Status/Partials/ViewStatus.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Footer from '@/Layouts/Partials/Footer.vue'
+import StatusTrendingBar from '@/Pages/Status/Partials/StatusTrendingBar.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head } from '@inertiajs/vue3';
 
@@ -32,8 +34,11 @@ const props = defineProps({
                   />
             </div>
             <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1 mt-3">
-                Viewing Status
+                <StatusTrendingBar />
+                <Footer />
             </div>
+
+
         </AuthenticatedLayout>
     </div>
 
@@ -47,7 +52,8 @@ const props = defineProps({
                   />
             </div>
             <div class="hidden lg:block col-span-4 mr-2 h-16 sticky top-1">
-                Viewing Status
+                <StatusTrendingBar />
+                <Footer />
             </div>
         </GuestLayout>
     </div>
