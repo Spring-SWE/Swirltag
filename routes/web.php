@@ -36,3 +36,4 @@ require __DIR__ . '/media.php';
 require __DIR__ . '/likes.php';
 require __DIR__ . '/tag.php';
 require __DIR__ . '/profile.php';
+require __DIR__ . '/follow.php';

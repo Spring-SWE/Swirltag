@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('post_count')->default(0);
+            $table->unsignedBigInteger('followers_count')->default(0);
+            $table->unsignedBigInteger('following_count')->default(0);
             $table->integer('role')->default(0);
             $table->string('avatar')->default('/media/avatars/usericon.png');
             $table->string('cover')->nullable();

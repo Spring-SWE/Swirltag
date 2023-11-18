@@ -9,6 +9,7 @@ import {
 } from '@heroicons/vue/24/solid'
 import Modal from '@/Components/Modal.vue';
 import Edit from '@/Pages/Profile/Edit.vue';
+import FollowButton from './FollowButton.vue';
 
 const isProfileEditModalOpen = ref(false);
 
@@ -52,9 +53,7 @@ const props = defineProps({
                 <CheckBadgeIcon class="h-6 w-6 text-white" alt="verification badge" />
             </div>
             <!-- Follow Button -->
-            <button class="bg-white hover:bg-gray-100 text-gray-600 font-bold py-2 px-5 rounded-full absolute right-4 top-4">
-                Follow
-            </button>
+            <FollowButton :userId="props.userData.id" />
         </div>
 
         <!-- User Profile Information -->
@@ -70,8 +69,8 @@ const props = defineProps({
             </div>
 
             <div class="flex space-x-1 justify-between mt-1">
-                <p class="text-base text-gray-800 dark:text-white">Followers <a href="#" class="text-theme-purple">0</a></p>
-                <p class="text-base text-gray-800 dark:text-white">Following <a href="#" class="text-theme-purple">0</a></p>
+                <p class="text-base text-gray-800 dark:text-white">Followers <a href="#" class="text-theme-purple">{{ props.userData.followers_count }}</a></p>
+                <p class="text-base text-gray-800 dark:text-white">Following <a href="#" class="text-theme-purple">{{ props.userData.following_count }}</a></p>
                 <p class="text-base text-gray-800 dark:text-white">Posts
                     {{ props.userData.post_count }}
                 </p>
