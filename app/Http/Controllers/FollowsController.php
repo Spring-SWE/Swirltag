@@ -42,4 +42,19 @@ class FollowsController extends Controller
 
         return back();
     }
+
+    /**
+     * Check if the authenticated user is following a specific user.
+     *
+     * @param  int  $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function checkFollowStatus($userId)
+    {
+        $isFollowing = Follow::where('user_id', Auth::id())
+            ->where('followed_user_id', $userId)
+            ->exists();
+
+        return response()->json(['isFollowing' => $isFollowing]);
+    }
 }

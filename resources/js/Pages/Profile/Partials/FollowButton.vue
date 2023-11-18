@@ -1,22 +1,28 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 // Props
 const props = defineProps({
     userId: Number,
-    isFollowing: Boolean
 });
 
-// Local state
-const isCurrentlyFollowing = ref(props.isFollowing);
+const isCurrentlyFollowing = ref(false);
+const buttonText = ref('Follow');
 
-// Watch for changes in props.isFollowing
-watch(() => props.isFollowing, (newValue) => {
-    isCurrentlyFollowing.value = newValue;
-});
+// Function to check follow status
+const checkFollowStatus = async () => {
+    try {
+        const response = await axios.get(`/check-follow-status/${props.userId}`);
+        isCurrentlyFollowing.value = response.data.isFollowing;
+        buttonText.value = isCurrentlyFollowing.value ? 'Unfollow' : 'Follow';
+    } catch (error) {
+        console.error('Error checking follow status', error);
+    }
+};
 
-const buttonText = ref(isCurrentlyFollowing.value ? 'Unfollow' : 'Follow');
+// Call checkFollowStatus on component mount
+onMounted(checkFollowStatus);
 
 const handleFollow = async () => {
     try {
