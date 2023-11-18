@@ -28,15 +28,18 @@ class ReplyNotification extends Notification implements ShouldBroadcast
         return ['database', 'broadcast'];
     }
 
+
     public function toDatabase($notifiable)
     {
         return [
             'reply_by' => $this->userId,
             'reply_to' => $this->parent->user_id,
             'parent_id' => $this->parent->id, //Named Status_id to stay uniformed.
+            'reply_id' => $this->reply->id,
             'reply_body' => $this->reply->body,
             'replier_avatar' => $this->reply->user->avatar,
             'replier_name' => $this->reply->user->name,
+            'created_at_human' => $this->reply->created_at->diffForHumans(),
         ];
     }
 

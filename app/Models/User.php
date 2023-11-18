@@ -70,11 +70,27 @@ class User extends Authenticatable
         return $this->hasMany(Status::class);
     }
 
-      /**
+    /**
      * The Roles of the User.
      */
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * The users that this user is following.
+     */
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'user_id', 'followed_user_id');
+    }
+
+    /**
+     * The users that follow this user.
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'followed_user_id', 'user_id');
     }
 }

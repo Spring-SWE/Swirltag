@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Notification extends Model
 {
@@ -20,6 +21,12 @@ class Notification extends Model
     {
         return $this->data['liked_by'] ?? null;
     }
+
+      // Accessor for human-readable created_at
+      public function getCreatedAtHumanAttribute()
+      {
+          return Carbon::createFromTimeStamp(strtotime($this->attributes['created_at']))->diffForHumans();
+      }
 
     // Relationship for the user who liked
     public function likedBy()
