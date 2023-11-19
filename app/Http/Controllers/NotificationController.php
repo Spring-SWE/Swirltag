@@ -37,7 +37,7 @@ class NotificationController extends Controller
         $user = Auth::user();
         $user->unreadNotifications->markAsRead();
 
-        return Inertia::render('Notifications', [
+        return Inertia::render('Notifications/Notifications', [
             'notifications' => $sortedNotifications->values()->all(),
         ]);
     }

@@ -1,5 +1,6 @@
 <script setup>
 import { HandThumbUpIcon, ChatBubbleBottomCenterIcon } from '@heroicons/vue/24/solid'
+import FollowButton from '@/Pages/Profile/Partials/FollowButton.vue';
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -30,7 +31,12 @@ console.log(props.notification);
 
 <template>
     <ul role="list" class="mt-1 border dark:border-gray-700">
-        <Link :href="isReplyNotification(notification) ? `status/${notification.data.reply_id}/#${notification.data.reply_id}` : `status/${notification.status_id}`">
+        <Link :href="isReplyNotification(notification) ? `status/${notification.data.reply_id}/#${notification.data.reply_id}`
+       : isLikeNotification(notification) ? `status/${notification.status_id}`
+       : isFollowNotification(notification) ? `/${notification.data.follower_name}`
+       : isRetweetNotification(notification) ? `status/${notification.data.status_id}`
+       : isMentionNotification(notification) ? `status/${notification.data.mention_status_id}`
+       : '#'">
             <li class="p-4 hover:dark:bg-gray-800">
                 <div class="flex items-center gap-x-3">
                     <!-- Display avatars for like notifications -->
@@ -51,8 +57,8 @@ console.log(props.notification);
                     <!-- Display avatar for follow notifications -->
                     <template v-if="isFollowNotification(notification)">
                         <img class="h-10 w-10 items-center justify-center rounded-full"
-                             :src="`/storage/${notification.data?.follower_avatar}`"
-                             :alt="`${notification.data?.follower_name}'s Avatar`" />
+                             :src="`/storage/${notification.data.follower_avatar}`"
+                             :alt="`${notification.data.follower_name}'s Avatar`" />
                     </template>
 
                     <!-- Display text for the notifications -->
