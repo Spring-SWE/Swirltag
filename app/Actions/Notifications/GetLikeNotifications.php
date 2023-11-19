@@ -16,7 +16,7 @@ class GetLikeNotifications
         // Filter out only LikeNotification
         $likeNotifications = $notifications->filter(function ($notification) {
             return $notification->type === 'App\Notifications\LikeNotification';
-        });
+        })->take(50);
 
         // Extract user IDs and status IDs from LikeNotifications
         $userIds = $likeNotifications->pluck('data.liked_by')->unique();

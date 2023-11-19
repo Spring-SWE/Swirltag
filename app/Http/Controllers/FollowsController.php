@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Follow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\FollowNotification;
 
 class FollowsController extends Controller
 {
@@ -22,7 +23,10 @@ class FollowsController extends Controller
                 'followed_user_id' => $userId
             ]);
 
-            // Increment followers count logic here (if not handled by model events)
+            $userToNotify = User::find($userId);
+            $follower = Auth::user();
+
+            $userToNotify->notify(new FollowNotification($follower, $userToNotify));
         }
 
         return back();

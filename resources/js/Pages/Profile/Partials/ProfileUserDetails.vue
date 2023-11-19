@@ -53,7 +53,7 @@ const props = defineProps({
                 <CheckBadgeIcon class="h-6 w-6 text-white" alt="verification badge" />
             </div>
             <!-- Follow Button -->
-            <FollowButton :userId="props.userData.id" />
+            <FollowButton v-if="props.userId !== props.userData.id && props.userId" :userId="props.userData.id" />
         </div>
 
         <!-- User Profile Information -->
@@ -89,8 +89,8 @@ const props = defineProps({
                 </div>
 
                 <!-- Edit -->
-                <div v-if="props.userId === props.userData.id">
-                    <PencilIcon @click="openProfileEditModal" class="cursor-pointer h-5 w-5 text-gray-800 dark:text-gray-400"/>
+                <div class="hover:bg-gray-700 hover:rounded-full p-1" v-if="props.userId === props.userData.id">
+                    <PencilIcon @click="openProfileEditModal" class=" cursor-pointer h-5 w-5 text-gray-800 dark:text-gray-400"/>
                 </div>
             </div>
 

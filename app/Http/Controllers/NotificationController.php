@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Notifications\GetFollowNotifications;
 use App\Actions\Notifications\GetReplyNotifications;
 use App\Actions\Notifications\GetLikeNotifications;
 use Illuminate\Support\Facades\Auth;
@@ -10,22 +11,24 @@ use Inertia\Inertia;
 
 class NotificationController extends Controller
 {
-
     public function show()
     {
         // Instantiate the actions
         $getLikeNotifications = new GetLikeNotifications();
         $getReplyNotifications = new GetReplyNotifications();
+        $getFollowNotifications = new GetFollowNotifications();
 
         // Fetch the notifications
         $likeNotifications = $getLikeNotifications->handle();
         $replyNotifications = $getReplyNotifications->handle();
+        $followNotifications = $getFollowNotifications->handle();
 
-        // Combine all types of notifications into one array
-        $allNotifications = $likeNotifications->merge($replyNotifications);
+        // Combine all types of notifications into one collection
+        $allNotifications = $likeNotifications
+                             ->merge($replyNotifications)
+                             ->merge($followNotifications);
 
         // Sort all notifications by 'created_at' in descending order
-        //The data is mixed, so it's needed.
         $sortedNotifications = $allNotifications->sortByDesc(function ($notification) {
             return $notification['created_at'] ?? $notification->created_at;
         });
