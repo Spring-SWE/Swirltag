@@ -161,49 +161,53 @@ defineExpose({
     border-bottom: none !important;
 }
 
+
 .ql-mention-list-container {
     position: absolute;
-    z-index: 1050; // Ensures it is above most other elements. Increase if necessary.
-    max-height: 250px; // Controls the maximum height before scrolling
+    z-index: 999; // High enough to ensure it is above most other elements
+    max-height: 250px; // Limits the height before scrolling
     overflow-y: auto; // Allows scrolling within the popup
     border: 1px solid #d1d5db; // Subtle border color
     background-color: #ffffff; // White background for better readability
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.25); // Adds a more pronounced shadow for depth
-    border-radius: 0.375rem; // Slightly rounded corners
-    margin-top: 8px; // Adds a little space between the mention trigger and the popup list
-    box-sizing: border-box; // Ensures that padding and border are included in the width and height
-    width: auto; // Allow the box to size according to its content
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); // Softer shadow for depth
+    border-radius: 0.375rem; // Rounded corners
+    margin-top: 8px; // Space between the mention trigger and the popup list
+    box-sizing: border-box; // Includes padding and border in the element's dimensions
+    width: 100%; // Match the width with the editor width
+    max-width: 300px; // Max width for the container
 }
 
 .ql-mention-list-item {
-    list-style-type: none;
+    list-style-type: none; // Removes the list item dots
     padding: 0.5rem 0.75rem;
     cursor: pointer;
     line-height: 1.5;
-    color: #000;
+    color: #333; // Darker text color for better readability
+    background-color: #fff; // Background color for list items
+    border-bottom: 1px solid #eee; // Adds a separator between items
 
     &:hover,
     &:focus {
-        background-color: #f3f4f6; // Highlight color for items on hover/focus
+        background-color: #f9f9f9; // Slightly darker background color on hover/focus
+        color: #000; // Optional: Change text color on hover/focus
     }
 }
 
 .ql-mention-list-item.selected,
 .ql-mention-list-item:hover {
-    background-color: #f3f4f6;
-    /* This is a light grey color, change as desired */
+    background-color: #e6e6e6; // Different background color for selected state
 }
 
-
-/* Custom styling for the scrollbar within the mention list for Webkit browsers */
+/* Styling for the scrollbar within the mention list for Webkit browsers */
 .ql-mention-list-container::-webkit-scrollbar {
-    width: 5px; // Scrollbar width
+    width: 5px;
 }
 
 .ql-mention-list-container::-webkit-scrollbar-thumb {
-    background: #ccc; // Scrollbar color
-    border-radius: 4px; // Rounded scrollbar for aesthetics
+    background: #d1d5db;
+    border-radius: 4px;
 }
+
 
 ql-editor ol,
 .ql-editor ul {

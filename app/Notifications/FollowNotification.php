@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Broadcasting\PrivateChannel;
+use Carbon\Carbon;
 
 class FollowNotification extends Notification implements ShouldBroadcast
 {
@@ -33,6 +34,7 @@ class FollowNotification extends Notification implements ShouldBroadcast
             'follower_id' => $this->follower->id,
             'follower_name' => $this->follower->name,
             'follower_avatar' => $this->follower->avatar,
+            'created_at_human' => Carbon::now()->diffForHumans(),
         ];
     }
 

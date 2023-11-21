@@ -204,7 +204,7 @@ const handleEditorFocus = () => {
             </div>
 
             <!-- Scrollable content area for form and image -->
-            <div class="overflow-auto px-3 py-3">
+            <div class="overflow-auto px-3 py-3 z-50">
                 <div class="flex gap-x-3">
                     <!-- User avatar -->
                     <div v-if="page.auth?.user?.avatar">
