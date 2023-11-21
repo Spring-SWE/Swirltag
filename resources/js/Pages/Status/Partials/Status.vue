@@ -228,7 +228,7 @@ onMounted(() => {
                             </div>
                             <div
                                 class="mb-5 text-base text-gray-700 font-medium dark:text-white whitespace-pre-line overflow-wrap break-words">
-                                <p>{{ status.body }}</p>
+                                <p v-html="status.body"></p>
                             </div>
                             <!-- Media area -->
                             <div class="status-media mt-1" v-if="status.media && status.media.length > 0">
@@ -411,7 +411,7 @@ onMounted(() => {
                             <Link :href="`/status/${statusData.id}#${statusData.id}`">
                             <div
                                 class="mb-5 text-base text-gray-900 font-medium dark:text-white whitespace-pre-line overflow-wrap break-words">
-                                <p>{{ statusData.body }}</p>
+                                <p v-html="statusData.body"></p>
                             </div>
                             <!-- Media area -->
                             <div class="status-media mt-1" v-if="statusData.media && statusData.media.length > 0">

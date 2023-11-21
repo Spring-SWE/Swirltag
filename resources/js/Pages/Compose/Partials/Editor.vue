@@ -150,6 +150,12 @@ defineExpose({
     line-height: 1.5;
 }
 
+.ql-clipboard {
+    word-break: break-word;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
 .ql-snow {
     border: none !important;
     overflow: visible !important;

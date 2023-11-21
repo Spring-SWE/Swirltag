@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use App\Actions\ProcessText;
+
 
 class Status extends Model
 {
@@ -24,6 +26,11 @@ class Status extends Model
                     $parent->increment('reply_count');
                 }
             }
+        });
+
+        //When a Status is retrieved, linkify the body.
+        static::retrieved(function ($status) {
+            $status->body = ProcessText::linkify($status->body);
         });
     }
 
