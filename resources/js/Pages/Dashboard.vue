@@ -37,7 +37,7 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
     <div v-if="$page.props.auth.user">
         <AuthenticatedLayout>
             <div v-if="props.statuses.data.length > 0"
-                class="status col-span-12 lg:col-span-8 border dark:border-gray-700 mt-2 pb-1">
+                class="status col-span-12 lg:col-span-8 border dark:border-gray-700 mt-2 mb-32">
                 <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data"
                     :hasMore="localStatuses.meta.next_cursor">
                     <template #default="{ items }">
@@ -59,7 +59,7 @@ const apiEndpoint = computed(() => `${localStatuses.meta.path}`);
     <div v-else>
         <GuestLayout>
             <div v-if="props.statuses.data.length > 0"
-                class="status col-span-12 lg:col-span-8 border dark:border-gray-700 mt-2">
+                class="status col-span-12 lg:col-span-8 border dark:border-gray-700 mt-2 mb-32">
                 <InfiniteLoader :apiEndpoint="apiEndpoint" :initialData="localStatuses.data"
                     :hasMore="localStatuses.meta.next_cursor">
                     <template #default="{ items }">

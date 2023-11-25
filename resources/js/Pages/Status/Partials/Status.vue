@@ -1,6 +1,6 @@
 <script setup>
-import { defineProps, ref, onMounted } from 'vue';
-import { Link, usePage, Head } from '@inertiajs/vue3';
+import { defineProps, onMounted } from 'vue';
+import { Link, usePage, } from '@inertiajs/vue3';
 import { CheckBadgeIcon, HandThumbUpIcon as SolidHandThumbUpIcon, HandThumbDownIcon as SolidHandThumbDownIcon } from '@heroicons/vue/24/solid';
 import {
     EllipsisHorizontalIcon,
@@ -11,6 +11,7 @@ import {
     HandThumbDownIcon,
 } from '@heroicons/vue/24/outline';
 import { useToast } from "vue-toastification";
+import UserInformation from './UserInformation.vue';
 import axios from 'axios';
 
 const toast = useToast();
@@ -119,7 +120,6 @@ onMounted(() => {
     }
 });
 
-
 </script>
 
 
@@ -137,9 +137,14 @@ onMounted(() => {
 
                     <!-- Status content -->
                     <div :id="`${status.id}`" class="relative flex items-start space-x-3">
-                        <div class="relative">
-                            <img class="h-10 w-10 items-center justify-center rounded-full"
+                        <div class="relative dropdown dropdown-right dropdown-hover">
+                            <img
+                                class="h-10 w-10 items-center justify-center rounded-full"
                                 :src="`/storage/${status.user.avatar}`" alt="User Avatar" />
+
+                                <div class="dropdown-content z-[100]">
+                                    <UserInformation :user="status.user" />
+                                </div>
                         </div>
                         <div class="min-w-0 flex-1">
                             <div>
@@ -318,9 +323,14 @@ onMounted(() => {
                 <li :id="`${statusData.id}`" class="relativ cursor-pointer list-none">
                     <!-- Status content -->
                     <div class="relative flex items-start space-x-3">
-                        <div class="relative">
-                            <img class="h-10 w-10 items-center justify-center rounded-full"
+                        <div class="relative dropdown dropdown-right dropdown-hover">
+                            <img
+                                class="h-10 w-10 items-center justify-center rounded-full"
                                 :src="`/storage/${statusData.user.avatar}`" alt="User Avatar" />
+
+                                <div class="dropdown-content z-[100]">
+                                    <UserInformation :user="statusData.user" />
+                                </div>
                         </div>
                         <div class="min-w-0 flex-1">
                             <div>

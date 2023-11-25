@@ -26,7 +26,7 @@ const props = defineProps({
     <Head title="Viewing Status" />
     <div v-if="$page.props.auth.user">
         <AuthenticatedLayout>
-            <div class="status col-span-12 lg:col-span-8">
+            <div class="status col-span-12 lg:col-span-8 mb-32">
                 <ViewStatus
                     :status="props.status"
                     :replies="props.replies"
@@ -44,7 +44,7 @@ const props = defineProps({
 
     <div v-else>
         <GuestLayout>
-            <div class="status col-span-12 lg:col-span-8">
+            <div class="status col-span-12 lg:col-span-8 mb-32">
                 <ViewStatus
                     :status="props.status"
                     :replies="props.replies"
